@@ -6,10 +6,6 @@
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "license": "ISC",
   "main": "lib/react-cli-service.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
   "files": [
     "lib"
   ],
@@ -25,5 +21,22 @@
   },
   "bugs": {
     "url": "https://github.com/fupengl/react-cli/issues"
+  },
+  "devDependencies": {
+    "webpack": "^5.54.0",
+    "webpack-chain": "^6.5.1",
+    "webpack-dev-server": "^4.11.0",
+    "webpack-merge": "^5.8.0"
+  },
+  "peerDependenciesMeta": {
+    "sass-loader": {
+      "optional": true
+    },
+    "stylus-loader": {
+      "optional": true
+    },
+    "less-loader": {
+      "optional": true
+    }
   }
 }

@@ -1,15 +1,11 @@
 {
   "name": "@planjs/react-cli",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "Command line interface for rapid React development",
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "license": "ISC",
   "main": "lib/react-cli.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
   "files": [
     "lib"
   ],
@@ -29,6 +25,11 @@
   "devDependencies": {
     "inquirer": "^9.1.1",
     "@types/inquirer": "^9.0.1",
-    "commander": "^9.4.0"
+    "commander": "^9.4.0",
+    "globby": "^13.1.2",
+    "pkg-dir": "^7.0.0"
+  },
+  "engines": {
+    "node": "^12.0.0 || >= 14.0.0"
   }
 }
