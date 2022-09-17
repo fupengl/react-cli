@@ -5,10 +5,15 @@
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "license": "ISC",
-  "main": "lib/react-cli-service.js",
+  "main": "es/index.js",
+  "type": "module",
   "files": [
-    "lib"
+    "bin",
+    "es"
   ],
+  "bin": {
+    "react-cli-service": "bin/react-cli-service.js"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -17,16 +22,19 @@
     "url": "git+https://github.com/fupengl/react-cli.git"
   },
   "scripts": {
+    "prepare": "stan-builder",
+    "dev": "stan-builder -w",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/fupengl/react-cli/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "webpack": "^5.54.0",
     "webpack-chain": "^6.5.1",
     "webpack-dev-server": "^4.11.0",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "@planjs/react-cli-shared-utils": "^0.0.0"
   },
   "peerDependenciesMeta": {
     "sass-loader": {
@@ -38,5 +46,8 @@
     "less-loader": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
   }
 }

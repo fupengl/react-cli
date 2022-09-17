@@ -1,17 +1,16 @@
 {
   "name": "@planjs/react-cli-shared-utils",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "Shared utilities for react-cli packages",
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "license": "ISC",
-  "main": "lib/react-cli-shared-utils.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "main": "es/index.js",
+  "typings": "typings/index.d.ts",
+  "type": "module",
   "files": [
-    "lib"
+    "typings",
+    "es"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,9 +20,19 @@
     "url": "git+https://github.com/fupengl/react-cli.git"
   },
   "scripts": {
+    "prepare": "stan-builder",
+    "dev": "stan-builder -w",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/fupengl/react-cli/issues"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "semver": "^7.3.7",
+    "@types/semver": "^7.3.12"
   }
 }
