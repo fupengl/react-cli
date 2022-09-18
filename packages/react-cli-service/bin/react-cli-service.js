@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-import "../es/index.js"
+import "../es/cli.js"

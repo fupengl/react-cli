@@ -34,20 +34,68 @@
     "webpack-chain": "^6.5.1",
     "webpack-dev-server": "^4.11.0",
     "webpack-merge": "^5.8.0",
-    "@planjs/react-cli-shared-utils": "^0.0.0"
+    "@planjs/react-cli-shared-utils": "^0.0.0",
+    "minimist": "^1.2.6",
+    "dotenv": "^16.0.2",
+    "dotenv-expand": "^9.0.0",
+    "file-loader": "^6.2.0",
+    "fs-extra": "^10.0.0",
+    "webpack-manifest-plugin": "^4.0.2",
+    "workbox-webpack-plugin": "^6.4.1",
+    "sass-loader": "^12.3.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "resolve-url-loader": "^4.0.0",
+    "source-map-loader": "^3.0.0",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.2",
+    "mini-css-extract-plugin": "^2.4.5",
+    "postcss": "^8.4.4",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-loader": "^6.2.1",
+    "postcss-normalize": "^10.0.1",
+    "postcss-preset-env": "^7.0.1",
+    "browserslist": "^4.18.1",
+    "terser-webpack-plugin": "^5.3.6",
+    "react-refresh": "^0.11.0",
+    "terser": "^5.14.1",
+    "is-file-esm": "^1.0.0",
+    "@planjs/utils": "^1.17.0"
+  },
+  "devDependencies": {
+    "@types/is-file-esm": "^1.0.0",
+    "@types/minimist": "^1.2.2"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  },
+  "peerDependencies": {
+    "react": ">= 16",
+    "typescript": "^3.2.1 || ^4"
   },
   "peerDependenciesMeta": {
-    "sass-loader": {
-      "optional": true
-    },
     "stylus-loader": {
       "optional": true
     },
     "less-loader": {
       "optional": true
+    },
+    "typescript": {
+      "optional": true
     }
   },
   "engines": {
     "node": "^14.18.0 || >=16.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

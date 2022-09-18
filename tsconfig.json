@@ -9,6 +9,8 @@
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "useUnknownInCatchVariables": false,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true
+  },
+  "exclude": ["node_modules"]
 }

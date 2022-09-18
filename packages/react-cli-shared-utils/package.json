@@ -33,6 +33,11 @@
   "dependencies": {
     "chalk": "^5.0.1",
     "semver": "^7.3.7",
-    "@types/semver": "^7.3.12"
+    "@types/semver": "^7.3.12",
+    "strip-ansi": "^7.0.1",
+    "debug": "^4.3.4",
+    "@types/debug": "^4.1.7",
+    "joi": "^17.6.0",
+    "read-pkg": "^7.1.0"
   }
 }
