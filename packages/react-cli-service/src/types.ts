@@ -1,8 +1,9 @@
-import type ChainableWebpackConfig from 'webpack-chain'
 import type { Configuration as WebpackOptions } from 'webpack'
+import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
+import type ChainableWebpackConfig from 'webpack-chain'
 import type { MinifyOptions } from 'terser'
 
-import type Plugin from './services/Plugin'
+import type PluginApi from './services/PluginApi'
 
 type PredefinedOptions<T> = T & { [key: string]: any }
 
@@ -54,7 +55,7 @@ interface CSSOptions {
   loaderOptions?: LoaderOptions
 }
 
-export type ServicePlugin = (api: Plugin, options: UserConfig) => any
+export type ServicePlugin = (api: PluginApi, options: UserConfig) => any
 
 export interface UserConfig {
   /**
@@ -118,7 +119,7 @@ export interface UserConfig {
   /**
    * [All options for `webpack-dev-server`](https://webpack.js.org/configuration/dev-server/) are supported
    */
-  devServer?: { proxy?: string | object; [key: string]: any }
+  configureDevServer?: WebpackDevServerOptions
 
   /**
    * Default: `undefined`

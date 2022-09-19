@@ -1,7 +1,10 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
 import { expand as dotenvExpand } from 'dotenv-expand'
-import type minimist from "minimist";
+import type minimist from 'minimist'
+import WebpackChain from 'webpack-chain'
+import type ChainableWebpackConfig from 'webpack-chain'
+import { merge } from 'webpack-merge'
 import {
   debug,
   loadJS,
@@ -9,11 +12,17 @@ import {
   logger
 } from '@planjs/react-cli-shared-utils'
 import type { PackageJsonType } from '@planjs/react-cli-shared-utils'
+import type { Configuration as WebpackOptions } from 'webpack'
+import type {
+  Configuration as WebpackDevServerOptions,
+  WebpackConfiguration
+} from 'webpack-dev-server'
 
 import loadUserConfig from '../utils/loadUserConfig'
 import resolveUserConfig from '../utils/resolveUserConfig'
 import { isPlugin } from '../utils/plugin'
 import type { ServicePlugin, UserConfig } from '../types'
+import PluginApi from './PluginApi'
 
 type PluginItem = {
   id: string
@@ -21,9 +30,16 @@ type PluginItem = {
 }
 
 class Service {
+  initialized = false
   context!: string
   pkgJson!: PackageJsonType
+  userOptions!: UserConfig
   plugins!: Array<PluginItem>
+  webpackChainFns: Array<(config: ChainableWebpackConfig) => void> = []
+  devServerConfigFns: Array<(config: WebpackDevServerOptions) => void> = []
+  webpackRawConfigFns: Array<
+    WebpackOptions | ((config: WebpackOptions) => WebpackOptions | void)
+  > = []
   commands!: Record<
     string,
     {
@@ -40,21 +56,6 @@ class Service {
     this.plugins = this.resolvePlugins()
   }
 
-  async init(mode?: string): Promise<void> {
-    mode = mode || process.env.REACT_CLI_MODE
-
-    // load base .env
-    this.loadEnv()
-    // load mode .env
-    if (mode) {
-      this.loadEnv(mode)
-    }
-
-    const userOptions = await this.loadUserOptions()
-
-    console.log({ userOptions })
-  }
-
   async run(
     name: string,
     args: Record<string, any> = {},
@@ -64,31 +65,97 @@ class Service {
     await this.init()
   }
 
-  resolvePlugins(): PluginItem[] {
-    const idToPlugin = (id: string, absolutePath?: string) => ({
-      id: id.replace(/^.\//, 'built-in:'),
-      apply: loadJS(absolutePath || id, import.meta.url)
+  async init(mode?: string): Promise<void> {
+    mode = mode || process.env.REACT_CLI_MODE
+
+    this.initialized = true
+
+    // load base .env
+    this.loadEnv()
+    // load mode .env
+    if (mode) {
+      this.loadEnv(mode)
+    }
+
+    // load user options
+    const userOptions = (this.userOptions = await this.loadUserOptions())
+
+    // apply plugins
+    this.plugins.forEach(({ id, apply }) => {
+      apply(new PluginApi(id, this), userOptions)
     })
 
-    return Object.keys(this.pkgJson.devDependencies || {})
-      .concat(Object.keys(this.pkgJson.dependencies || {}))
-      .filter(isPlugin)
-      .map((id) => {
-        if (
-          this.pkgJson.optionalDependencies &&
-          id in this.pkgJson.optionalDependencies
-        ) {
-          let apply = loadJS(id, import.meta.url)
-          if (!apply) {
-            logger.warn(`Optional dependency ${id} is not installed.`)
-            apply = () => {}
-          }
+    if (userOptions.configureWebpack) {
+      this.webpackRawConfigFns.push(userOptions.configureWebpack)
+    }
+  }
 
-          return { id, apply }
-        } else {
-          return idToPlugin(id)
-        }
-      })
+  resolveChainableWebpackConfig(): WebpackChain {
+    const chainableConfig = new WebpackChain()
+    this.webpackChainFns.forEach((fn) => fn(chainableConfig))
+    return chainableConfig
+  }
+
+  resolveWebpackConfig(
+    chainableConfig = this.resolveChainableWebpackConfig()
+  ): WebpackConfiguration {
+    if (!this.initialized) {
+      throw new Error(
+        'Service must call init() before calling resolveWebpackConfig().'
+      )
+    }
+    // get raw config
+    let config = chainableConfig.toConfig()
+
+    // apply raw config fns
+    this.webpackRawConfigFns.forEach((fn) => {
+      if (typeof fn === 'function') {
+        // function with optional return value
+        const res = fn(config)
+        if (res) config = merge(config, res)
+      } else if (fn) {
+        // merge literal values
+        config = merge(config, fn)
+      }
+    })
+
+    // check if the user has manually mutated output.publicPath
+    const target = process.env.REACT_CLI_BUILD_TARGET
+    if (
+      !process.env.REACT_CLI_TEST &&
+      target &&
+      target !== 'app' &&
+      config.output.publicPath !== this.userOptions.publicPath
+    ) {
+      throw new Error(
+        `Do not modify webpack output.publicPath directly. ` +
+          `Use the "publicPath" option in react.config.js instead.`
+      )
+    }
+
+    if (
+      !process.env.REACT_CLI_ENTRY_FILES &&
+      typeof config.entry !== 'function'
+    ) {
+      let entryFiles: string[]
+      if (typeof config.entry === 'string') {
+        entryFiles = [config.entry]
+      } else if (Array.isArray(config.entry)) {
+        entryFiles = config.entry
+      } else {
+        entryFiles = Object.values(config.entry || []).reduce<string[]>(
+          (allEntries, curr) => {
+            return allEntries.concat(curr as string)
+          },
+          []
+        )
+      }
+
+      entryFiles = entryFiles.map((file) => path.resolve(this.context, file))
+      process.env.REACT_CLI_ENTRY_FILES = JSON.stringify(entryFiles)
+    }
+
+    return config
   }
 
   loadEnv(mode?: string): void {
@@ -135,6 +202,35 @@ class Service {
       fileConfigPath,
       fileConfig
     })
+  }
+
+  resolvePlugins(): PluginItem[] {
+    const idToPlugin = (id: string, absolutePath?: string) => ({
+      id: id.replace(/^.\//, 'built-in:'),
+      apply: loadJS(absolutePath || id, import.meta.url)
+    })
+
+    return Object.keys({
+      ...this.pkgJson.dependencies,
+      ...this.pkgJson.devDependencies
+    })
+      .filter(isPlugin)
+      .map((id) => {
+        if (
+          this.pkgJson.optionalDependencies &&
+          id in this.pkgJson.optionalDependencies
+        ) {
+          let apply = loadJS(id, import.meta.url)
+          if (!apply) {
+            logger.warn(`Optional dependency ${id} is not installed.`)
+            apply = () => {}
+          }
+
+          return { id, apply }
+        } else {
+          return idToPlugin(id)
+        }
+      })
   }
 }
 

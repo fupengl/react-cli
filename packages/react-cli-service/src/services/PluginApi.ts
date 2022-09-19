@@ -1,11 +1,14 @@
 import path from 'node:path'
 import { semver } from '@planjs/react-cli-shared-utils'
 import type minimist from 'minimist'
+import { Configuration as WebpackOptions } from 'webpack'
+import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 
+import type ChainableWebpackConfig from 'webpack-chain'
 import { matchesPluginId } from '../utils/plugin'
 import type Service from './Service'
 
-class Plugin {
+class PluginApi {
   id: string
   service: Service
 
@@ -86,63 +89,65 @@ class Plugin {
     this.service.commands[name] = { fn, options: options || {} }
   }
 
-  // /**
-  //  * Register a function that will receive a chainable webpack config
-  //  * the function is lazy and won't be called until `resolveWebpackConfig` is
-  //  * called
-  //  *
-  //  * @param {function} fn
-  //  */
-  // chainWebpack(fn): void {
-  //   this.service.webpackChainFns.push(fn)
-  // }
+  /**
+   * Register a function that will receive a chainable webpack config
+   * the function is lazy and won't be called until `resolveWebpackConfig` is
+   * called
+   *
+   * @param {function} fn
+   */
+  chainWebpack(fn: (config: ChainableWebpackConfig) => void): void {
+    this.service.webpackChainFns.push(fn)
+  }
 
-  // /**
-  //  * Register
-  //  * - a webpack configuration object that will be merged into the config
-  //  * OR
-  //  * - a function that will receive the raw webpack config.
-  //  *   the function can either mutate the config directly or return an object
-  //  *   that will be merged into the config.
-  //  *
-  //  * @param {object | function} fn
-  //  */
-  // configureWebpack(fn) {
-  //   this.service.webpackRawConfigFns.push(fn)
-  // }
+  /**
+   * Register
+   * - a webpack configuration object that will be merged into the config
+   * OR
+   * - a function that will receive the raw webpack config.
+   *   the function can either mutate the config directly or return an object
+   *   that will be merged into the config.
+   *
+   * @param {object | function} fn
+   */
+  configureWebpack(
+    fn: WebpackOptions | ((config: WebpackOptions) => WebpackOptions | void)
+  ) {
+    this.service.webpackRawConfigFns.push(fn)
+  }
 
-  // /**
-  //  * Register a dev serve config function. It will receive the express `app`
-  //  * instance of the dev server.
-  //  *
-  //  * @param {function} fn
-  //  */
-  // configureDevServer(fn) {
-  //   this.service.devServerConfigFns.push(fn)
-  // }
+  /**
+   * Register a dev serve config function. It will receive the express `app`
+   * instance of the dev server.
+   *
+   * @param {function} fn
+   */
+  configureDevServer(fn: (config: WebpackDevServerOptions) => void) {
+    this.service.devServerConfigFns.push(fn)
+  }
 
-  // /**
-  //  * Resolve the final raw webpack config, that will be passed to webpack.
-  //  *
-  //  * @param {ChainableWebpackConfig} [chainableConfig]
-  //  * @return {object} Raw webpack config.
-  //  */
-  // resolveWebpackConfig(chainableConfig) {
-  //   return this.service.resolveWebpackConfig(chainableConfig)
-  // }
+  /**
+   * Resolve the final raw webpack config, that will be passed to webpack.
+   *
+   * @param {ChainableWebpackConfig} [chainableConfig]
+   * @return {object} Raw webpack config.
+   */
+  resolveWebpackConfig(chainableConfig: ChainableWebpackConfig) {
+    return this.service.resolveWebpackConfig(chainableConfig)
+  }
 
-  // /**
-  //  * Resolve an intermediate chainable webpack config instance, which can be
-  //  * further tweaked before generating the final raw webpack config.
-  //  * You can call this multiple times to generate different branches of the
-  //  * base webpack config.
-  //  * See https://github.com/mozilla-neutrino/webpack-chain
-  //  *
-  //  * @return {ChainableWebpackConfig}
-  //  */
-  // resolveChainableWebpackConfig() {
-  //   return this.service.resolveChainableWebpackConfig()
-  // }
+  /**
+   * Resolve an intermediate chainable webpack config instance, which can be
+   * further tweaked before generating the final raw webpack config.
+   * You can call this multiple times to generate different branches of the
+   * base webpack config.
+   * See https://github.com/mozilla-neutrino/webpack-chain
+   *
+   * @return {ChainableWebpackConfig}
+   */
+  resolveChainableWebpackConfig() {
+    return this.service.resolveChainableWebpackConfig()
+  }
 
   /**
    * Generate a cache identifier from a number of variables
@@ -213,4 +218,4 @@ class Plugin {
   // }
 }
 
-export default Plugin
+export default PluginApi
