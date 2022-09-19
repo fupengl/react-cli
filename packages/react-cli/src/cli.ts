@@ -14,8 +14,8 @@ checkNodeVersion(engines.node, name)
 program.version(`${name} ${version}`).usage('<command> [options]')
 
 program
-  .command('serve')
-  .description('alias of "npm run serve" in the current project')
+  .command('start')
+  .description('alias of "npm run start" in the current project')
   .allowUnknownOption()
   .action(() => {})
 
