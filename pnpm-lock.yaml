@@ -76,6 +76,7 @@ importers:
       '@planjs/utils': ^1.17.0
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.3
       '@types/is-file-esm': ^1.0.0
+      '@types/lodash.defaultsdeep': ^4.6.7
       '@types/minimist': ^1.2.2
       browserslist: ^4.18.1
       dotenv: ^16.0.2
@@ -84,6 +85,7 @@ importers:
       fs-extra: ^10.0.0
       fsevents: ^2.3.2
       is-file-esm: ^1.0.0
+      lodash.defaultsdeep: ^4.6.1
       mini-css-extract-plugin: ^2.4.5
       minimist: ^1.2.6
       postcss: ^8.4.4
@@ -115,6 +117,7 @@ importers:
       file-loader: 6.2.0_webpack@5.74.0
       fs-extra: 10.1.0
       is-file-esm: 1.0.0
+      lodash.defaultsdeep: 4.6.1
       mini-css-extract-plugin: 2.6.1_webpack@5.74.0
       minimist: 1.2.6
       postcss: 8.4.16
@@ -140,6 +143,7 @@ importers:
       fsevents: 2.3.2
     devDependencies:
       '@types/is-file-esm': 1.0.0
+      '@types/lodash.defaultsdeep': 4.6.7
       '@types/minimist': 1.2.2
 
   packages/react-cli-shared-utils:
@@ -3828,6 +3832,12 @@ packages:
     resolution: {integrity: sha512-X1T4wMZ+gT000M2/91SYj0d/7JfeNZ9PeeOldSNoE/lunLeQXKvkmIumI29IaKMotU/ln/McOIvgzZcQ/3TrSA==}
     dependencies:
       '@types/lodash': 4.14.185
+
+  /@types/lodash.defaultsdeep/4.6.7:
+    resolution: {integrity: sha512-D+AUxs64qehDMkbfFoskG0XsIOh2CHBGqYfcQcubLbZSFCGKJKS885su3a97huqBNHj+p9of9UZ/uUIP46wUGQ==}
+    dependencies:
+      '@types/lodash': 4.14.185
+    dev: true
 
   /@types/lodash.throttle/4.1.7:
     resolution: {integrity: sha512-znwGDpjCHQ4FpLLx19w4OXDqq8+OvREa05H89obtSyXyOFKL3dDjCslsmfBz0T2FU8dmf5Wx1QvogbINiGIu9g==}
@@ -9260,6 +9270,10 @@ packages:
 
   /lodash.debounce/4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+
+  /lodash.defaultsdeep/4.6.1:
+    resolution: {integrity: sha512-3j8wdDzYuWO3lM3Reg03MuQR957t287Rpcxp1njpEa8oDrikb+FwGdW3n+FELh/A6qib6yPit0j/pv9G/yeAqA==}
+    dev: false
 
   /lodash.ismatch/4.4.0:
     resolution: {integrity: sha512-fPMfXjGQEV9Xsq/8MTSgUf255gawYRbjwMyDbcvDhXgV7enSZA0hynz6vMPnpAb5iONEzBHBPsT+0zes5Z301g==}

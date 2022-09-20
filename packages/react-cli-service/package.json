@@ -59,11 +59,13 @@
     "react-refresh": "^0.11.0",
     "terser": "^5.14.1",
     "is-file-esm": "^1.0.0",
-    "@planjs/utils": "^1.17.0"
+    "@planjs/utils": "^1.17.0",
+    "lodash.defaultsdeep": "^4.6.1"
   },
   "devDependencies": {
     "@types/is-file-esm": "^1.0.0",
-    "@types/minimist": "^1.2.2"
+    "@types/minimist": "^1.2.2",
+    "@types/lodash.defaultsdeep": "^4.6.7"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

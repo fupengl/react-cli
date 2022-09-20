@@ -1,12 +1,12 @@
 import path from 'node:path'
 import { semver } from '@planjs/react-cli-shared-utils'
 import type minimist from 'minimist'
-import { Configuration as WebpackOptions } from 'webpack'
+import type { Configuration as WebpackOptions } from 'webpack'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
-
 import type ChainableWebpackConfig from 'webpack-chain'
-import { matchesPluginId } from '../utils/plugin'
-import type Service from './Service'
+
+import { matchesPluginId } from '../utils/plugin.js'
+import type Service from './Service.js'
 
 class PluginApi {
   id: string
@@ -112,7 +112,7 @@ class PluginApi {
    */
   configureWebpack(
     fn: WebpackOptions | ((config: WebpackOptions) => WebpackOptions | void)
-  ) {
+  ): void {
     this.service.webpackRawConfigFns.push(fn)
   }
 
@@ -122,7 +122,7 @@ class PluginApi {
    *
    * @param {function} fn
    */
-  configureDevServer(fn: (config: WebpackDevServerOptions) => void) {
+  configureDevServer(fn: (config: WebpackDevServerOptions) => void): void {
     this.service.devServerConfigFns.push(fn)
   }
 
@@ -132,7 +132,9 @@ class PluginApi {
    * @param {ChainableWebpackConfig} [chainableConfig]
    * @return {object} Raw webpack config.
    */
-  resolveWebpackConfig(chainableConfig: ChainableWebpackConfig) {
+  resolveWebpackConfig(
+    chainableConfig: ChainableWebpackConfig
+  ): WebpackOptions {
     return this.service.resolveWebpackConfig(chainableConfig)
   }
 
@@ -145,7 +147,7 @@ class PluginApi {
    *
    * @return {ChainableWebpackConfig}
    */
-  resolveChainableWebpackConfig() {
+  resolveChainableWebpackConfig(): ChainableWebpackConfig {
     return this.service.resolveChainableWebpackConfig()
   }
 

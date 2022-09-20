@@ -1,15 +1,16 @@
 import { isFunction, isObject } from '@planjs/utils'
 
-import { defaultOptions } from '../options'
+import { defaultOptions } from '../options.js'
 import type { UserConfig } from '../types'
 
-type UserConfigReturnType = UserConfig | Promise<UserConfig>
+type UserConfigFNReturnType = UserConfig | Promise<UserConfig>
+type DefineConfigReturnType = Promise<UserConfig | undefined>
 
-function defineConfig(config: UserConfig): Promise<UserConfig>
+function defineConfig(config: UserConfig): DefineConfigReturnType
 function defineConfig(
-  config: (config: UserConfig) => UserConfigReturnType
-): Promise<UserConfig>
-async function defineConfig(config: unknown): Promise<UserConfig> {
+  config: (config: UserConfig) => UserConfigFNReturnType
+): DefineConfigReturnType
+async function defineConfig(config: unknown): DefineConfigReturnType {
   let result
   if (isFunction(config)) {
     result = config(defaultOptions)

@@ -1,5 +1,9 @@
 import minimist from 'minimist'
-import { checkNodeVersion, loadJSON,logger } from '@planjs/react-cli-shared-utils'
+import {
+  checkNodeVersion,
+  loadJSON,
+  logger
+} from '@planjs/react-cli-shared-utils'
 
 import Service from './services/Service.js'
 
@@ -31,6 +35,7 @@ const args = minimist(rawArgv, {
 const command = args._[0]
 
 service.run(command, args, rawArgv).catch((err) => {
+  console.log(err)
   logger.error(err)
   process.exit(1)
 })

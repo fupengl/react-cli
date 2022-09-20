@@ -13,16 +13,13 @@ import {
 } from '@planjs/react-cli-shared-utils'
 import type { PackageJsonType } from '@planjs/react-cli-shared-utils'
 import type { Configuration as WebpackOptions } from 'webpack'
-import type {
-  Configuration as WebpackDevServerOptions,
-  WebpackConfiguration
-} from 'webpack-dev-server'
+import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 
-import loadUserConfig from '../utils/loadUserConfig'
-import resolveUserConfig from '../utils/resolveUserConfig'
-import { isPlugin } from '../utils/plugin'
+import loadUserConfig from '../utils/loadUserConfig.js'
+import resolveUserConfig from '../utils/resolveUserConfig.js'
+import { isPlugin } from '../utils/plugin.js'
 import type { ServicePlugin, UserConfig } from '../types'
-import PluginApi from './PluginApi'
+import PluginApi from './PluginApi.js'
 
 type PluginItem = {
   id: string
@@ -32,7 +29,7 @@ type PluginItem = {
 class Service {
   initialized = false
   context!: string
-  pkgJson!: PackageJsonType
+  pkgJson!: PackageJsonType & { react?: UserConfig }
   userOptions!: UserConfig
   plugins!: Array<PluginItem>
   webpackChainFns: Array<(config: ChainableWebpackConfig) => void> = []
@@ -98,7 +95,7 @@ class Service {
 
   resolveWebpackConfig(
     chainableConfig = this.resolveChainableWebpackConfig()
-  ): WebpackConfiguration {
+  ): WebpackOptions {
     if (!this.initialized) {
       throw new Error(
         'Service must call init() before calling resolveWebpackConfig().'
@@ -200,7 +197,8 @@ class Service {
     const { fileConfigPath, fileConfig } = loadUserConfig(this.context)
     return await resolveUserConfig({
       fileConfigPath,
-      fileConfig
+      fileConfig,
+      pkgConfig: this.pkgJson.react
     })
   }
 

@@ -3,7 +3,11 @@ import { createSchema } from '@planjs/react-cli-shared-utils'
 
 import type { UserConfig } from './types'
 
-export const schema = createSchema((joi) => joi.object({}))
+export const schema = createSchema((joi) => joi.object({
+  publicPath: joi.string().allow(''),
+  outputDir: joi.string(),
+  assetsDir: joi.string().allow(''),
+}))
 
 export const defaultOptions: UserConfig = {
   // project deployment base
@@ -51,7 +55,7 @@ export const defaultOptions: UserConfig = {
   // whether to use eslint-loader
   lintOnSave: 'default',
 
-  devServer: {
+  configureDevServer: {
     /*
     open: process.platform === 'darwin',
     host: '0.0.0.0',
