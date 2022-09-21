@@ -1,4 +1,6 @@
-import { ServicePlugin } from '../types'
+import webpack from 'webpack'
+
+import type { ServicePlugin } from '../types'
 
 const REACT_APP = /^REACT_APP_/i
 
@@ -35,7 +37,7 @@ function getClientEnvironment(publicUrl: string) {
     )
   // Stringify all values so we can feed into webpack DefinePlugin
   const stringified = {
-    'process.env': Object.keys(raw).reduce((env, key) => {
+    'process.env': Object.keys(raw).reduce<Record<string, any>>((env, key) => {
       env[key] = JSON.stringify(raw[key])
       return env
     }, {})
@@ -44,6 +46,20 @@ function getClientEnvironment(publicUrl: string) {
   return { raw, stringified }
 }
 
-const dev: ServicePlugin = (api, options) => {}
+const dev: ServicePlugin = (api, options) => {
+  const res = getClientEnvironment(options.publicPath!)
+
+  api.chainWebpack((config) => {
+    console.log(config)
+    console.log(res)
+  })
+
+  const webpackConfig = api.resolveWebpackConfig()
+
+  // create compiler
+  const compiler = webpack(webpackConfig)
+
+  console.log(compiler)
+}
 
 export default dev

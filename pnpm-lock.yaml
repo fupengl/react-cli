@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@commitlint/cli': ^17.1.2
       '@commitlint/config-conventional': ^17.1.0
+      '@types/jest': ^29.0.3
       '@types/node': ^17.0.42
       '@typescript-eslint/eslint-plugin': ^5.36.2
       '@typescript-eslint/parser': ^5.36.2
@@ -24,11 +25,13 @@ importers:
       prettier: 2.7.1
       sort-package-json: ^1.57.0
       stan-builder: ^0.19.1
+      ts-jest: ^29.0.1
       ts-node: ^10.9.1
       typescript: 4.8.3
     devDependencies:
       '@commitlint/cli': 17.1.2
       '@commitlint/config-conventional': 17.1.0
+      '@types/jest': 29.0.3
       '@types/node': 17.0.45
       '@typescript-eslint/eslint-plugin': 5.37.0_22c5fnooleyfkzrkkgdmel5kmi
       '@typescript-eslint/parser': 5.37.0_irgkl5vooow2ydyo6aokmferha
@@ -47,6 +50,7 @@ importers:
       prettier: 2.7.1
       sort-package-json: 1.57.0
       stan-builder: 0.19.1_qv3zdqwr5cvvfboiktsp7a3dfa
+      ts-jest: 29.0.1_jksntdpmkmo5cthob65gehuuvi
       ts-node: 10.9.1_rb7lfb2dlgdf5f7m6mcvvespxa
       typescript: 4.8.3
 
@@ -75,6 +79,7 @@ importers:
       '@planjs/react-cli-shared-utils': ^0.0.0
       '@planjs/utils': ^1.17.0
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.3
+      '@types/hash-sum': ^1.0.0
       '@types/lodash.defaultsdeep': ^4.6.7
       '@types/minimist': ^1.2.2
       browserslist: ^4.18.1
@@ -83,6 +88,7 @@ importers:
       file-loader: ^6.2.0
       fs-extra: ^10.0.0
       fsevents: ^2.3.2
+      hash-sum: ^2.0.0
       lodash.defaultsdeep: ^4.6.1
       mini-css-extract-plugin: ^2.4.5
       minimist: ^1.2.6
@@ -114,6 +120,7 @@ importers:
       dotenv-expand: 9.0.0
       file-loader: 6.2.0_webpack@5.74.0
       fs-extra: 10.1.0
+      hash-sum: 2.0.0
       lodash.defaultsdeep: 4.6.1
       mini-css-extract-plugin: 2.6.1_webpack@5.74.0
       minimist: 1.2.6
@@ -139,6 +146,7 @@ importers:
     optionalDependencies:
       fsevents: 2.3.2
     devDependencies:
+      '@types/hash-sum': 1.0.0
       '@types/lodash.defaultsdeep': 4.6.7
       '@types/minimist': 1.2.2
 
@@ -3770,6 +3778,10 @@ packages:
       '@types/node': 18.7.18
     dev: true
 
+  /@types/hash-sum/1.0.0:
+    resolution: {integrity: sha512-FdLBT93h3kcZ586Aee66HPCVJ6qvxVjBlDWNmxSGSbCZe9hTsjRKdSsl4y1T+3zfujxo9auykQMnFsfyHWD7wg==}
+    dev: true
+
   /@types/http-proxy/1.17.9:
     resolution: {integrity: sha512-QsbSjA/fSk7xB+UXlCT3wHBy5ai9wOcNDWwZAtud+jXhwOM3l+EYZh8Lng4+/6n8uar0J7xILzqftJdJ/Wdfkw==}
     dependencies:
@@ -3801,6 +3813,13 @@ packages:
     resolution: {integrity: sha512-c3mAZEuK0lvBp8tmuL74XRKn1+y2dcwOUpH7x4WrF6gk1GIgiluDRgMYQtw2OFcBvAJWlt6ASU3tSqxp0Uu0Aw==}
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
+    dev: true
+
+  /@types/jest/29.0.3:
+    resolution: {integrity: sha512-F6ukyCTwbfsEX5F2YmVYmM5TcTHy1q9P5rWlRbrk56KyMh3v9xRGUO3aa8+SkvMi0SHXtASJv1283enXimC0Og==}
+    dependencies:
+      expect: 29.0.3
+      pretty-format: 29.0.3
     dev: true
 
   /@types/json-schema/7.0.11:
@@ -4942,6 +4961,13 @@ packages:
       electron-to-chromium: 1.4.253
       node-releases: 2.0.6
       update-browserslist-db: 1.0.9_browserslist@4.21.4
+
+  /bs-logger/0.2.6:
+    resolution: {integrity: sha512-pd8DCoxmbgc7hyPKOvxtqNcjYoOsABPQdcCUjGp3d42VR2CX1ORhk2A87oqqu5R1kk+76nsxZupkmyd+MVtCog==}
+    engines: {node: '>= 6'}
+    dependencies:
+      fast-json-stable-stringify: 2.1.0
+    dev: true
 
   /bser/2.1.1:
     resolution: {integrity: sha512-gQxTNE/GAfIIrmHLUE3oJyp5FO6HRBfhjnw4/wMmA63ZGDJnWBmgY/lyQBpnDUkGmAhbSe39tx2d/iTOAfglwQ==}
@@ -7607,6 +7633,10 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+
+  /hash-sum/2.0.0:
+    resolution: {integrity: sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==}
+    dev: false
 
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
@@ -13206,6 +13236,39 @@ packages:
   /trim-newlines/3.0.1:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}
     engines: {node: '>=8'}
+    dev: true
+
+  /ts-jest/29.0.1_jksntdpmkmo5cthob65gehuuvi:
+    resolution: {integrity: sha512-htQOHshgvhn93QLxrmxpiQPk69+M1g7govO1g6kf6GsjCv4uvRV0znVmDrrvjUrVCnTYeY4FBxTYYYD4airyJA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
+    peerDependencies:
+      '@babel/core': '>=7.0.0-beta.0 <8'
+      '@jest/types': ^29.0.0
+      babel-jest: ^29.0.0
+      esbuild: '*'
+      jest: ^29.0.0
+      typescript: '>=4.3'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@jest/types':
+        optional: true
+      babel-jest:
+        optional: true
+      esbuild:
+        optional: true
+    dependencies:
+      bs-logger: 0.2.6
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.0.3_2263m44mchjafa7bz7l52hbcpa
+      jest-util: 29.0.3
+      json5: 2.2.1
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.3.7
+      typescript: 4.8.3
+      yargs-parser: 21.0.1
     dev: true
 
   /ts-node/10.9.1_ck2axrxkiif44rdbzjywaqjysa:

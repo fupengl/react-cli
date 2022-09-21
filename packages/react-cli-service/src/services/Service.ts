@@ -18,8 +18,8 @@ import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-serve
 import loadUserConfig from '../utils/loadUserConfig.js'
 import resolveUserConfig from '../utils/resolveUserConfig.js'
 import { isPlugin } from '../utils/plugin.js'
-import PluginAPI from './PluginApi.js'
 import type { ServicePlugin, UserConfig } from '../types'
+import PluginAPI from './PluginApi.js'
 
 type PluginItem = {
   id: string
@@ -80,6 +80,8 @@ class Service {
 
   async init(mode?: string): Promise<void> {
     mode = mode || process.env.REACT_CLI_MODE
+
+    if (this.initialized) return
 
     this.initialized = true
 
@@ -207,7 +209,7 @@ class Service {
 
   async resolvePlugins(): Promise<PluginItem[]> {
     const idToPlugin = async (id: string, absolutePath?: string) => ({
-      id: id.replace(/^.\//, 'built-in:'),
+      id: id.replace(/^..\//, 'built-in:'),
       apply: await loadModule(absolutePath || id, import.meta.url)
     })
 

@@ -33,7 +33,7 @@ export async function loadModule<T = any>(
   const { esm } = isFileEsm.sync(moduleUrl.pathname)
   let result
   if (esm) {
-    result = await import(moduleUrl.pathname)
+    result = (await import(moduleUrl.pathname)).default
   } else {
     result = useRequire(id, importMetaUrl)
   }

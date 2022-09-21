@@ -1,9 +1,11 @@
 import path from 'node:path'
-import { semver } from '@planjs/react-cli-shared-utils'
+import fs from 'node:fs'
 import type minimist from 'minimist'
 import type { Configuration as WebpackOptions } from 'webpack'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 import type ChainableWebpackConfig from 'webpack-chain'
+import { loadJSON, semver } from '@planjs/react-cli-shared-utils'
+import hash from 'hash-sum'
 
 import { matchesPluginId } from '../utils/plugin.js'
 import type Service from './Service.js'
@@ -133,7 +135,7 @@ class PluginApi {
    * @return {object} Raw webpack config.
    */
   resolveWebpackConfig(
-    chainableConfig: ChainableWebpackConfig
+    chainableConfig?: ChainableWebpackConfig
   ): WebpackOptions {
     return this.service.resolveWebpackConfig(chainableConfig)
   }
@@ -154,70 +156,68 @@ class PluginApi {
   /**
    * Generate a cache identifier from a number of variables
    */
-  // genCacheConfig(id, partialIdentifier, configFiles = []) {
-  //   const fs = require('fs')
-  //   const cacheDirectory = this.resolve(`node_modules/.cache/${id}`)
-  //
-  //   // replace \r\n to \n generate consistent hash
-  //   const fmtFunc = (conf) => {
-  //     if (typeof conf === 'function') {
-  //       return conf.toString().replace(/\r\n?/g, '\n')
-  //     }
-  //     return conf
-  //   }
-  //
-  //   const variables = {
-  //     partialIdentifier,
-  //     'cli-service': require('../package.json').version,
-  //     env: process.env.NODE_ENV,
-  //     test: !!process.env.VUE_CLI_TEST,
-  //     config: [
-  //       fmtFunc(this.service.projectOptions.chainWebpack),
-  //       fmtFunc(this.service.projectOptions.configureWebpack)
-  //     ]
-  //   }
-  //
-  //   try {
-  //     variables['cache-loader'] = require('cache-loader/package.json').version
-  //   } catch (e) {
-  //     // cache-loader is only intended to be used for webpack 4
-  //   }
-  //
-  //   if (!Array.isArray(configFiles)) {
-  //     configFiles = [configFiles]
-  //   }
-  //   configFiles = configFiles.concat([
-  //     'package-lock.json',
-  //     'yarn.lock',
-  //     'pnpm-lock.yaml'
-  //   ])
-  //
-  //   const readConfig = (file) => {
-  //     const absolutePath = this.resolve(file)
-  //     if (!fs.existsSync(absolutePath)) {
-  //       return
-  //     }
-  //
-  //     if (absolutePath.endsWith('.js')) {
-  //       // should evaluate config scripts to reflect environment variable changes
-  //       try {
-  //         return JSON.stringify(require(absolutePath))
-  //       } catch (e) {
-  //         return fs.readFileSync(absolutePath, 'utf-8')
-  //       }
-  //     } else {
-  //       return fs.readFileSync(absolutePath, 'utf-8')
-  //     }
-  //   }
-  //
-  //   variables.configFiles = configFiles.map((file) => {
-  //     const content = readConfig(file)
-  //     return content && content.replace(/\r\n?/g, '\n')
-  //   })
-  //
-  //   const cacheIdentifier = hash(variables)
-  //   return { cacheDirectory, cacheIdentifier }
-  // }
+  getCacheIdentifier(
+    id: string,
+    partialIdentifier: any,
+    configFiles: string[] | string = []
+  ): { cacheDirectory: string; cacheIdentifier: string } {
+    const cacheDirectory = this.resolve(`node_modules/.cache/${id}`)
+
+    // replace \r\n to \n generate consistent hash
+    const fmtFunc = (conf: any) => {
+      if (typeof conf === 'function') {
+        return conf.toString().replace(/\r\n?/g, '\n')
+      }
+      return conf
+    }
+
+    const variables: any = {
+      partialIdentifier,
+      'cli-service': loadJSON('../package.json', import.meta.url).version,
+      env: process.env.NODE_ENV,
+      test: !!process.env.REACT_CLI_TEST,
+      config: [
+        fmtFunc(this.service.userOptions.chainWebpack),
+        fmtFunc(this.service.userOptions.configureWebpack)
+      ]
+    }
+
+    try {
+      variables['cache-loader'] = loadJSON(
+        'cache-loader/package.json',
+        import.meta.url
+      ).version
+    } catch (e) {
+      // cache-loader is only intended to be used for webpack 4
+    }
+
+    if (!Array.isArray(configFiles)) {
+      configFiles = [configFiles]
+    }
+    configFiles = configFiles.concat([
+      'package-lock.json',
+      'yarn.lock',
+      'pnpm-lock.yaml'
+    ])
+
+    const readConfig = (file: string) => {
+      const absolutePath = this.resolve(file)
+      if (!fs.existsSync(absolutePath)) {
+        return
+      }
+      try {
+        return fs.readFileSync(absolutePath, 'utf-8')
+      } catch (e) {}
+    }
+
+    variables.configFiles = configFiles.map((file) => {
+      const content = readConfig(file)
+      return content && content.replace(/\r\n?/g, '\n')
+    })
+
+    const cacheIdentifier = hash(variables)
+    return { cacheDirectory, cacheIdentifier }
+  }
 }
 
 export default PluginApi
