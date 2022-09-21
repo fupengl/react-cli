@@ -3,13 +3,16 @@ import { createSchema } from '@planjs/react-cli-shared-utils'
 
 import type { UserConfig } from './types'
 
-export const schema = createSchema((joi) => joi.object({
-  publicPath: joi.string().allow(''),
-  outputDir: joi.string(),
-  assetsDir: joi.string().allow(''),
-}))
+export const schema = createSchema((joi) =>
+  joi.object({
+    publicPath: joi.string().allow(''),
+    outputDir: joi.string(),
+    assetsDir: joi.string().allow('')
+  })
+)
 
-export const defaultOptions: UserConfig = {
+// TODO react env
+export const defaultOptions: () => UserConfig = () => ({
   // project deployment base
   publicPath: '/',
 
@@ -66,7 +69,7 @@ export const defaultOptions: UserConfig = {
     before: app => {}
   */
   }
-}
+})
 
 function hasMultipleCores() {
   try {

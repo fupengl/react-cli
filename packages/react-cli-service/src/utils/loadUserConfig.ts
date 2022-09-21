@@ -1,14 +1,13 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import isFileEsm from 'is-file-esm'
-import { loadJS } from '@planjs/react-cli-shared-utils'
+import { loadModule } from '@planjs/react-cli-shared-utils'
 
-function loadFileConfig<T = any>(
+async function loadFileConfig<T = any>(
   context: string
-): {
+): Promise<{
   fileConfig?: T
   fileConfigPath?: string
-} {
+}> {
   let fileConfig, fileConfigPath: string | undefined
 
   const possibleConfigPaths = [
@@ -27,13 +26,7 @@ function loadFileConfig<T = any>(
   }
 
   if (fileConfigPath) {
-    const { esm } = isFileEsm.sync(fileConfigPath)
-
-    if (esm) {
-      fileConfig = import(fileConfigPath)
-    } else {
-      fileConfig = loadJS(fileConfigPath, import.meta.url)
-    }
+    fileConfig = await loadModule<T>(fileConfigPath, import.meta.url)
   }
 
   return {

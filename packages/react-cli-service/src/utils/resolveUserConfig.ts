@@ -38,7 +38,7 @@ async function resolveUserConfig({
     logger.error(`Invalid options in ${chalk.bold(fileConfigPath)}: ${msg}`)
   })
 
-  return defaultsDeep(config, defaultOptions)
+  return defaultsDeep(config, defaultOptions())
 }
 
 export default resolveUserConfig

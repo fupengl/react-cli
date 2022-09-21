@@ -38,6 +38,8 @@
     "debug": "^4.3.4",
     "@types/debug": "^4.1.7",
     "joi": "^17.6.0",
-    "read-pkg": "^7.1.0"
+    "read-pkg": "^7.1.0",
+    "is-file-esm": "^1.0.0",
+    "@types/is-file-esm": "^1.0.0"
   }
 }

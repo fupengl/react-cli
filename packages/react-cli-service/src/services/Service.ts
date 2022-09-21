@@ -7,7 +7,7 @@ import type ChainableWebpackConfig from 'webpack-chain'
 import { merge } from 'webpack-merge'
 import {
   debug,
-  loadJS,
+  loadModule,
   loadPackageJson,
   logger
 } from '@planjs/react-cli-shared-utils'
@@ -18,8 +18,8 @@ import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-serve
 import loadUserConfig from '../utils/loadUserConfig.js'
 import resolveUserConfig from '../utils/resolveUserConfig.js'
 import { isPlugin } from '../utils/plugin.js'
+import PluginAPI from './PluginApi.js'
 import type { ServicePlugin, UserConfig } from '../types'
-import PluginApi from './PluginApi.js'
 
 type PluginItem = {
   id: string
@@ -37,7 +37,7 @@ class Service {
   webpackRawConfigFns: Array<
     WebpackOptions | ((config: WebpackOptions) => WebpackOptions | void)
   > = []
-  commands!: Record<
+  commands: Record<
     string,
     {
       description?: string
@@ -45,21 +45,37 @@ class Service {
       options: Record<string, string>
       fn(args: minimist.ParsedArgs, rawArgv: string[]): void
     }
-  >
+  > = {}
 
   constructor(context: string) {
     this.context = context
     this.pkgJson = loadPackageJson(context)
-    this.plugins = this.resolvePlugins()
   }
 
   async run(
     name: string,
-    args: Record<string, any> = {},
+    args: minimist.ParsedArgs,
     rawArgv: string[] = []
   ): Promise<void> {
-    //
+    this.plugins = await this.resolvePlugins()
+
+    // TODO mode
     await this.init()
+
+    args._ = args._ || []
+    let command = this.commands[name]
+    if (!command && name) {
+      logger.error(`command "${name}" does not exist.`)
+      process.exit(1)
+    }
+    if (!command || args.help || args.h) {
+      command = this.commands.help
+    } else {
+      args._.shift() // remove command itself
+      rawArgv.shift()
+    }
+    const { fn } = command
+    return fn(args, rawArgv)
   }
 
   async init(mode?: string): Promise<void> {
@@ -75,16 +91,12 @@ class Service {
     }
 
     // load user options
-    const userOptions = (this.userOptions = await this.loadUserOptions())
+    this.userOptions = await this.loadUserOptions()
 
-    // apply plugins
+    // apply plugins.
     this.plugins.forEach(({ id, apply }) => {
-      apply(new PluginApi(id, this), userOptions)
+      apply(new PluginAPI(id, this), this.userOptions)
     })
-
-    if (userOptions.configureWebpack) {
-      this.webpackRawConfigFns.push(userOptions.configureWebpack)
-    }
   }
 
   resolveChainableWebpackConfig(): WebpackChain {
@@ -193,42 +205,63 @@ class Service {
     }
   }
 
+  async resolvePlugins(): Promise<PluginItem[]> {
+    const idToPlugin = async (id: string, absolutePath?: string) => ({
+      id: id.replace(/^.\//, 'built-in:'),
+      apply: await loadModule(absolutePath || id, import.meta.url)
+    })
+
+    const builtInPlugins = await Promise.all(
+      [
+        '../commands/start.js',
+        '../commands/build.js',
+        '../commands/inspect.js',
+        '../commands/help.js',
+        // config plugins are order sensitive
+        '../config/base.js',
+        '../config/assets.js',
+        '../config/style.js',
+        '../config/dev.js',
+        '../config/prod.js',
+        '../config/devServer.js'
+      ].map((id) => idToPlugin(id))
+    )
+
+    return [
+      ...builtInPlugins,
+      ...(await Promise.all(
+        Object.keys({
+          ...this.pkgJson.dependencies,
+          ...this.pkgJson.devDependencies
+        })
+          .filter(isPlugin)
+          .map(async (id) => {
+            if (
+              this.pkgJson.optionalDependencies &&
+              id in this.pkgJson.optionalDependencies
+            ) {
+              let apply = await loadModule(id, import.meta.url)
+              if (!apply) {
+                logger.warn(`Optional dependency ${id} is not installed.`)
+                apply = () => {}
+              }
+
+              return { id, apply }
+            } else {
+              return await idToPlugin(id)
+            }
+          })
+      ))
+    ]
+  }
+
   async loadUserOptions(): Promise<UserConfig> {
-    const { fileConfigPath, fileConfig } = loadUserConfig(this.context)
+    const { fileConfigPath, fileConfig } = await loadUserConfig(this.context)
     return await resolveUserConfig({
       fileConfigPath,
       fileConfig,
       pkgConfig: this.pkgJson.react
     })
-  }
-
-  resolvePlugins(): PluginItem[] {
-    const idToPlugin = (id: string, absolutePath?: string) => ({
-      id: id.replace(/^.\//, 'built-in:'),
-      apply: loadJS(absolutePath || id, import.meta.url)
-    })
-
-    return Object.keys({
-      ...this.pkgJson.dependencies,
-      ...this.pkgJson.devDependencies
-    })
-      .filter(isPlugin)
-      .map((id) => {
-        if (
-          this.pkgJson.optionalDependencies &&
-          id in this.pkgJson.optionalDependencies
-        ) {
-          let apply = loadJS(id, import.meta.url)
-          if (!apply) {
-            logger.warn(`Optional dependency ${id} is not installed.`)
-            apply = () => {}
-          }
-
-          return { id, apply }
-        } else {
-          return idToPlugin(id)
-        }
-      })
   }
 }
 

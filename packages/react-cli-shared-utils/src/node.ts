@@ -1,10 +1,11 @@
-import url from 'node:url'
+import url, { URL } from 'node:url'
 import path from 'node:path'
 import { createRequire } from 'node:module'
 import fs from 'node:fs'
 import chalk from 'chalk'
 import semver from 'semver'
 import { readPackageSync } from 'read-pkg'
+import isFileEsm from 'is-file-esm'
 
 export function loadJSON<T = any>(filepath: string, importMetaUrl: string): T {
   const reg = /\S+.json$/g
@@ -16,9 +17,27 @@ export function loadJSON<T = any>(filepath: string, importMetaUrl: string): T {
   }
 }
 
-export function loadJS<T = any>(filepath: string, importMetaUrl: string): T {
+export function useRequire<T = any>(
+  filepath: string,
+  importMetaUrl: string
+): T {
   const require = createRequire(importMetaUrl)
   return require(filepath)
+}
+
+export async function loadModule<T = any>(
+  id: string,
+  importMetaUrl: string
+): Promise<T> {
+  const moduleUrl = new URL(id, importMetaUrl)
+  const { esm } = isFileEsm.sync(moduleUrl.pathname)
+  let result
+  if (esm) {
+    result = await import(moduleUrl.pathname)
+  } else {
+    result = useRequire(id, importMetaUrl)
+  }
+  return result
 }
 
 export function getCurrentFileName(importMetaUrl: string): string {
