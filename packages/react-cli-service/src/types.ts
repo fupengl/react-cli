@@ -3,7 +3,7 @@ import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-serve
 import type ChainableWebpackConfig from 'webpack-chain'
 import type { MinifyOptions } from 'terser'
 
-import type PluginApi from './services/PluginApi'
+import type PluginApi from './services/PluginApi.js'
 
 type PredefinedOptions<T> = T & { [key: string]: any }
 

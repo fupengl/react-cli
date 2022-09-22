@@ -1,5 +1,5 @@
 import { loadJSON } from '@planjs/react-cli-shared-utils'
-import type { ServicePlugin } from '../types'
+import type { ServicePlugin } from '../types.js'
 
 const test: ServicePlugin = (api, options) => {
   api.registerCommand(

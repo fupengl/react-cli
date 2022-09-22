@@ -1,6 +1,6 @@
 import { chalk } from '@planjs/react-cli-shared-utils'
 
-import type { ServicePlugin } from '../types'
+import type { ServicePlugin } from '../types.js'
 import type { CommandItem } from '../services/Service.js'
 import getPadLength from '../utils/getPadLength.js'
 

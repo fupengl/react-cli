@@ -1,6 +1,6 @@
 import webpack from 'webpack'
 
-import type { ServicePlugin } from '../types'
+import type { ServicePlugin } from '../types.js'
 
 const start: ServicePlugin = (api, options) => {
   api.registerCommand(
@@ -14,6 +14,9 @@ const start: ServicePlugin = (api, options) => {
       }
     },
     (args) => {
+      process.env.BABEL_ENV = 'development'
+      process.env.NODE_ENV = 'development'
+
       const webpackConfig = api.resolveWebpackConfig()
 
       console.log('webpackConfig', webpackConfig)

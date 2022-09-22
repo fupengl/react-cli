@@ -18,7 +18,7 @@ import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-serve
 import loadUserConfig from '../utils/loadUserConfig.js'
 import resolveUserConfig from '../utils/resolveUserConfig.js'
 import { isPlugin } from '../utils/plugin.js'
-import type { ServicePlugin, UserConfig } from '../types'
+import type { ServicePlugin, UserConfig } from '../types.js'
 import PluginAPI from './PluginApi.js'
 
 type PluginItem = {

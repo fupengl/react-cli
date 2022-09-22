@@ -1,4 +1,4 @@
-import type { ServicePlugin } from '../types'
+import type { ServicePlugin } from '../types.js'
 
 const build: ServicePlugin = (api, options) => {
   api.registerCommand(
@@ -10,7 +10,10 @@ const build: ServicePlugin = (api, options) => {
         '--mode': `specify env mode (default: production)`
       }
     },
-    (args) => {}
+    (args) => {
+      process.env.BABEL_ENV = 'production'
+      process.env.NODE_ENV = 'production'
+    }
   )
 }
 

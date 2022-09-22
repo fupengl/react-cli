@@ -1,4 +1,4 @@
-import type { ServicePlugin } from '../types'
+import type { ServicePlugin } from '../types.js'
 
 const inspect: ServicePlugin = (api, options) => {}
 

@@ -1,12 +1,17 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import resolve from 'resolve'
-import { chalk } from '@planjs/react-cli-shared-utils'
+import { chalk, loadJSON, useRequire } from '@planjs/react-cli-shared-utils'
 import type { CompilerOptions } from 'typescript'
 
 import type PluginApi from '../services/PluginApi.js'
 
-function getModules(api: PluginApi) {
+function getModules(api: PluginApi): {
+  additionalModulePaths: string | string[] | null
+  webpackAliases: Record<string, string> | undefined
+  jestAliases: Record<string, string> | undefined
+  hasTsConfig: boolean
+} {
   // Check if TypeScript is setup
   const hasTsConfig = fs.existsSync(api.resolve('tsconfig.json'))
   const hasJsConfig = fs.existsSync(api.resolve('jsconfig.json'))
@@ -28,7 +33,9 @@ function getModules(api: PluginApi) {
    *
    * @param {Object} options
    */
-  function getAdditionalModulePaths(options: CompilerOptions = {}) {
+  function getAdditionalModulePaths(
+    options: CompilerOptions = {}
+  ): string | string[] | null {
     const baseUrl = options.baseUrl!
 
     if (!baseUrl) {
@@ -71,7 +78,9 @@ function getModules(api: PluginApi) {
    *
    * @param {*} options
    */
-  function getWebpackAliases(options: CompilerOptions = {}) {
+  function getWebpackAliases(
+    options: CompilerOptions = {}
+  ): Record<string, string> | undefined {
     const baseUrl = options.baseUrl
 
     if (!baseUrl) {
@@ -92,7 +101,9 @@ function getModules(api: PluginApi) {
    *
    * @param {*} options
    */
-  function getJestAliases(options: CompilerOptions = {}) {
+  function getJestAliases(
+    options: CompilerOptions = {}
+  ): Record<string, string> | undefined {
     const baseUrl = options.baseUrl
 
     if (!baseUrl) {
@@ -114,14 +125,17 @@ function getModules(api: PluginApi) {
   // TypeScript project and set up the config
   // based on tsconfig.json
   if (hasTsConfig) {
-    const ts = require(resolve.sync('typescript', {
-      basedir: appNodeModules
-    }))
+    const ts = useRequire(
+      resolve.sync('typescript', {
+        basedir: appNodeModules
+      }),
+      import.meta.url
+    )
     config = ts.readConfigFile(appTsConfig, ts.sys.readFile).config
     // Otherwise we'll check if there is jsconfig.json
     // for non TS projects.
   } else if (hasJsConfig) {
-    config = require(appJsConfig)
+    config = loadJSON(appJsConfig, import.meta.url)
   }
 
   config = config || {}

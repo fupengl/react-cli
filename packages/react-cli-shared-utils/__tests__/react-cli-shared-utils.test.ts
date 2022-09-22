@@ -1,4 +1,4 @@
-import { loadModule } from '../src'
+import { loadModule } from '../src/index.js'
 
 describe('@planjs/react-cli-shared-utils', () => {
   it('load esm module', async () => {

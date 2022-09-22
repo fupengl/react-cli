@@ -3,7 +3,7 @@ import { isPlanObject } from '@planjs/utils'
 import defaultsDeep from 'lodash.defaultsdeep'
 
 import { defaultOptions, schema } from '../options.js'
-import type { UserConfig } from '../types'
+import type { UserConfig } from '../types.js'
 import defineConfig from './defineConfig.js'
 
 type ResolveUserConfigParams = {

@@ -1,7 +1,7 @@
 import { isFunction, isObject } from '@planjs/utils'
 
 import { defaultOptions } from '../options.js'
-import type { UserConfig } from '../types'
+import type { UserConfig } from '../types.js'
 
 type UserConfigFNReturnType = UserConfig | Promise<UserConfig>
 type DefineConfigReturnType = Promise<UserConfig | undefined>

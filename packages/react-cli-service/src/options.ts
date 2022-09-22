@@ -1,7 +1,7 @@
 import os from 'node:os'
 import { createSchema } from '@planjs/react-cli-shared-utils'
 
-import type { UserConfig } from './types'
+import type { UserConfig } from './types.js'
 
 export const schema = createSchema((joi) =>
   joi.object({
