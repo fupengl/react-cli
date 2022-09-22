@@ -1,7 +1,7 @@
 {
   "name": "@planjs/react-cli-service",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "local service for react-cli projects",
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "license": "ISC",
@@ -30,10 +30,17 @@
     "url": "https://github.com/fupengl/react-cli/issues"
   },
   "dependencies": {
+    "@babel/core": "^7.16.0",
+    "babel-jest": "^29.0.3",
+    "babel-loader": "^8.2.5",
+    "babel-plugin-named-asset-import": "^0.3.8",
+    "babel-preset-react-app": "^10.0.1",
+    "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.54.0",
     "webpack-chain": "^6.5.1",
     "webpack-dev-server": "^4.11.0",
     "webpack-merge": "^5.8.0",
+    "react-app-polyfill": "^3.0.0",
     "@planjs/react-cli-shared-utils": "^0.0.0",
     "minimist": "^1.2.6",
     "dotenv": "^16.0.2",
@@ -60,7 +67,8 @@
     "terser": "^5.14.1",
     "@planjs/utils": "^1.17.0",
     "lodash.defaultsdeep": "^4.6.1",
-    "hash-sum": "^2.0.0"
+    "hash-sum": "^2.0.0",
+    "resolve": "^1.20.0"
   },
   "devDependencies": {
     "@types/minimist": "^1.2.2",

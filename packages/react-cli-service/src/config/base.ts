@@ -1,4 +1,4 @@
-import { ServicePlugin } from '../types'
+import type { ServicePlugin } from '../types'
 
 const base: ServicePlugin = (api, options) => {}
 

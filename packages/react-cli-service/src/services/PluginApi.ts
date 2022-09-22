@@ -1,6 +1,5 @@
 import path from 'node:path'
 import fs from 'node:fs'
-import type minimist from 'minimist'
 import type { Configuration as WebpackOptions } from 'webpack'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 import type ChainableWebpackConfig from 'webpack-chain'
@@ -9,6 +8,7 @@ import hash from 'hash-sum'
 
 import { matchesPluginId } from '../utils/plugin.js'
 import type Service from './Service.js'
+import type { CommandItem } from './Service.js'
 
 class PluginApi {
   id: string
@@ -85,10 +85,16 @@ class PluginApi {
    */
   registerCommand(
     name: string,
-    options: Record<string, string>,
-    fn: (args: minimist.ParsedArgs, rawArgv: string[]) => void
+    options: Omit<CommandItem, 'fn'> | CommandItem['fn'],
+    fn?: CommandItem['fn']
   ): void {
-    this.service.commands[name] = { fn, options: options || {} }
+    if (typeof options === 'function') {
+      fn = options
+      this.service.commands[name] = { fn: options }
+    }
+    if (typeof fn === 'function') {
+      this.service.commands[name] = { ...options, fn }
+    }
   }
 
   /**

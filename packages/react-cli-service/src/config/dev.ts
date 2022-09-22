@@ -1,5 +1,3 @@
-import webpack from 'webpack'
-
 import type { ServicePlugin } from '../types'
 
 const REACT_APP = /^REACT_APP_/i
@@ -53,13 +51,6 @@ const dev: ServicePlugin = (api, options) => {
     console.log(config)
     console.log(res)
   })
-
-  const webpackConfig = api.resolveWebpackConfig()
-
-  // create compiler
-  const compiler = webpack(webpackConfig)
-
-  console.log(compiler)
 }
 
 export default dev

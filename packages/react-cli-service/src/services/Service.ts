@@ -26,6 +26,17 @@ type PluginItem = {
   apply: ServicePlugin
 }
 
+export type CommandItem = {
+  description?: string
+  usage?: string
+  options?: Record<string, string>
+  details?: string
+  fn(
+    args: minimist.ParsedArgs,
+    rawArgv: string[]
+  ): void | any | Promise<void | any>
+}
+
 class Service {
   initialized = false
   context!: string
@@ -37,15 +48,7 @@ class Service {
   webpackRawConfigFns: Array<
     WebpackOptions | ((config: WebpackOptions) => WebpackOptions | void)
   > = []
-  commands: Record<
-    string,
-    {
-      description?: string
-      usage?: string
-      options: Record<string, string>
-      fn(args: minimist.ParsedArgs, rawArgv: string[]): void
-    }
-  > = {}
+  commands: Record<string, CommandItem> = {}
 
   constructor(context: string) {
     this.context = context
@@ -96,9 +99,11 @@ class Service {
     this.userOptions = await this.loadUserOptions()
 
     // apply plugins.
-    this.plugins.forEach(({ id, apply }) => {
-      apply(new PluginAPI(id, this), this.userOptions)
-    })
+    await Promise.all(
+      this.plugins.map(({ id, apply }) =>
+        Promise.resolve(apply(new PluginAPI(id, this), this.userOptions))
+      )
+    )
   }
 
   resolveChainableWebpackConfig(): WebpackChain {
@@ -219,6 +224,7 @@ class Service {
         '../commands/build.js',
         '../commands/inspect.js',
         '../commands/help.js',
+        '../commands/version.js',
         // config plugins are order sensitive
         '../config/base.js',
         '../config/assets.js',

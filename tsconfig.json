@@ -10,7 +10,8 @@
     "esModuleInterop": true,
     "useUnknownInCatchVariables": false,
     "resolveJsonModule": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
   "exclude": ["node_modules"]
 }
