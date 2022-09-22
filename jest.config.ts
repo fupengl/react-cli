@@ -9,9 +9,15 @@ export default {
   clearMocks: true,
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
-  testMatch: ['**/__tests__/**/*.test.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
+  testMatch: ['**/__tests__/**/?(*.)+(spec|test).[tj]s?(x)'],
   transform: {
-    '^.+\\.[jt]sx?$': 'ts-jest',
+    '^.+\\.[jt]sx?$': [
+      'ts-jest',
+      {
+        useESM: true
+      }
+    ]
   },
-  transformIgnorePatterns: ['/node_modules/', '\\.pnp\\.[^\\/]+$'],
-};
+  transformIgnorePatterns: ['node_modules', '\\.pnp\\.[^\\/]+$'],
+  extensionsToTreatAsEsm: ['.ts']
+}

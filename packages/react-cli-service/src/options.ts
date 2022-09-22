@@ -17,7 +17,7 @@ export const defaultOptions: () => UserConfig = () => ({
   publicPath: '/',
 
   // where to output built files
-  outputDir: 'dist',
+  outputDir: process.env.BUILD_PATH || 'build',
 
   // where to put static assets (js/css/img/font/...)
   assetsDir: '',
@@ -32,7 +32,7 @@ export const defaultOptions: () => UserConfig = () => ({
   transpileDependencies: false,
 
   // sourceMap for production build?
-  productionSourceMap: !process.env.REACT_CLI_TEST,
+  productionSourceMap: process.env.GENERATE_SOURCEMAP !== 'false',
 
   // use thread-loader for babel & TS in production build
   // enabled by default if the machine has more than 1 cores
@@ -54,6 +54,9 @@ export const defaultOptions: () => UserConfig = () => ({
     // sourceMap: false,
     // loaderOptions: {}
   },
+
+  // disable eslint plugin
+  disableLint: process.env.DISABLE_ESLINT_PLUGIN === 'true',
 
   // whether to use eslint-loader
   lintOnSave: 'default',

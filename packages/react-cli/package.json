@@ -23,8 +23,7 @@
   },
   "scripts": {
     "prepare": "stan-builder",
-    "dev": "stan-builder -w",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "dev": "stan-builder -w"
   },
   "bugs": {
     "url": "https://github.com/fupengl/react-cli/issues"

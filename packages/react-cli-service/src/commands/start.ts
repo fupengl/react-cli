@@ -14,8 +14,6 @@ const start: ServicePlugin = (api, options) => {
       }
     },
     (args) => {
-      console.log('start cmd', args)
-
       const webpackConfig = api.resolveWebpackConfig()
 
       console.log('webpackConfig', webpackConfig)

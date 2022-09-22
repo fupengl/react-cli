@@ -159,6 +159,13 @@ export interface UserConfig {
     | ((config: WebpackOptions) => WebpackOptions | void)
 
   /**
+   * Default: `'false'`
+   *
+   * Disable `eslint-webpack-plugin`, no eslint checks will be done after setting
+   */
+  disableLint?: boolean
+
+  /**
    * Default: `'default'`
    *
    * Whether to perform lint-on-save during development using [eslint-loader](https://github.com/webpack-contrib/eslint-loader)

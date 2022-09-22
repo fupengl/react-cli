@@ -23,6 +23,12 @@ class PluginApi {
     return this.service.pkgJson.version!
   }
 
+  used = {
+    typescript: () => fs.existsSync(this.resolve('tsconfig.json')),
+    tainwind: () => fs.existsSync(this.resolve('tailwind.config.js')),
+    babel: () => ['.babelrc', 'babel.config.js'].map((f) => this.resolve(f))
+  }
+
   assertVersion(range: number | string): void {
     if (typeof range === 'number') {
       if (!Number.isInteger(range)) {
@@ -44,6 +50,7 @@ class PluginApi {
 
   /**
    * Current working directory.
+   *
    * @return {string}
    */
   getCwd(): string {
@@ -56,8 +63,8 @@ class PluginApi {
    * @param {string} _path - Relative path from project root
    * @return {string} The resolved absolute path.
    */
-  resolve(_path: string): string {
-    return path.resolve(this.service.context, _path)
+  resolve(...paths: string[]): string {
+    return path.resolve(this.service.context, ...paths)
   }
 
   /**
@@ -179,22 +186,13 @@ class PluginApi {
 
     const variables: any = {
       partialIdentifier,
-      'cli-service': loadJSON('../package.json', import.meta.url).version,
+      'cli-service': loadJSON('../../package.json', import.meta.url).version,
       env: process.env.NODE_ENV,
       test: !!process.env.REACT_CLI_TEST,
       config: [
         fmtFunc(this.service.userOptions.chainWebpack),
         fmtFunc(this.service.userOptions.configureWebpack)
       ]
-    }
-
-    try {
-      variables['cache-loader'] = loadJSON(
-        'cache-loader/package.json',
-        import.meta.url
-      ).version
-    } catch (e) {
-      // cache-loader is only intended to be used for webpack 4
     }
 
     if (!Array.isArray(configFiles)) {
