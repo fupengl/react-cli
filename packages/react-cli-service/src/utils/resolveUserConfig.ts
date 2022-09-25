@@ -4,18 +4,21 @@ import defaultsDeep from 'lodash.defaultsdeep'
 
 import { defaultOptions, schema } from '../options.js'
 import type { UserConfig } from '../types.js'
+import getPublicUrlOrPath from '../utils/getPublicUrlOrPath.js'
 import defineConfig from './defineConfig.js'
 
 type ResolveUserConfigParams = {
   fileConfig?: any
   fileConfigPath?: string
   pkgConfig?: UserConfig
+  homepage?: string
 }
 
 async function resolveUserConfig({
   fileConfig,
   fileConfigPath,
   pkgConfig,
+  homepage
 }: ResolveUserConfigParams): Promise<UserConfig> {
   const config = await defineConfig(fileConfig)
 
@@ -35,7 +38,10 @@ async function resolveUserConfig({
 
   const result = defaultsDeep(config, defaultOptions())
 
-
+  result.publicPath = getPublicUrlOrPath(
+    homepage,
+    result!.publicPath
+  )
 
   // validate options
   validate(result, schema, (msg) => {

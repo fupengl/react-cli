@@ -19,7 +19,6 @@ import loadUserConfig from '../utils/loadUserConfig.js'
 import resolveUserConfig from '../utils/resolveUserConfig.js'
 import { isPlugin } from '../utils/plugin.js'
 import type { ServicePlugin, UserConfig } from '../types.js'
-import getPublicUrlOrPath from "../utils/getPublicUrlOrPath.js";
 import PluginAPI from './PluginApi.js'
 
 type PluginItem = {
@@ -106,11 +105,7 @@ class Service {
       )
     )
 
-    this.userOptions.publicPath = getPublicUrlOrPath(
-      process.env.NODE_ENV === 'development',
-      this.packageJson.homepage,
-      this.userOptions!.publicPath
-    )
+
   }
 
   resolveChainableWebpackConfig(): WebpackChain {
@@ -276,6 +271,7 @@ class Service {
       fileConfigPath,
       fileConfig,
       pkgConfig: this.packageJson.react,
+      homepage: this.packageJson.homepage
     })
   }
 }

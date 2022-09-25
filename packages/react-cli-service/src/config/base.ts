@@ -43,6 +43,7 @@ const base: ServicePlugin = (api, options) => {
       }
     })()
 
+
     // base
     config.target('browserslist')
     config.stats('errors-warnings')
@@ -292,7 +293,7 @@ const base: ServicePlugin = (api, options) => {
           eslintPath: require.resolve('eslint'),
           failOnWarning: options.lintOnSave === 'error',
           failOnError: !(isEnvDevelopment && emitErrorsAsWarnings),
-          context: api.resolve('src/'),
+          context: api.resolve('src'),
           cache: true,
           cacheLocation: api.resolve('node_modules', '.cache/.eslintcache'),
           // ESLint class options
