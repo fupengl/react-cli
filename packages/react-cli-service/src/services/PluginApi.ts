@@ -3,8 +3,8 @@ import fs from 'node:fs'
 import type { Configuration as WebpackOptions } from 'webpack'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 import type ChainableWebpackConfig from 'webpack-chain'
-import { loadJSON, semver } from '@planjs/react-cli-shared-utils'
 import hash from 'hash-sum'
+import { loadJSON, semver } from '@planjs/react-cli-shared-utils'
 
 import { matchesPluginId } from '../utils/plugin.js'
 import type Service from './Service.js'
@@ -20,13 +20,16 @@ class PluginApi {
   }
 
   get version(): string {
-    return this.service.pkgJson.version!
+    return this.service.packageJson.version!
   }
 
   used = {
-    typescript: () => fs.existsSync(this.resolve('tsconfig.json')),
-    tainwind: () => fs.existsSync(this.resolve('tailwind.config.js')),
-    babel: () => ['.babelrc', 'babel.config.js'].map((f) => this.resolve(f))
+    typescript: (): boolean => fs.existsSync(this.resolve('tsconfig.json')),
+    tailwind: (): boolean => fs.existsSync(this.resolve('tailwind.config.js')),
+    babel: (): boolean =>
+      ['.babelrc', 'babel.config.js'].some((f) =>
+        fs.existsSync(this.resolve(f))
+      )
   }
 
   assertVersion(range: number | string): void {

@@ -19,10 +19,12 @@ const start: ServicePlugin = (api, options) => {
 
       const webpackConfig = api.resolveWebpackConfig()
 
-      console.log('webpackConfig', webpackConfig)
-
       // create compiler
       const compiler = webpack(webpackConfig)
+
+      compiler.watch({}, (err) => {
+        console.log(err)
+      })
     }
   )
 }

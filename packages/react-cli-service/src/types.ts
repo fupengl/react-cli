@@ -62,11 +62,13 @@ export interface UserConfig {
    * Default: `'/'`
    *
    * The base URL your application bundle will be deployed at
+   * If not set, it can also be set through the homepage field in package.json
+   * If not set, it can also be set through the environment variable `PUBLIC_URL`
    */
   publicPath?: string
 
   /**
-   * Default: `'dist'`
+   * Default: `'build'`
    *
    * The directory where the production build files will be generated in when running `react-cli-service build`
    */
@@ -101,6 +103,15 @@ export interface UserConfig {
    * in this option.
    */
   transpileDependencies?: boolean | Array<string | RegExp>
+
+  /**
+   * Default: `true`
+   *
+   * By default, will embed the runtime script into index.html during the production build.
+   * When set to false, the script will not be embedded and will be imported as usual.
+   * This is normally required when dealing with CSP.
+   */
+  inlineRuntime?: boolean
 
   /**
    * Default: `true`
@@ -196,6 +207,13 @@ export interface UserConfig {
      */
     terserOptions?: PredefinedOptions<MinifyOptions>
   }
+
+  /**
+   * Default `true`
+   *
+   * When set to false, disables experimental support for Fast Refresh to allow you to tweak your components in real time without reloading the page.
+   */
+  fastRefresh?: boolean
 
   /**
    * This is an object that doesn't go through any schema validation, so it can be used to pass arbitrary options to 3rd party plugins

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "module": "esnext",
+    "target": "esnext",
+    "module": "nodenext",
     "moduleResolution": "nodenext",
     "strict": true,
     "declaration": true,
@@ -11,7 +11,8 @@
     "useUnknownInCatchVariables": false,
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
   "exclude": ["node_modules"]
 }

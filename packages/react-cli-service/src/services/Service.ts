@@ -19,6 +19,7 @@ import loadUserConfig from '../utils/loadUserConfig.js'
 import resolveUserConfig from '../utils/resolveUserConfig.js'
 import { isPlugin } from '../utils/plugin.js'
 import type { ServicePlugin, UserConfig } from '../types.js'
+import getPublicUrlOrPath from "../utils/getPublicUrlOrPath.js";
 import PluginAPI from './PluginApi.js'
 
 type PluginItem = {
@@ -40,7 +41,7 @@ export type CommandItem = {
 class Service {
   initialized = false
   context!: string
-  pkgJson!: PackageJsonType & { react?: UserConfig }
+  packageJson!: PackageJsonType & { react?: UserConfig }
   userOptions!: UserConfig
   plugins!: Array<PluginItem>
   webpackChainFns: Array<(config: ChainableWebpackConfig) => void> = []
@@ -52,7 +53,7 @@ class Service {
 
   constructor(context: string) {
     this.context = context
-    this.pkgJson = loadPackageJson(context)
+    this.packageJson = loadPackageJson(context, false)
   }
 
   async run(
@@ -103,6 +104,12 @@ class Service {
       this.plugins.map(({ id, apply }) =>
         Promise.resolve(apply(new PluginAPI(id, this), this.userOptions))
       )
+    )
+
+    this.userOptions.publicPath = getPublicUrlOrPath(
+      process.env.NODE_ENV === 'development',
+      this.packageJson.homepage,
+      this.userOptions!.publicPath
     )
   }
 
@@ -226,12 +233,12 @@ class Service {
         '../commands/help.js',
         '../commands/version.js',
         // config plugins are order sensitive
-        '../config/base.js',
         '../config/assets.js',
         '../config/style.js',
         '../config/dev.js',
         '../config/prod.js',
-        '../config/devServer.js'
+        '../config/devServer.js',
+        '../config/base.js'
       ].map((id) => idToPlugin(id))
     )
 
@@ -239,14 +246,14 @@ class Service {
       ...builtInPlugins,
       ...(await Promise.all(
         Object.keys({
-          ...this.pkgJson.dependencies,
-          ...this.pkgJson.devDependencies
+          ...this.packageJson.dependencies,
+          ...this.packageJson.devDependencies
         })
           .filter(isPlugin)
           .map(async (id) => {
             if (
-              this.pkgJson.optionalDependencies &&
-              id in this.pkgJson.optionalDependencies
+              this.packageJson.optionalDependencies &&
+              id in this.packageJson.optionalDependencies
             ) {
               let apply = await loadModule(id, import.meta.url)
               if (!apply) {
@@ -268,7 +275,7 @@ class Service {
     return await resolveUserConfig({
       fileConfigPath,
       fileConfig,
-      pkgConfig: this.pkgJson.react
+      pkgConfig: this.packageJson.react,
     })
   }
 }

@@ -35,7 +35,6 @@ const args = minimist(rawArgv, {
 const command = args._[0]
 
 service.run(command, args, rawArgv).catch((err) => {
-  console.log(err)
   logger.error(err)
   process.exit(1)
 })

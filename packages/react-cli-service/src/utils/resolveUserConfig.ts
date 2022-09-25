@@ -15,7 +15,7 @@ type ResolveUserConfigParams = {
 async function resolveUserConfig({
   fileConfig,
   fileConfigPath,
-  pkgConfig
+  pkgConfig,
 }: ResolveUserConfigParams): Promise<UserConfig> {
   const config = await defineConfig(fileConfig)
 
@@ -33,12 +33,16 @@ async function resolveUserConfig({
     )
   }
 
+  const result = defaultsDeep(config, defaultOptions())
+
+
+
   // validate options
-  validate(config, schema, (msg) => {
+  validate(result, schema, (msg) => {
     logger.error(`Invalid options in ${chalk.bold(fileConfigPath)}: ${msg}`)
   })
 
-  return defaultsDeep(config, defaultOptions())
+  return result
 }
 
 export default resolveUserConfig

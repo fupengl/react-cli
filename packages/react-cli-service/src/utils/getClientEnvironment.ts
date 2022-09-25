@@ -1,7 +1,10 @@
+import type { UserConfig } from '../types.js'
+
 const REACT_APP = /^REACT_APP_/i
 
 // @see https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/config/env.js#L71
-function getClientEnvironment(publicUrl: string) {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+function getClientEnvironment(publicUrl: string, options: UserConfig) {
   const raw = Object.keys(process.env)
     .filter((key) => REACT_APP.test(key))
     .reduce<Record<string, any>>(
@@ -28,7 +31,7 @@ function getClientEnvironment(publicUrl: string) {
         WDS_SOCKET_PORT: process.env.WDS_SOCKET_PORT,
         // Whether or not react-refresh is enabled.
         // It is defined here so it is available in the webpackHotDevClient.
-        FAST_REFRESH: process.env.FAST_REFRESH !== 'false'
+        FAST_REFRESH: options.fastRefresh
       }
     )
   // Stringify all values so we can feed into webpack DefinePlugin

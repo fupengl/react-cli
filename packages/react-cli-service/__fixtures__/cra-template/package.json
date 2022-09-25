@@ -2,6 +2,7 @@
   "name": "cra-template",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -9,15 +10,16 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@planjs/react-cli-service": "file:../../"
   },
   "scripts": {
     "rs:start": "react-scripts start",
     "rs:build": "react-scripts build",
     "rs:test": "react-scripts test",
-    "start": "../../bin/react-cli-service.js start",
-    "build": "../../bin/react-cli-service.js build",
-    "test": "../../bin/react-cli-service.js test",
+    "start": "react-cli-service start",
+    "build": "react-cli-service build",
+    "test": "react-cli-service test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

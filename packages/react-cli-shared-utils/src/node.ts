@@ -70,9 +70,12 @@ export function checkNodeVersion(wanted: string, id: string): void {
   }
 }
 
-export function loadPackageJson(context: string): PackageJsonType {
+export function loadPackageJson(
+  context: string,
+  normalize = false
+): PackageJsonType {
   if (fs.existsSync(path.join(context, 'package.json'))) {
-    return readPackageSync({ cwd: context })
+    return readPackageSync({ cwd: context, normalize })
   }
   return {}
 }
