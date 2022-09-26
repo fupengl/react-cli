@@ -27,6 +27,7 @@ const args = minimist(rawArgv, {
     'report-json',
     'inline-react',
     'watch',
+    'stats',
     // inspect
     'verbose'
   ]
@@ -35,6 +36,6 @@ const args = minimist(rawArgv, {
 const command = args._[0]
 
 service.run(command, args, rawArgv).catch((err) => {
-  logger.error(err)
+  err && logger.error(err)
   process.exit(1)
 })

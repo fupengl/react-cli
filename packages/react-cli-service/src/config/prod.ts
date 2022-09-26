@@ -31,7 +31,7 @@ const prod: ServicePlugin = (api, options) => {
           // into invalid ecma 5 code. This is why the 'compress' and 'output'
           // sections only apply transformations that are ecma 5 safe
           // https://github.com/facebook/create-react-app/pull/4234
-          ecma: 8
+          ecma: 8,
         },
         compress: {
           ecma: 5,
@@ -45,10 +45,10 @@ const prod: ServicePlugin = (api, options) => {
           // https://github.com/facebook/create-react-app/issues/5250
           // Pending further investigation:
           // https://github.com/terser-js/terser/issues/120
-          inline: 2
+          inline: 2,
         },
         mangle: {
-          safari10: true
+          safari10: true,
         },
         // Added for profiling in devtools
         keep_classnames: isEnvProductionProfile,
@@ -58,11 +58,10 @@ const prod: ServicePlugin = (api, options) => {
           comments: false,
           // Turned on because emoji and regex is not minified properly using default
           // https://github.com/facebook/create-react-app/issues/2488
-          ascii_only: true
-        }
+          ascii_only: true,
+        },
       }),
       parallel: options.parallel,
-      extractComments: false
     })
 
     // `terserOptions` options will be passed to `esbuild`

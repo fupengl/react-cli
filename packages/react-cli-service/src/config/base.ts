@@ -59,7 +59,7 @@ const base: ServicePlugin = (api, options) => {
           : false
         : isEnvDevelopment && 'cheap-module-source-map'
     )
-    config.entry('app').add(api.resolve('src/index'))
+    config.entry('main').add(api.resolve('src/index'))
 
     // output
     config.output.path(api.resolve(options.outputDir!))
@@ -76,7 +76,10 @@ const base: ServicePlugin = (api, options) => {
     )
     config.output.filename(outputDir)
     config.output.chunkFilename(outputDir)
-    config.output.set('assetModuleFilename', 'static/media/[name].[hash][ext]')
+    config.output.set(
+      'assetModuleFilename',
+      tryPrefixPath('static/media/[name].[hash][ext]', options.assetsDir)
+    )
     config.output.publicPath(options.publicPath!)
     config.output.devtoolModuleFilenameTemplate(
       isEnvProduction
@@ -146,9 +149,7 @@ const base: ServicePlugin = (api, options) => {
     )
     const babelRuntimeRegenerator = require.resolve(
       '@babel/runtime/regenerator',
-      {
-        paths: [babelRuntimeEntry]
-      }
+      { paths: [babelRuntimeEntry] }
     )
     // Prevents users from importing files from outside of src/ (or node_modules/).
     // This often causes confusion because we only process files within src/ with babel.
