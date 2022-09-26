@@ -4,7 +4,7 @@ const REACT_APP = /^REACT_APP_/i
 
 // @see https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/config/env.js#L71
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function getClientEnvironment(publicUrl: string, options: UserConfig) {
+function getClientEnvironment(options: UserConfig) {
   const raw = Object.keys(process.env)
     .filter((key) => REACT_APP.test(key))
     .reduce<Record<string, any>>(
@@ -20,7 +20,7 @@ function getClientEnvironment(publicUrl: string, options: UserConfig) {
         // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
-        PUBLIC_URL: publicUrl,
+        PUBLIC_URL: options.publicPath!.slice(0, -1),
         // We support configuring the sockjs pathname during development.
         // These settings let a developer run multiple simultaneous projects.
         // They are used as the connection `hostname`, `pathname` and `port`

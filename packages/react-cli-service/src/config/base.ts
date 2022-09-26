@@ -26,7 +26,7 @@ const base: ServicePlugin = (api, options) => {
   const require = createRequire(import.meta.url)
 
   api.chainWebpack((config) => {
-    const env = getClientEnvironment(options.publicPath!, options)
+    const env = getClientEnvironment(options)
     const isEnvProduction = process.env.NODE_ENV === 'production'
     const isEnvDevelopment = process.env.NODE_ENV === 'development'
     const shouldUseSourceMap = options.productionSourceMap
@@ -42,7 +42,6 @@ const base: ServicePlugin = (api, options) => {
         return false
       }
     })()
-
 
     // base
     config.target('browserslist')
