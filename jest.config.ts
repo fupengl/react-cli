@@ -5,7 +5,6 @@
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
-  preset: 'ts-jest/presets/default-esm',
   verbose: true,
   clearMocks: true,
   coverageDirectory: 'coverage',
@@ -14,14 +13,17 @@ export default {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+  preset: 'ts-jest/presets/default-esm',
   transform: {
-    '^.+\\.[jt]sx?$': [
+    '^.+\\.tsx?$': [
       'ts-jest',
       {
+        tsconfig: './tsconfig.json',
         useESM: true
       }
     ]
   },
   transformIgnorePatterns: ['node_modules', '\\.pnp\\.[^\\/]+$'],
-  extensionsToTreatAsEsm: ['.ts']
+  extensionsToTreatAsEsm: ['.ts'],
+  resolver: './__mock__/resolver.cjs'
 }

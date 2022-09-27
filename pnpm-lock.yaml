@@ -10,6 +10,7 @@ importers:
       '@types/node': ^17.0.42
       '@typescript-eslint/eslint-plugin': ^5.36.2
       '@typescript-eslint/parser': ^5.36.2
+      enhanced-resolve: ^5.10.0
       eslint: ^8.23.1
       eslint-define-config: ^1.7.0
       eslint-import-resolver-typescript: ^3.5.1
@@ -35,6 +36,7 @@ importers:
       '@types/node': 17.0.45
       '@typescript-eslint/eslint-plugin': 5.37.0_22c5fnooleyfkzrkkgdmel5kmi
       '@typescript-eslint/parser': 5.37.0_irgkl5vooow2ydyo6aokmferha
+      enhanced-resolve: 5.10.0
       eslint: 8.23.1
       eslint-define-config: 1.7.0
       eslint-import-resolver-typescript: 3.5.1_hdzsmr7kawaomymueo2tso6fjq

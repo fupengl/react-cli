@@ -6,7 +6,7 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint --cache .",
     "prepare": "npx husky install",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "watch": "lerna run --parallel dev"
   },
   "devDependencies": {
@@ -16,6 +16,7 @@
     "@types/node": "^17.0.42",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
+    "enhanced-resolve": "^5.10.0",
     "eslint": "^8.23.1",
     "eslint-define-config": "^1.7.0",
     "eslint-import-resolver-typescript": "^3.5.1",
