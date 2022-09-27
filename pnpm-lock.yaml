@@ -83,6 +83,7 @@ importers:
       '@svgr/webpack': ^6.3.1
       '@types/case-sensitive-paths-webpack-plugin': ^2.1.6
       '@types/fs-extra': ^9.0.13
+      '@types/global-modules': ^2.0.0
       '@types/hash-sum': ^1.0.0
       '@types/loader-utils': ^2.0.3
       '@types/lodash.defaultsdeep': ^4.6.7
@@ -111,6 +112,7 @@ importers:
       fork-ts-checker-webpack-plugin: ^7.2.13
       fs-extra: ^10.0.0
       fsevents: ^2.3.2
+      global-modules: ^2.0.0
       gzip-size: ^7.0.0
       hash-sum: ^2.0.0
       html-webpack-plugin: ^5.5.0
@@ -170,6 +172,7 @@ importers:
       find-up: 6.3.0
       fork-ts-checker-webpack-plugin: 7.2.13_webpack@5.74.0
       fs-extra: 10.1.0
+      global-modules: 2.0.0
       gzip-size: 7.0.0
       hash-sum: 2.0.0
       html-webpack-plugin: 5.5.0_webpack@5.74.0
@@ -208,6 +211,7 @@ importers:
     devDependencies:
       '@types/case-sensitive-paths-webpack-plugin': 2.1.6
       '@types/fs-extra': 9.0.13
+      '@types/global-modules': 2.0.0
       '@types/hash-sum': 1.0.0
       '@types/loader-utils': 2.0.3
       '@types/lodash.defaultsdeep': 4.6.7
@@ -4296,6 +4300,10 @@ packages:
     dependencies:
       '@types/minimatch': 3.0.5
       '@types/node': 18.7.18
+    dev: true
+
+  /@types/global-modules/2.0.0:
+    resolution: {integrity: sha512-AsEQE+Rhe82YGPmO2vpzhpdvsYwUbK9ev7ZhTY7QQBHuKeLxCr8K0K47HmlaVkuSe0YivNAjjEGoEnkGKhivMA==}
     dev: true
 
   /@types/graceful-fs/4.1.5:

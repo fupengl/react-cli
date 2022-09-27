@@ -7,8 +7,12 @@ import hash from 'hash-sum'
 import { loadJSON, semver } from '@planjs/react-cli-shared-utils'
 
 import { matchesPluginId } from '../utils/plugin.js'
-import type Service from './Service.js'
+import getNpmClient from '../utils/getNpmClient.js'
+import type { NpmClientType } from '../utils/getNpmClient.js'
 import type { CommandItem } from './Service.js'
+import type Service from './Service.js'
+
+const npmLockFile = ['package-lock.json', 'yarn.lock', 'pnpm-lock.yaml']
 
 class PluginApi {
   id: string
@@ -21,6 +25,10 @@ class PluginApi {
 
   get version(): string {
     return this.service.packageJson.version!
+  }
+
+  get npmClient(): NpmClientType {
+    return getNpmClient(this.service.context)
   }
 
   used = {
@@ -63,7 +71,7 @@ class PluginApi {
   /**
    * Resolve path for a project.
    *
-   * @param {string} _path - Relative path from project root
+   * @param {string[]} paths - Relative path from project root
    * @return {string} The resolved absolute path.
    */
   resolve(...paths: string[]): string {
@@ -201,11 +209,7 @@ class PluginApi {
     if (!Array.isArray(configFiles)) {
       configFiles = [configFiles]
     }
-    configFiles = configFiles.concat([
-      'package-lock.json',
-      'yarn.lock',
-      'pnpm-lock.yaml'
-    ])
+    configFiles = configFiles.concat(npmLockFile)
 
     const readConfig = (file: string) => {
       const absolutePath = this.resolve(file)

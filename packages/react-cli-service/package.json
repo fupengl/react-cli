@@ -86,7 +86,8 @@
     "recursive-readdir": "^2.2.2",
     "gzip-size": "^7.0.0",
     "bfj": "^7.0.2",
-    "find-up": "^6.3.0"
+    "find-up": "^6.3.0",
+    "global-modules": "^2.0.0"
   },
   "devDependencies": {
     "@types/minimist": "^1.2.2",
@@ -97,7 +98,8 @@
     "@types/fs-extra": "^9.0.13",
     "@types/loader-utils": "^2.0.3",
     "@types/prompts": "^2.0.14",
-    "@types/recursive-readdir": "^2.2.1"
+    "@types/recursive-readdir": "^2.2.1",
+    "@types/global-modules": "^2.0.0"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

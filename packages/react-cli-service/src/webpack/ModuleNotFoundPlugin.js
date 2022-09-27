@@ -2,6 +2,8 @@ import path from 'node:path'
 import { chalk } from '@planjs/react-cli-shared-utils'
 import { findUpSync } from 'find-up'
 
+import getNpmClient from "../utils/getNpmClient.js";
+
 // TODO support pnpm
 class ModuleNotFoundPlugin {
   /**
@@ -17,7 +19,8 @@ class ModuleNotFoundPlugin {
 
   useYarnCommand() {
     try {
-      return findUpSync('yarn.lock', { cwd: this.appPath }) != null
+      this.npmClient = getNpmClient(this.appPath)
+      return this.npmClient === 'yarn'
     } catch (_) {
       return false
     }
@@ -68,7 +71,7 @@ class ModuleNotFoundPlugin {
           '',
           'You can install this package by running: ' +
             (isYarn
-              ? chalk.bold(`yarn add ${target}`)
+              ? chalk.bold(`${this.npmClient} add ${target}`)
               : chalk.bold(`npm install ${target}`)) +
             '.'
         ]

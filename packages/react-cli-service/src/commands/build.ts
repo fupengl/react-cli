@@ -1,4 +1,6 @@
 import { createRequire } from 'node:module'
+import path from 'node:path'
+
 import type { Stats } from 'webpack'
 import webpack from 'webpack'
 import fs from 'fs-extra'
@@ -11,6 +13,7 @@ import {
 } from '../utils/FileSizeReporter.js'
 import formatWebpackMessages from '../utils/formatWebpackMessages.js'
 import printBuildError from '../utils/printBuildError.js'
+import printHostingInstructions from '../utils/printHostingInstructions.js'
 import {
   WARN_AFTER_BUNDLE_GZIP_SIZE,
   WARN_AFTER_CHUNK_GZIP_SIZE
@@ -86,6 +89,7 @@ const build: ServicePlugin = (api, options) => {
                 stats!.toJson({ all: false, warnings: true, errors: true })
               )
             }
+
             if (messages.errors.length) {
               // Only keep the first error. Others are often indicative
               // of the same problem, but confuse the reader with noise.
@@ -94,6 +98,7 @@ const build: ServicePlugin = (api, options) => {
               }
               return reject(new Error(messages.errors.join('\n\n')))
             }
+
             if (
               process.env.CI &&
               (typeof process.env.CI !== 'string' ||
@@ -163,6 +168,21 @@ const build: ServicePlugin = (api, options) => {
           WARN_AFTER_CHUNK_GZIP_SIZE
         )
         console.log()
+
+        const appPackage = api.service.packageJson
+        const publicUrl = options.publicPath!
+        const publicPath = options.outputDir!
+        const buildFolder = path.relative(
+          process.cwd(),
+          api.resolve(options.outputDir!)
+        )
+        printHostingInstructions(
+          appPackage,
+          publicUrl,
+          publicPath,
+          buildFolder,
+          api.npmClient
+        )
       } catch (err) {
         const tscCompileOnError = process.env.TSC_COMPILE_ON_ERROR === 'true'
         if (tscCompileOnError) {
