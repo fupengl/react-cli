@@ -107,6 +107,8 @@ importers:
       eslint-webpack-plugin: ^3.2.0
       file-loader: ^6.2.0
       filesize: ^9.0.11
+      find-up: ^6.3.0
+      fork-ts-checker-webpack-plugin: ^7.2.13
       fs-extra: ^10.0.0
       fsevents: ^2.3.2
       gzip-size: ^7.0.0
@@ -165,6 +167,8 @@ importers:
       eslint-webpack-plugin: 3.2.0_cnsurwdbw57xgwxuf5k544xt5e
       file-loader: 6.2.0_webpack@5.74.0
       filesize: 9.0.11
+      find-up: 6.3.0
+      fork-ts-checker-webpack-plugin: 7.2.13_webpack@5.74.0
       fs-extra: 10.1.0
       gzip-size: 7.0.0
       hash-sum: 2.0.0
@@ -8544,6 +8548,32 @@ packages:
       webpack: 5.74.0
     dev: false
 
+  /fork-ts-checker-webpack-plugin/7.2.13_webpack@5.74.0:
+    resolution: {integrity: sha512-fR3WRkOb4bQdWB/y7ssDUlVdrclvwtyCUIHCfivAoYxq9dF7XfrDKbMdZIfwJ7hxIAqkYSGeU7lLJE6xrxIBdg==}
+    engines: {node: '>=12.13.0', yarn: '>=1.0.0'}
+    peerDependencies:
+      typescript: '>3.6.0'
+      vue-template-compiler: '*'
+      webpack: ^5.11.0
+    peerDependenciesMeta:
+      vue-template-compiler:
+        optional: true
+    dependencies:
+      '@babel/code-frame': 7.18.6
+      chalk: 4.1.2
+      chokidar: 3.5.3
+      cosmiconfig: 7.0.1
+      deepmerge: 4.2.2
+      fs-extra: 10.1.0
+      memfs: 3.4.7
+      minimatch: 3.1.2
+      node-abort-controller: 3.0.1
+      schema-utils: 3.1.1
+      semver: 7.3.7
+      tapable: 2.2.1
+      webpack: 5.74.0
+    dev: false
+
   /form-data/3.0.1:
     resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
     engines: {node: '>= 6'}
@@ -11941,6 +11971,10 @@ packages:
     dependencies:
       lower-case: 2.0.2
       tslib: 2.4.0
+    dev: false
+
+  /node-abort-controller/3.0.1:
+    resolution: {integrity: sha512-/ujIVxthRs+7q6hsdjHMaj8hRG9NuWmwrz+JdRwZ14jdFoKSkm+vDsCbF9PLpnSqjaWQJuTmVtcWHNLr+vrOFw==}
     dev: false
 
   /node-addon-api/3.2.1:

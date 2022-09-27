@@ -6,6 +6,7 @@ import resolve from 'resolve'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ESLintPlugin from 'eslint-webpack-plugin'
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
 import {
   getCurrentDirName,
   getCurrentFileName
@@ -17,6 +18,7 @@ import getModules from '../utils/modules.js'
 import ModuleScopePlugin from '../webpack/ModuleScopePlugin.js'
 import InlineChunkHtmlPlugin from '../webpack/InlineChunkHtmlPlugin.js'
 import InterpolateHtmlPlugin from '../webpack/InterpolateHtmlPlugin.js'
+import ModuleNotFoundPlugin from '../webpack/ModuleNotFoundPlugin.js'
 import getEslintFormatter from '../webpack/eslintFormatter.js'
 import tryPrefixPath from '../utils/tryPrefixPath.js'
 
@@ -195,7 +197,7 @@ const base: ServicePlugin = (api, options) => {
           : undefined
       )
     ])
-    if (options.inlineRuntime) {
+    if (options.inlineRuntime && isEnvProduction) {
       config
         .plugin('InlineChunkHtmlPlugin')
         .use(InlineChunkHtmlPlugin, [HtmlWebpackPlugin, [/runtime-.+[.]js/]])
@@ -204,6 +206,31 @@ const base: ServicePlugin = (api, options) => {
       .plugin('InterpolateHtmlPlugin')
       .use(InterpolateHtmlPlugin, [HtmlWebpackPlugin, env.raw])
     config.plugin('DefinePlugin').use(webpack.DefinePlugin, [env.stringified])
+
+    config
+      .plugin('ModuleNotFoundPlugin')
+      .use(ModuleNotFoundPlugin, [api.service.context])
+
+    config.plugin('WebpackManifestPlugin').use(WebpackManifestPlugin, [
+      {
+        fileName: 'asset-manifest.json',
+        publicPath: options.publicPath,
+        generate: (seed, files, entrypoints) => {
+          const manifestFiles = files.reduce((manifest, file) => {
+            manifest[file.name] = file.path
+            return manifest
+          }, seed)
+          const entrypointFiles = entrypoints.main.filter(
+            (fileName) => !fileName.endsWith('.map')
+          )
+
+          return {
+            files: manifestFiles,
+            entrypoints: entrypointFiles
+          }
+        }
+      }
+    ])
 
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how webpack interprets its code. This is a practical
@@ -220,8 +247,8 @@ const base: ServicePlugin = (api, options) => {
     if (api.used.typescript()) {
       const ForkTsCheckerWebpackPlugin =
         process.env.TSC_COMPILE_ON_ERROR === 'true'
-          ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin')
-          : require('react-dev-utils/ForkTsCheckerWebpackPlugin')
+          ? require('../webpack/ForkTsCheckerWarningWebpackPlugin.js')
+          : require('fork-ts-checker-webpack-plugin')
       // TypeScript type checking
       config
         .plugin('ForkTsCheckerWebpackPlugin')
