@@ -57,7 +57,7 @@ interface CSSOptions {
 
 export type ServicePlugin = (api: PluginApi, options: UserConfig) => any
 
-export interface UserConfig {
+export declare interface UserConfig {
   /**
    * Default: `'/'`
    *

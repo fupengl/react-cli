@@ -35,7 +35,7 @@
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-preset-react-app": "^10.0.1",
     "html-webpack-plugin": "^5.5.0",
-    "webpack": "^5.54.0",
+    "webpack": "^5.74.0",
     "webpack-chain": "^6.5.1",
     "webpack-dev-server": "^4.11.0",
     "webpack-merge": "^5.8.0",
@@ -99,7 +99,8 @@
     "@types/loader-utils": "^2.0.3",
     "@types/prompts": "^2.0.14",
     "@types/recursive-readdir": "^2.2.1",
-    "@types/global-modules": "^2.0.0"
+    "@types/global-modules": "^2.0.0",
+    "@types/webpack": "^5.28.0"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"
