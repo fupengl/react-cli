@@ -30,8 +30,8 @@ export async function loadModule<T = any>(
   importMetaUrl: string
 ): Promise<T> {
   const moduleUrl = new URL(id, importMetaUrl)
-  const { esm } = isFileEsm.sync(moduleUrl.pathname)
   console.log(moduleUrl)
+  const { esm } = isFileEsm.sync(moduleUrl.pathname)
   let result
   if (esm) {
     result = (await import(moduleUrl.pathname)).default
