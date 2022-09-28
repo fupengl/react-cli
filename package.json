@@ -2,7 +2,7 @@
   "name": "react-cli-monorepo",
   "private": true,
   "scripts": {
-    "dev": "jest -w",
+    "dev": "pnpm test -- -w",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint --cache .",
     "prepare": "npx husky install",

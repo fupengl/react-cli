@@ -20,12 +20,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Setup yarn cache
+      - name: Cache pnpm modules
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
-          key: ${{ matrix.os }}-${{ matrix.node }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Install dependencies
-        run: yarn
+          path: ~/.pnpm-store
+          key: ${{ matrix.os }}-${{ matrix.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node }}-
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.0.2
+          run_install: true
       - name: Jest
-        run: yarn test
+        run: pnpm test
