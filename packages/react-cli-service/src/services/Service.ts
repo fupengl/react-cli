@@ -98,14 +98,19 @@ class Service {
     // load user options
     this.userOptions = await this.loadUserOptions()
 
+    if (this.userOptions.chainWebpack) {
+      this.webpackChainFns.push(this.userOptions.chainWebpack)
+    }
+    if (this.userOptions.configureWebpack) {
+      this.webpackRawConfigFns.push(this.userOptions.configureWebpack)
+    }
+
     // apply plugins.
     await Promise.all(
       this.plugins.map(({ id, apply }) =>
         Promise.resolve(apply(new PluginAPI(id, this), this.userOptions))
       )
     )
-
-
   }
 
   resolveChainableWebpackConfig(): WebpackChain {
@@ -162,9 +167,7 @@ class Service {
         entryFiles = config.entry
       } else {
         entryFiles = Object.values(config.entry || []).reduce<string[]>(
-          (allEntries, curr) => {
-            return allEntries.concat(curr as string)
-          },
+          (allEntries, curr) => allEntries.concat(curr as string),
           []
         )
       }

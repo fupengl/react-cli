@@ -39,6 +39,9 @@
     "joi": "^17.6.0",
     "read-pkg": "^7.1.0",
     "is-file-esm": "^1.0.0",
-    "@types/is-file-esm": "^1.0.0"
+    "prompts": "^2.4.2",
+    "@types/is-file-esm": "^1.0.0",
+    "@types/prompts": "^2.0.14",
+    "address": "^1.2.1"
   }
 }

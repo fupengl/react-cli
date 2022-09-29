@@ -27,6 +27,10 @@ class PluginApi {
     return this.service.packageJson.version!
   }
 
+  get appName(): string {
+    return this.service.packageJson.name!
+  }
+
   get npmClient(): NpmClientType {
     return getNpmClient(this.service.context)
   }
@@ -96,6 +100,7 @@ class PluginApi {
    *   {
    *     description: string,
    *     usage: string,
+   *     details: string,
    *     options: { [string]: string }
    *   }
    * @param {function} fn
