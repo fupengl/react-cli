@@ -1,4 +1,4 @@
-import url, { URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { createRequire } from 'node:module'
 import fs from 'node:fs'
@@ -29,12 +29,11 @@ export async function loadModule<T = any>(
   id: string,
   importMetaUrl: string
 ): Promise<T> {
-  const moduleUrl = new URL(id, importMetaUrl)
-  console.log(moduleUrl)
-  const { esm } = isFileEsm.sync(moduleUrl.pathname)
+  const modulePath = fileURLToPath(new URL(id, importMetaUrl))
+  const { esm } = isFileEsm.sync(modulePath)
   let result
   if (esm) {
-    result = (await import(moduleUrl.pathname)).default
+    result = (await import(modulePath)).default
   } else {
     result = useRequire(id, importMetaUrl)
   }
@@ -42,11 +41,11 @@ export async function loadModule<T = any>(
 }
 
 export function getCurrentFileName(importMetaUrl: string): string {
-  return url.fileURLToPath(importMetaUrl)
+  return fileURLToPath(importMetaUrl)
 }
 
 export function getCurrentDirName(importMetaUrl: string): string {
-  return path.dirname(url.fileURLToPath(importMetaUrl))
+  return path.dirname(fileURLToPath(importMetaUrl))
 }
 
 /**
