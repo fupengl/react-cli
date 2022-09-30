@@ -1,7 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import resolve from 'resolve'
-import { chalk, loadJSON, useRequire } from '@planjs/react-cli-shared-utils'
+import {
+  chalk,
+  loadJSON,
+  resolve,
+  useRequire
+} from '@planjs/react-cli-shared-utils'
 import type { CompilerOptions } from 'typescript'
 
 import type PluginApi from '../services/PluginApi.js'

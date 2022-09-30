@@ -42,6 +42,8 @@
     "prompts": "^2.4.2",
     "@types/is-file-esm": "^1.0.0",
     "@types/prompts": "^2.0.14",
-    "address": "^1.2.1"
+    "address": "^1.2.1",
+    "resolve": "^1.20.0",
+    "@types/resolve": "^1.20.2"
   }
 }

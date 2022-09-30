@@ -1,7 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { createRequire } from 'node:module'
-import resolve from 'resolve'
 
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -9,7 +8,8 @@ import ESLintPlugin from 'eslint-webpack-plugin'
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
 import {
   getCurrentDirName,
-  getCurrentFileName
+  getCurrentFileName,
+  resolve
 } from '@planjs/react-cli-shared-utils'
 
 import getClientEnvironment from '../utils/getClientEnvironment.js'

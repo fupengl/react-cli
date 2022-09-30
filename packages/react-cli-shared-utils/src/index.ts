@@ -3,8 +3,9 @@ import semver from 'semver'
 import debug from 'debug'
 import prompts from 'prompts'
 import address from 'address'
+import resolve from 'resolve'
 
-export { chalk, semver, debug, prompts, address }
+export { chalk, semver, debug, prompts, address, resolve }
 
 export * from './node.js'
 export * from './validate.js'

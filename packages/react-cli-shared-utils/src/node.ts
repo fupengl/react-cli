@@ -6,6 +6,7 @@ import chalk from 'chalk'
 import semver from 'semver'
 import { readPackageSync } from 'read-pkg'
 import isFileEsm from 'is-file-esm'
+import resolve from 'resolve'
 
 export function loadJSON<T = any>(filepath: string, importMetaUrl: string): T {
   const reg = /\S+.json$/g
@@ -29,7 +30,14 @@ export async function loadModule<T = any>(
   id: string,
   importMetaUrl: string
 ): Promise<T> {
-  const modulePath = fileURLToPath(new URL(id, importMetaUrl))
+  let modulePath: string
+  if (path.parse(id).ext === '') {
+    modulePath = resolve.sync(id, {
+      basedir: fileURLToPath(importMetaUrl)
+    })
+  } else {
+    modulePath = fileURLToPath(new URL(id, importMetaUrl))
+  }
   const { esm } = isFileEsm.sync(modulePath)
   let result
   if (esm) {

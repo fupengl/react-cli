@@ -93,7 +93,6 @@ importers:
       '@types/minimist': ^1.2.2
       '@types/prompts': ^2.0.14
       '@types/recursive-readdir': ^2.2.1
-      '@types/resolve': ^1.20.2
       '@types/webpack': ^5.28.0
       babel-jest: ^29.0.3
       babel-loader: ^8.2.5
@@ -136,7 +135,6 @@ importers:
       react-app-polyfill: ^3.0.0
       react-refresh: ^0.11.0
       recursive-readdir: ^2.2.2
-      resolve: ^1.20.0
       resolve-url-loader: ^4.0.0
       sass-loader: ^12.3.0
       source-map-loader: ^3.0.0
@@ -198,7 +196,6 @@ importers:
       react-app-polyfill: 3.0.0
       react-refresh: 0.11.0
       recursive-readdir: 2.2.2
-      resolve: 1.22.1
       resolve-url-loader: 4.0.0
       sass-loader: 12.6.0_webpack@5.74.0
       source-map-loader: 3.0.1_webpack@5.74.0
@@ -227,7 +224,6 @@ importers:
       '@types/minimist': 1.2.2
       '@types/prompts': 2.0.14
       '@types/recursive-readdir': 2.2.1
-      '@types/resolve': 1.20.2
       '@types/webpack': 5.28.0
 
   packages/react-cli-service/__fixtures__/cra-template:
@@ -255,6 +251,7 @@ importers:
       '@types/debug': ^4.1.7
       '@types/is-file-esm': ^1.0.0
       '@types/prompts': ^2.0.14
+      '@types/resolve': ^1.20.2
       '@types/semver': ^7.3.12
       address: ^1.2.1
       chalk: ^5.0.1
@@ -263,12 +260,14 @@ importers:
       joi: ^17.6.0
       prompts: ^2.4.2
       read-pkg: ^7.1.0
+      resolve: ^1.20.0
       semver: ^7.3.7
       strip-ansi: ^7.0.1
     dependencies:
       '@types/debug': 4.1.7
       '@types/is-file-esm': 1.0.0
       '@types/prompts': 2.0.14
+      '@types/resolve': 1.20.2
       '@types/semver': 7.3.12
       address: 1.2.1
       chalk: 5.0.1
@@ -277,6 +276,7 @@ importers:
       joi: 17.6.0
       prompts: 2.4.2
       read-pkg: 7.1.0
+      resolve: 1.22.1
       semver: 7.3.7
       strip-ansi: 7.0.1
 
@@ -4553,7 +4553,7 @@ packages:
 
   /@types/resolve/1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
-    dev: true
+    dev: false
 
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
