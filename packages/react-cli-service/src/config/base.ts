@@ -66,21 +66,34 @@ const base: ServicePlugin = (api, options) => {
     // output
     config.output.path(api.resolve(options.outputDir!))
     config.output.pathinfo(isEnvDevelopment)
-    const outputDir = tryPrefixPath(
+    const filename = tryPrefixPath(
       isEnvProduction
         ? `static/js/[name]${
-            options.productionSourceMap ? '.[contenthash:8]' : ''
+            options.filenameHashing ? '.[contenthash:8]' : ''
           }.js`
         : isEnvDevelopment
         ? 'static/js/bundle.js'
         : '',
       options.assetsDir
     )
-    config.output.filename(outputDir)
-    config.output.chunkFilename(outputDir)
+    const chunkFilename = tryPrefixPath(
+      isEnvProduction
+        ? `static/js/[name]${
+            options.filenameHashing ? '.[contenthash:8]' : ''
+          }.js`
+        : isEnvDevelopment
+        ? 'static/js/[name].chunk.js'
+        : '',
+      options.assetsDir
+    )
+    config.output.filename(filename)
+    config.output.chunkFilename(chunkFilename)
     config.output.set(
       'assetModuleFilename',
-      tryPrefixPath('static/media/[name].[hash][ext]', options.assetsDir)
+      tryPrefixPath(
+        `static/media/[name].${options.filenameHashing ? '[hash]' : ''}[ext]`,
+        options.assetsDir
+      )
     )
     config.output.publicPath(options.publicPath!)
     config.output.devtoolModuleFilenameTemplate(

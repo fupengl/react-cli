@@ -52,7 +52,7 @@ const start: ServicePlugin = (api, options) => {
         options.publicPath!.slice(0, -1)
       )
 
-      console.log(urls)
+      console.log(urls.lanUrlForTerminal)
 
       const webpackConfig = api.resolveWebpackConfig()
 

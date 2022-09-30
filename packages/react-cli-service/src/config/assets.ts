@@ -60,7 +60,9 @@ const assets: ServicePlugin = (api, options) => {
       .loader(require.resolve('file-loader'))
       .options({
         name: tryPrefixPath(
-          'static/media/[name].[hash].[ext]',
+          `static/media/[name]${
+            options.filenameHashing ? '.[hash]' : ''
+          }.[ext]`,
           options.assetsDir
         )
       })
