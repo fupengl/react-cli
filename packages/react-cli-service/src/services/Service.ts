@@ -231,12 +231,12 @@ class Service {
         '../commands/help.js',
         '../commands/version.js',
         // config plugins are order sensitive
-        '../config/assets.js',
-        '../config/style.js',
         '../config/dev.js',
         '../config/prod.js',
         '../config/devServer.js',
-        '../config/base.js'
+        '../config/assets.js',
+        '../config/base.js',
+        '../config/style.js'
       ].map((id) => idToPlugin(id))
     )
 

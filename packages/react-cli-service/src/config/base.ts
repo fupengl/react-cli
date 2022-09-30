@@ -454,18 +454,7 @@ const base: ServicePlugin = (api, options) => {
         sourceMaps: shouldUseSourceMap,
         inputSourceMap: shouldUseSourceMap
       })
-
-    // "file" loader makes sure those assets get served by WebpackDevServer.
-    // When you `import` an asset, you get its (virtual) filename.
-    // In production, they would get copied to the `build` folder.
-    // This loader doesn't use a "test" so it will catch all modules
-    // that fall through the other loaders.
-    config.module
-      .rule('oneOf')
-      .oneOf('exclude-assets')
-      .exclude.merge([/^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/])
       .end()
-      .set('type', 'asset/resource')
   })
 }
 

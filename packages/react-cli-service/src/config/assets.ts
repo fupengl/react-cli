@@ -32,7 +32,6 @@ const assets: ServicePlugin = (api, options) => {
       .oneOf('img')
       .test([/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/])
       .set('type', 'assets')
-      .set('mimetype', 'image/avif')
       .parser({
         dataUrlCondition: {
           maxSize: imageInlineSizeLimit

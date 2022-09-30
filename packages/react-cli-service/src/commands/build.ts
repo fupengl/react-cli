@@ -31,7 +31,8 @@ const build: ServicePlugin = (api, options) => {
       usage: 'react-cli-service build [options] [entry|pattern]',
       options: {
         '--mode': `specify env mode (default: production)`,
-        '--stats': `output "bundle-stats.json"`
+        '--stats': `output "bundle-stats.json"`,
+        '--print-config': 'output current webpack configuration'
       }
     },
     async (args) => {
@@ -42,6 +43,14 @@ const build: ServicePlugin = (api, options) => {
       const isInteractive = process.stdout.isTTY
       const appBuild = api.resolve(options.outputDir!)
       const writeStatsJson = !!args.stats
+
+      if (args['print-config']) {
+        fs.outputFileSync(
+          api.resolve('webpack.config.js'),
+          api.resolveChainableWebpackConfig().toString()
+        )
+        return
+      }
 
       try {
         await checkBrowsers(api.service.context, isInteractive)
