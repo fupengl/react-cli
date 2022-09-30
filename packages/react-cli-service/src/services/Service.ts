@@ -148,7 +148,7 @@ class Service {
       !process.env.REACT_CLI_TEST &&
       target &&
       target !== 'app' &&
-      config.output.publicPath !== this.userOptions.publicPath
+      config.output!.publicPath! !== this.userOptions.publicPath!
     ) {
       throw new Error(
         `Do not modify webpack output.publicPath directly. ` +
