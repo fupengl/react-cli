@@ -2,6 +2,8 @@ import joi from 'joi'
 import type Joi from 'joi'
 import exit from './exit.js'
 
+type SchemaType = Joi.ObjectSchema
+
 export function createSchema(
   fn: (j: typeof Joi) => Joi.ObjectSchema
 ): Joi.ObjectSchema {
@@ -36,3 +38,5 @@ export function validateSync(obj: any, schema: Joi.ObjectSchema): void {
     throw error
   }
 }
+
+export type { SchemaType }

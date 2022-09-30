@@ -52,6 +52,8 @@ const start: ServicePlugin = (api, options) => {
         options.publicPath!.slice(0, -1)
       )
 
+      console.log(urls)
+
       const webpackConfig = api.resolveWebpackConfig()
 
       // create compiler
