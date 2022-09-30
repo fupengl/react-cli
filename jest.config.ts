@@ -9,9 +9,12 @@ export default {
   clearMocks: true,
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
-  testMatch: ['**/__tests__/**/?(*.)+(spec|test).[tj]s?(x)'],
+  testMatch: [
+    '**/*.+(spec|test).[tj]s?(x)',
+    '!**/__fixtures__/**'
+  ],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   preset: 'ts-jest/presets/default-esm',
   transform: {
@@ -25,5 +28,5 @@ export default {
   },
   transformIgnorePatterns: ['node_modules', '\\.pnp\\.[^\\/]+$'],
   extensionsToTreatAsEsm: ['.ts'],
-  resolver: './__mock__/resolver.cjs'
+  resolver: './__mock__/resolver.cjs',
 }
