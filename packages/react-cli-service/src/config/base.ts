@@ -74,7 +74,7 @@ const base: ServicePlugin = (api, options) => {
             options.filenameHashing ? '.[contenthash:8]' : ''
           }.js`
         : isEnvDevelopment
-        ? 'static/js/bundle.js'
+        ? 'static/js/[name].js'
         : '',
       options.assetsDir
     )

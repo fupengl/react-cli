@@ -24,13 +24,6 @@ const style: ServicePlugin = (api, options) => {
     // optimization
     config.optimization.minimizer('css').use(CssMinimizerPlugin)
 
-    // modules
-    // style files regexes
-    const cssRegex = /\.css$/
-    const cssModuleRegex = /\.module\.css$/
-    const sassRegex = /\.(scss|sass)$/
-    const sassModuleRegex = /\.module\.(scss|sass)$/
-
     function createCSSRule(
       lang: string,
       test: RegExp,
@@ -125,7 +118,7 @@ const style: ServicePlugin = (api, options) => {
 
         rule
           .use(loader)
-          .loader(require.resolve(loader))
+          .loader(loader)
           .options({
             sourceMap,
             // @ts-ignore
@@ -137,7 +130,7 @@ const style: ServicePlugin = (api, options) => {
       return rule
     }
 
-    createCSSRule('css', cssRegex, {
+    createCSSRule('css', /\.css$/, {
       importLoaders: 1,
       sourceMap,
       modules: {
@@ -145,7 +138,7 @@ const style: ServicePlugin = (api, options) => {
       }
     }).set('sideEffects', true)
 
-    createCSSRule('css-module', cssModuleRegex, {
+    createCSSRule('css-module', /\.module\.css$/, {
       importLoaders: 1,
       sourceMap,
       modules: {
@@ -156,7 +149,7 @@ const style: ServicePlugin = (api, options) => {
 
     createCSSRule(
       'sass',
-      sassRegex,
+      /\.(scss|sass)$/,
       {
         importLoaders: 3,
         sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
@@ -169,7 +162,7 @@ const style: ServicePlugin = (api, options) => {
 
     createCSSRule(
       'sass-module',
-      sassModuleRegex,
+      /\.module\.(scss|sass)$/,
       {
         importLoaders: 3,
         sourceMap,
@@ -179,6 +172,60 @@ const style: ServicePlugin = (api, options) => {
         }
       },
       'sass-loader'
+    )
+
+    createCSSRule(
+      'less',
+      /\.less$/,
+      {
+        importLoaders: 3,
+        sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+        modules: {
+          mode: 'icss'
+        }
+      },
+      'less-loader'
+    ).set('sideEffects', true)
+
+    createCSSRule(
+      'less-module',
+      /\.module\.less$/,
+      {
+        importLoaders: 3,
+        sourceMap,
+        modules: {
+          mode: 'local',
+          getLocalIdent: getCSSModuleLocalIdent
+        }
+      },
+      'less-loader'
+    )
+
+    createCSSRule(
+      'stylus',
+      /\.styl(us)?$/,
+      {
+        importLoaders: 3,
+        sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+        modules: {
+          mode: 'icss'
+        }
+      },
+      'stylus-loader'
+    ).set('sideEffects', true)
+
+    createCSSRule(
+      'stylus-module',
+      /\.module\.styl(us)?$/,
+      {
+        importLoaders: 3,
+        sourceMap,
+        modules: {
+          mode: 'local',
+          getLocalIdent: getCSSModuleLocalIdent
+        }
+      },
+      'stylus-loader'
     )
 
     // "file" loader makes sure those assets get served by WebpackDevServer.

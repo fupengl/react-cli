@@ -183,7 +183,7 @@ class Service {
   }
 
   loadEnv(mode?: string): void {
-    const debugLog = debug('vue:env')
+    const debugLog = debug('react:env')
     const basePath = path.resolve(this.context, `.env${mode ? `.${mode}` : ``}`)
     const localPath = `${basePath}.local`
 

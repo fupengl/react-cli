@@ -15,6 +15,7 @@ import type { ServicePlugin } from '../types.js'
 import formatWebpackMessages from '../utils/formatWebpackMessages.js'
 import printInstructions from '../utils/printInstructions.js'
 import ignoredFiles from '../utils/ignoredFiles.js'
+import getPublicUrlOrPath from '../utils/getPublicUrlOrPath.js'
 
 const defaults = {
   host: '0.0.0.0',
@@ -70,6 +71,12 @@ const start: ServicePlugin = (api, options) => {
           HOST,
           port,
           options.publicPath!.slice(0, -1)
+        )
+
+        options.publicPath = getPublicUrlOrPath(
+          api.service.packageJson.homepage,
+          options.publicPath,
+          true
         )
 
         const webpackConfig = api.resolveWebpackConfig()

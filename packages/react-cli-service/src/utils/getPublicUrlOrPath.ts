@@ -8,11 +8,13 @@ import { URL } from 'node:url'
  *
  * @param {(string|undefined)} homepage a valid url or pathname
  * @param {(string|undefined)} envPublicUrl a valid url or pathname
+ * @param {boolean|undefined}isEnvDevelopment
  * @returns {string}
  */
 function getPublicUrlOrPath(
   homepage?: string,
-  envPublicUrl?: string
+  envPublicUrl?: string,
+  isEnvDevelopment?: boolean
 ): string {
   const stubDomain = 'https://create-react-app.dev'
 
@@ -22,9 +24,15 @@ function getPublicUrlOrPath(
       ? envPublicUrl
       : envPublicUrl + '/'
 
-    // Some apps do not use client-side routing with pushState.
-    // For these, "homepage" can be set to "." to enable relative asset paths.
-    return envPublicUrl
+    const validPublicUrl = new URL(envPublicUrl, stubDomain)
+
+    return isEnvDevelopment
+      ? envPublicUrl.startsWith('.')
+        ? '/'
+        : validPublicUrl.pathname
+      : // Some apps do not use client-side routing with pushState.
+        // For these, "homepage" can be set to "." to enable relative asset paths.
+        envPublicUrl
   }
 
   if (homepage) {
@@ -33,9 +41,15 @@ function getPublicUrlOrPath(
 
     // validate if `homepage` is a URL or path like and use just pathname
     const validHomepagePathname = new URL(homepage, stubDomain).pathname
-    // Some apps do not use client-side routing with pushState.
-    // For these, "homepage" can be set to "." to enable relative asset paths.
-    return homepage.startsWith('.') ? homepage : validHomepagePathname
+    return isEnvDevelopment
+      ? homepage.startsWith('.')
+        ? '/'
+        : validHomepagePathname
+      : // Some apps do not use client-side routing with pushState.
+      // For these, "homepage" can be set to "." to enable relative asset paths.
+      homepage.startsWith('.')
+      ? homepage
+      : validHomepagePathname
   }
 
   return '/'

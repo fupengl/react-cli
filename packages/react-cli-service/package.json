@@ -50,7 +50,7 @@
     "webpack-manifest-plugin": "^4.0.2",
     "sass-loader": "^12.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
-    "resolve-url-loader": "^4.0.0",
+    "resolve-url-loader": "^5.0.0",
     "source-map-loader": "^3.0.0",
     "style-loader": "^3.3.1",
     "mini-css-extract-plugin": "^2.4.5",

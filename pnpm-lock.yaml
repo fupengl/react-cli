@@ -141,7 +141,7 @@ importers:
       react-app-polyfill: ^3.0.0
       react-refresh: ^0.11.0
       recursive-readdir: ^2.2.2
-      resolve-url-loader: ^4.0.0
+      resolve-url-loader: ^5.0.0
       sass-loader: ^12.3.0
       source-map-loader: ^3.0.0
       strip-ansi: ^7.0.1
@@ -203,7 +203,7 @@ importers:
       react-app-polyfill: 3.0.0
       react-refresh: 0.11.0
       recursive-readdir: 2.2.2
-      resolve-url-loader: 4.0.0
+      resolve-url-loader: 5.0.0
       sass-loader: 12.6.0_webpack@5.74.0
       source-map-loader: 3.0.1_webpack@5.74.0
       strip-ansi: 7.0.1
@@ -14495,6 +14495,17 @@ packages:
       convert-source-map: 1.8.0
       loader-utils: 2.0.2
       postcss: 7.0.39
+      source-map: 0.6.1
+    dev: false
+
+  /resolve-url-loader/5.0.0:
+    resolution: {integrity: sha512-uZtduh8/8srhBoMx//5bwqjQ+rfYOUq8zC9NrMUGtjBiGTtFJM42s58/36+hTqeqINcnYe08Nj3LkK9lW4N8Xg==}
+    engines: {node: '>=12'}
+    dependencies:
+      adjust-sourcemap-loader: 4.0.0
+      convert-source-map: 1.8.0
+      loader-utils: 2.0.2
+      postcss: 8.4.16
       source-map: 0.6.1
     dev: false
 
