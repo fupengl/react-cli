@@ -5,6 +5,7 @@ import type { Stats } from 'webpack'
 import webpack from 'webpack'
 import fs from 'fs-extra'
 import { chalk } from '@planjs/react-cli-shared-utils'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 import { checkBrowsers } from '../utils/browsersHelper.js'
 import {
@@ -32,16 +33,20 @@ const build: ServicePlugin = (api, options) => {
       options: {
         '--mode': `specify env mode (default: production)`,
         '--stats': `output "bundle-stats.json"`,
-        '--print-config': 'output current webpack configuration'
+        '--dest': `specify output directory (default: ${options.outputDir})`,
+        '--print-config': 'output current webpack configuration',
+        '--report': `generate report.html to help analyze bundle content`,
+        '--report-json': 'generate report.json to help analyze bundle content',
+        '--clean': `remove the dist directory contents before building the project (default: true)`
       }
     },
-    async (args) => {
+    async (args, rawArgv) => {
       process.env.BABEL_ENV = 'production'
       process.env.NODE_ENV = 'production'
 
       const webpackConfig = api.resolveWebpackConfig()
       const isInteractive = process.stdout.isTTY
-      const appBuild = api.resolve(options.outputDir!)
+      const appBuild = api.resolve(args.dest || options.outputDir!)
       const writeStatsJson = !!args.stats
 
       if (args['print-config']) {
@@ -55,9 +60,9 @@ const build: ServicePlugin = (api, options) => {
       try {
         await checkBrowsers(api.service.context, isInteractive)
         const previousFileSizes = await measureFileSizesBeforeBuild(appBuild)
-        // Remove all content but keep the directory so that
-        // if you're in it, you don't end up in Trash
-        fs.emptyDirSync(appBuild)
+        if (args.clean !== 'false') {
+          fs.emptyDirSync(appBuild)
+        }
         // Merge with the public folder
         fs.copySync(api.resolve('public'), appBuild, {
           dereference: true,
@@ -65,6 +70,23 @@ const build: ServicePlugin = (api, options) => {
         })
 
         console.log('Creating an optimized production build...')
+
+        // add report
+        if (args.report || args['report-json']) {
+          webpackConfig?.plugins?.push(
+            new BundleAnalyzerPlugin({
+              logLevel: 'warn',
+              openAnalyzer: false,
+              analyzerMode: args.report ? 'static' : 'disabled',
+              reportFilename: `report.html`,
+              statsFilename: `report.json`,
+              generateStatsFile: !!args['report-json']
+            })
+          )
+        }
+
+        // rewrite app build
+        webpackConfig.output!.path = appBuild
 
         // Start the webpack build
         const compiler = webpack(webpackConfig)

@@ -38,7 +38,7 @@
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.74.0",
     "webpack-chain": "^6.5.1",
-    "webpack-dev-server": "^4.11.0",
+    "webpack-dev-server": "^4.6.0",
     "webpack-merge": "^5.8.0",
     "react-app-polyfill": "^3.0.0",
     "@planjs/react-cli-shared-utils": "^0.0.0",
@@ -89,7 +89,8 @@
     "find-up": "^6.3.0",
     "global-modules": "^2.0.0",
     "detect-port": "^1.5.1",
-    "is-root": "^3.0.0"
+    "is-root": "^3.0.0",
+    "webpack-bundle-analyzer": "^4.6.1"
   },
   "devDependencies": {
     "@types/minimist": "^1.2.2",
@@ -102,7 +103,8 @@
     "@types/recursive-readdir": "^2.2.1",
     "@types/global-modules": "^2.0.0",
     "@types/webpack": "^5.28.0",
-    "@types/detect-port": "^1.3.2"
+    "@types/detect-port": "^1.3.2",
+    "@types/webpack-bundle-analyzer": "^4.4.3"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

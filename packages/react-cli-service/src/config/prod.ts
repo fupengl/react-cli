@@ -1,10 +1,8 @@
 import fs from 'node:fs'
 import TerserPlugin from 'terser-webpack-plugin'
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 import type { ServicePlugin } from '../types.js'
-import tryPrefixPath from '../utils/tryPrefixPath.js'
 
 const prod: ServicePlugin = (api, options) => {
   api.chainWebpack((config) => {
@@ -116,25 +114,6 @@ const prod: ServicePlugin = (api, options) => {
     config.optimization.minimizer('terser').use(TerserPlugin, [getMinify()])
 
     if (isEnvProduction) {
-      config.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [
-        {
-          // Options similar to the same options in webpackOptions.output
-          // both options are optional
-          filename: tryPrefixPath(
-            `static/css/[name]${
-              options.filenameHashing ? '.[contenthash:8]' : ''
-            }.css`,
-            options.assetsDir
-          ),
-          chunkFilename: tryPrefixPath(
-            `static/css/[name]${
-              options.filenameHashing ? '.[contenthash:8]' : ''
-            }.chunk.css`,
-            options.assetsDir
-          )
-        }
-      ])
-
       // Generate a service worker script that will precache, and keep up to date,
       // the HTML & assets that are part of the webpack build.
       if (fs.existsSync(api.resolve('src/service-worker'))) {

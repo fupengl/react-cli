@@ -40,7 +40,10 @@ export type CommandItem = {
 class Service {
   initialized = false
   context!: string
-  packageJson!: PackageJsonType & { react?: UserConfig }
+  packageJson!: PackageJsonType & {
+    react?: UserConfig
+    proxy?: WebpackDevServerOptions['proxy']
+  }
   userOptions!: UserConfig
   plugins!: Array<PluginItem>
   webpackChainFns: Array<(config: ChainableWebpackConfig) => void> = []

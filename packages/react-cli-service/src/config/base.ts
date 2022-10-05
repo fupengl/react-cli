@@ -38,7 +38,9 @@ const base: ServicePlugin = (api, options) => {
       }
 
       try {
-        require.resolve('react/jsx-runtime')
+        require.resolve('react/jsx-runtime', {
+          paths: [api.service.context]
+        })
         return true
       } catch (e) {
         return false
@@ -215,9 +217,11 @@ const base: ServicePlugin = (api, options) => {
         .plugin('InlineChunkHtmlPlugin')
         .use(InlineChunkHtmlPlugin, [HtmlWebpackPlugin, [/runtime-.+[.]js/]])
     }
+
     config
       .plugin('InterpolateHtmlPlugin')
       .use(InterpolateHtmlPlugin, [HtmlWebpackPlugin, env.raw])
+
     config.plugin('DefinePlugin').use(webpack.DefinePlugin, [env.stringified])
 
     config
@@ -363,6 +367,7 @@ const base: ServicePlugin = (api, options) => {
         .use('source-map-loader')
         .loader(require.resolve('source-map-loader'))
         .end()
+        .before('oneOf')
     }
 
     // Process application JS with Babel.

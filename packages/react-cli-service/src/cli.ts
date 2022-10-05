@@ -27,6 +27,7 @@ const args = minimist(rawArgv, {
     'report-json',
     'inline-react',
     'watch',
+    'clean',
     'stats',
     // inspect
     'verbose'

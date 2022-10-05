@@ -60,7 +60,7 @@ const assets: ServicePlugin = (api, options) => {
       .options({
         name: tryPrefixPath(
           `static/media/[name]${
-            options.filenameHashing ? '.[hash]' : ''
+            options.filenameHashing ? '.[hash:8]' : ''
           }.[ext]`,
           options.assetsDir
         )

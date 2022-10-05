@@ -5,6 +5,7 @@ import type Config from 'webpack-chain'
 
 import getCSSModuleLocalIdent from '../utils/getCSSModuleLocalIdent.js'
 import type { ServicePlugin } from '../types.js'
+import tryPrefixPath from '../utils/tryPrefixPath.js'
 
 const style: ServicePlugin = (api, options) => {
   const require = createRequire(import.meta.url)
@@ -13,6 +14,12 @@ const style: ServicePlugin = (api, options) => {
     const isEnvProduction = process.env.NODE_ENV === 'production'
     const isEnvDevelopment = process.env.NODE_ENV === 'development'
     const shouldUseSourceMap = options.productionSourceMap
+
+    const {
+      extract = isEnvProduction,
+      sourceMap = isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+      loaderOptions = {}
+    } = options.css || {}
 
     // optimization
     config.optimization.minimizer('css').use(CssMinimizerPlugin)
@@ -36,7 +43,7 @@ const style: ServicePlugin = (api, options) => {
         rule.use('style-loader').loader(require.resolve('style-loader')).end()
       }
 
-      if (isEnvProduction) {
+      if (extract) {
         // css is located in `static/css`, use '../../' to locate index.html folder
         // in production `paths.publicUrlOrPath` can be a relative path
         rule
@@ -55,7 +62,10 @@ const style: ServicePlugin = (api, options) => {
       rule
         .use('css-loader')
         .loader(require.resolve('css-loader'))
-        .options(cssOptions)
+        .options({
+          ...cssOptions,
+          ...loaderOptions?.css
+        })
         .end()
 
       rule
@@ -96,9 +106,10 @@ const style: ServicePlugin = (api, options) => {
                       stage: 3
                     }
                   ]
-                ]
+                ],
+            ...loaderOptions?.postcss
           },
-          sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment
+          sourceMap
         })
         .end()
 
@@ -107,7 +118,7 @@ const style: ServicePlugin = (api, options) => {
           .use('resolve-url-loader')
           .loader(require.resolve('resolve-url-loader'))
           .options({
-            sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+            sourceMap,
             root: api.resolve('src')
           })
           .end()
@@ -116,7 +127,9 @@ const style: ServicePlugin = (api, options) => {
           .use(loader)
           .loader(require.resolve(loader))
           .options({
-            sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment
+            sourceMap,
+            // @ts-ignore
+            ...loaderOptions?.[lang]
           })
           .end()
       }
@@ -126,7 +139,7 @@ const style: ServicePlugin = (api, options) => {
 
     createCSSRule('css', cssRegex, {
       importLoaders: 1,
-      sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+      sourceMap,
       modules: {
         mode: 'icss'
       }
@@ -134,7 +147,7 @@ const style: ServicePlugin = (api, options) => {
 
     createCSSRule('css-module', cssModuleRegex, {
       importLoaders: 1,
-      sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+      sourceMap,
       modules: {
         mode: 'local',
         getLocalIdent: getCSSModuleLocalIdent
@@ -159,7 +172,7 @@ const style: ServicePlugin = (api, options) => {
       sassModuleRegex,
       {
         importLoaders: 3,
-        sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+        sourceMap,
         modules: {
           mode: 'local',
           getLocalIdent: getCSSModuleLocalIdent
@@ -179,6 +192,27 @@ const style: ServicePlugin = (api, options) => {
       .exclude.merge([/^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/])
       .end()
       .set('type', 'asset/resource')
+
+    if (extract) {
+      config.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [
+        {
+          // Options similar to the same options in webpackOptions.output
+          // both options are optional
+          filename: tryPrefixPath(
+            `static/css/[name]${
+              options.filenameHashing ? '.[contenthash:8]' : ''
+            }.css`,
+            options.assetsDir
+          ),
+          chunkFilename: tryPrefixPath(
+            `static/css/[name]${
+              options.filenameHashing ? '.[contenthash:8]' : ''
+            }.chunk.css`,
+            options.assetsDir
+          )
+        }
+      ])
+    }
   })
 }
 
