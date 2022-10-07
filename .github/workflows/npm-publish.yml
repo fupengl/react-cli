@@ -69,8 +69,8 @@ jobs:
           npm whoami
       - run: |
           if [ ${{ github.base_ref }} = develop ]; then
-            yarn version:beta
+            pnpm version:beta
           else
-            yarn version:release
+            pnpm version:release
           fi
-          yarn release:pkg --create-release github
+          pnpm release:pkg --create-release github
