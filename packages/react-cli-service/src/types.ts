@@ -127,11 +127,6 @@ export declare interface UserConfig {
   parallel?: boolean | number
 
   /**
-   * [All options for `webpack-dev-server`](https://webpack.js.org/configuration/dev-server/) are supported
-   */
-  configureDevServer?: WebpackDevServerOptions
-
-  /**
    * Default: `undefined`
    *
    * Build the app in multi-page mode
@@ -167,6 +162,11 @@ export declare interface UserConfig {
   configureWebpack?:
     | WebpackOptions
     | ((config: WebpackOptions) => WebpackOptions | void)
+
+  /**
+   * [All options for `webpack-dev-server`](https://webpack.js.org/configuration/dev-server/) are supported
+   */
+  configureDevServer?: WebpackDevServerOptions
 
   /**
    * Default: `'false'`

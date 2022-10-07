@@ -4,7 +4,7 @@ import path from 'node:path'
 import type { Stats } from 'webpack'
 import webpack from 'webpack'
 import fs from 'fs-extra'
-import { chalk } from '@planjs/react-cli-shared-utils'
+import { chalk, logger } from '@planjs/react-cli-shared-utils'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 import { checkBrowsers } from '../utils/browsersHelper.js'
@@ -54,6 +54,8 @@ const build: ServicePlugin = (api, options) => {
           api.resolve('webpack.config.js'),
           api.resolveChainableWebpackConfig().toString()
         )
+        logger.log(`  print ${chalk.cyan('webpack.config.js')} success.`)
+        console.log()
         return
       }
 

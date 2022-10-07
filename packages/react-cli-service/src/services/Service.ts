@@ -47,7 +47,7 @@ class Service {
   userOptions!: UserConfig
   plugins!: Array<PluginItem>
   webpackChainFns: Array<(config: ChainableWebpackConfig) => void> = []
-  devServerConfigFns: Array<(config: WebpackDevServerOptions) => void> = []
+  devServerConfigFns: Array<WebpackDevServerOptions['setupMiddlewares']> = []
   webpackRawConfigFns: Array<
     WebpackOptions | ((config: WebpackOptions) => WebpackOptions | void)
   > = []

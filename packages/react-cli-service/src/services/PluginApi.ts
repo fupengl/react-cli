@@ -1,5 +1,6 @@
 import path from 'node:path'
 import fs from 'node:fs'
+
 import type { Configuration as WebpackOptions } from 'webpack'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 import type ChainableWebpackConfig from 'webpack-chain'
@@ -153,7 +154,7 @@ class PluginApi {
    *
    * @param {function} fn
    */
-  configureDevServer(fn: (config: WebpackDevServerOptions) => void): void {
+  configureDevServer(fn: WebpackDevServerOptions['setupMiddlewares']): void {
     this.service.devServerConfigFns.push(fn)
   }
 

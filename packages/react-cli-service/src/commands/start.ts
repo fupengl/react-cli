@@ -1,12 +1,13 @@
 import { createRequire } from 'node:module'
-import fs from 'node:fs'
-import path from 'node:path'
 
 import webpack from 'webpack'
 import { chalk, clearConsole, semver } from '@planjs/react-cli-shared-utils'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import WebpackDevServer from 'webpack-dev-server'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
+import clipboard from 'clipboardy'
+import defaultsDeep from 'lodash.defaultsdeep'
+import { isFunction } from '@planjs/utils'
 
 import { checkBrowsers } from '../utils/browsersHelper.js'
 import choosePort from '../utils/choosePort.js'
@@ -16,6 +17,7 @@ import formatWebpackMessages from '../utils/formatWebpackMessages.js'
 import printInstructions from '../utils/printInstructions.js'
 import ignoredFiles from '../utils/ignoredFiles.js'
 import getPublicUrlOrPath from '../utils/getPublicUrlOrPath.js'
+import getHttpsConfig from '../utils/getHttpsConfig.js'
 
 const defaults = {
   host: '0.0.0.0',
@@ -50,7 +52,7 @@ const start: ServicePlugin = (api, options) => {
         const isInteractive = process.stdout.isTTY
         const DEFAULT_PORT =
           parseInt(args.port || process.env.PORT!, 10) || 3000
-        const HOST = args.host || process.env.HOST || '0.0.0.0'
+        const host = args.host || process.env.HOST || '0.0.0.0'
         const protocol =
           args.https || process.env.HTTPS === 'true' ? 'https' : 'http'
         const sockHost = process.env.WDS_SOCKET_HOST
@@ -61,22 +63,22 @@ const start: ServicePlugin = (api, options) => {
           process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true'
 
         await checkBrowsers(api.service.context, isInteractive)
-        const port = await choosePort(HOST, DEFAULT_PORT)
+        const port = await choosePort(host, DEFAULT_PORT)
         if (port == null) {
           return
         }
-
-        const urls = formatDevUrl(
-          protocol,
-          HOST,
-          port,
-          options.publicPath!.slice(0, -1)
-        )
 
         options.publicPath = getPublicUrlOrPath(
           api.service.packageJson.homepage,
           options.publicPath,
           true
+        )
+
+        const urls = formatDevUrl(
+          protocol,
+          host,
+          port,
+          options.publicPath!.slice(0, -1)
         )
 
         const webpackConfig = api.resolveWebpackConfig()
@@ -133,7 +135,11 @@ const start: ServicePlugin = (api, options) => {
             console.log(chalk.green('Compiled successfully!'))
           }
           if (isSuccessful && (isInteractive || isFirstCompile)) {
-            printInstructions(api.appName, urls, api.npmClient)
+            if (args.copy) {
+              clipboard.writeSync(urls.localUrlForBrowser)
+            }
+
+            printInstructions(api.appName, urls, api.npmClient, args.copy)
           }
           isFirstCompile = false
 
@@ -169,7 +175,7 @@ const start: ServicePlugin = (api, options) => {
         })
 
         const devServerOptions: WebpackDevServerOptions = {
-          host: HOST,
+          host,
           port,
           allowedHosts: disableFirewall ? 'all' : [urls.lanUrlForConfig],
           headers: {
@@ -204,97 +210,37 @@ const start: ServicePlugin = (api, options) => {
             index: options.publicPath
           },
           proxy: api.service.packageJson.proxy,
-          setupMiddlewares(middlewares, devServer) {
-            devServer.app!.use(function handleWebpackInternalMiddleware(
-              req,
-              res,
-              next
-            ) {
-              if (req.url.startsWith('/__get-internal-source')) {
-                const fileName = req.query.fileName! as string
-                const id = fileName?.match(/webpack-internal:\/\/\/(.+)/)?.[1]
-                // @ts-ignore
-                if (!id || !devServer.stats) {
-                  next()
-                }
-
-                const source = getSourceById(devServer, id!)
-                const sourceMapURL = `//# sourceMappingURL=${base64SourceMap(
-                  source
-                )}`
-                const sourceURL = `//# sourceURL=webpack-internal:///${module.id}`
-                res.end(`${source.source()}\n${sourceMapURL}\n${sourceURL}`)
-              } else {
-                next()
-              }
-            })
-
-            const proxySetupFile = api.resolve('src/setupProxy.js')
-            if (fs.existsSync(proxySetupFile)) {
-              require(proxySetupFile)(devServer.app)
-            }
-
-            devServer.app!.use(function redirectServedPathMiddleware(
-              req,
-              res,
-              next
-            ) {
-              const servedPath = options.publicPath!.slice(0, -1)
-              if (
-                servedPath === '' ||
-                req.url === servedPath ||
-                req.url.startsWith(servedPath)
-              ) {
-                next()
-              } else {
-                const newPath = path.posix.join(
-                  servedPath,
-                  req.path !== '/' ? req.path : ''
-                )
-                res.redirect(newPath)
-              }
-            })
-
-            devServer.app!.use(function noopServiceWorkerMiddleware(
-              req,
-              res,
-              next
-            ) {
-              if (
-                req.url ===
-                path.posix.join(options.publicPath!, 'service-worker.js')
-              ) {
-                res.setHeader('Content-Type', 'text/javascript')
-                res.send(
-                  `// This service worker file is effectively a 'no-op' that will reset any
-// previous service worker registered for the same host:port combination.
-// In the production build, this file is replaced with an actual service worker
-// file that will precache your site's local assets.
-// See https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
-
-self.addEventListener('install', () => self.skipWaiting());
-
-self.addEventListener('activate', () => {
-  self.clients.matchAll({ type: 'window' }).then(windowClients => {
-    for (let windowClient of windowClients) {
-      // Force open pages to refresh, so that they have a chance to load the
-      // fresh navigation response from the local dev server.
-      windowClient.navigate(windowClient.url);
-    }
-  });
-});
-`
-                )
-              } else {
-                next()
-              }
-            })
-
-            return middlewares
-          }
+          open: args.open,
+          setupExitSignals: true,
+          https:
+            protocol === 'https' ? getHttpsConfig(api.service.context) : false
         }
 
-        const devServer = new WebpackDevServer(devServerOptions, compiler)
+        if (isFunction(webpackConfig?.devServer?.setupMiddlewares)) {
+          api.configureDevServer(webpackConfig.devServer!.setupMiddlewares)
+        }
+
+        if (isFunction(options.configureDevServer?.setupMiddlewares)) {
+          api.configureDevServer(options.configureDevServer!.setupMiddlewares)
+        }
+
+        const devServer = new WebpackDevServer(
+          defaultsDeep(
+            devServerOptions,
+            webpackConfig.devServer,
+            options.configureDevServer,
+            {
+              setupMiddlewares(middlewares, devServer) {
+                api.service.devServerConfigFns
+                  .filter(isFunction)
+                  .forEach((fn) => middlewares.concat(fn!([], devServer) || []))
+
+                return middlewares
+              }
+            } as WebpackDevServerOptions
+          ),
+          compiler
+        )
 
         // Launch WebpackDevServer.
         devServer.startCallback(() => {
@@ -319,12 +265,22 @@ self.addEventListener('activate', () => {
           })
         })
 
-        if (process.env.CI !== 'true') {
+        if (process.env.CI !== 'true' && !args.stdin) {
           // Gracefully exit when stdin ends
           process.stdin.on('end', function () {
             devServer.close()
             process.exit()
           })
+        }
+
+        if (args.stdin) {
+          process.stdin.on('end', () => {
+            devServer.stopCallback(() => {
+              process.exit(0)
+            })
+          })
+
+          process.stdin.resume()
         }
       } catch (err) {
         console.log(chalk.red('Failed to compile.'))
@@ -335,23 +291,6 @@ self.addEventListener('activate', () => {
       }
     }
   )
-}
-
-function base64SourceMap(source: any) {
-  const base64 = Buffer.from(JSON.stringify(source.map()), 'utf8').toString(
-    'base64'
-  )
-  return `data:application/json;charset=utf-8;base64,${base64}`
-}
-
-function getSourceById(server: WebpackDevServer, id: string): any {
-  // @ts-ignore
-  const module = Array.from(server.stats.compilation.modules).find(
-    // @ts-ignore
-    (m) => server.stats.compilation.chunkGraph.getModuleId(m) === id
-  )
-  // @ts-ignore
-  return module?.originalSource()
 }
 
 export default start

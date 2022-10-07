@@ -6,7 +6,8 @@ import type { NpmClientType } from './getNpmClient.js'
 function printInstructions(
   appName: string,
   urls: ReturnType<typeof formatDevUrl>,
-  npmClient: NpmClientType
+  npmClient: NpmClientType,
+  copy?: boolean
 ): void {
   console.log()
   console.log(`You can now view ${chalk.bold(appName)} in the browser.`)
@@ -14,7 +15,9 @@ function printInstructions(
 
   if (urls.lanUrlForTerminal) {
     console.log(
-      `  ${chalk.bold('Local:')}            ${urls.localUrlForTerminal}`
+      `  ${chalk.bold('Local:')}            ${urls.localUrlForTerminal}${
+        copy ? chalk.dim(' (copied to clipboard)') : ''
+      }`
     )
     console.log(
       `  ${chalk.bold('On Your Network:')}  ${urls.lanUrlForTerminal}`
