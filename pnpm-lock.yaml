@@ -62,7 +62,7 @@ importers:
 
   packages/react-cli:
     specifiers:
-      '@planjs/react-cli-shared-utils': ^0.0.0
+      '@planjs/react-cli-shared-utils': ^0.0.1
       '@types/envinfo': ^7.8.1
       '@types/inquirer': ^9.0.1
       commander: ^9.4.0
@@ -86,7 +86,7 @@ importers:
   packages/react-cli-service:
     specifiers:
       '@babel/core': ^7.16.0
-      '@planjs/react-cli-shared-utils': ^0.0.0
+      '@planjs/react-cli-shared-utils': ^0.0.1
       '@planjs/utils': ^1.17.0
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.3
       '@svgr/webpack': ^6.3.1
