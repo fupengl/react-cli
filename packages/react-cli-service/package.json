@@ -10,7 +10,8 @@
   "typings": "typings/index.d.ts",
   "files": [
     "bin",
-    "es"
+    "es",
+    "typings"
   ],
   "bin": {
     "react-cli-service": "bin/react-cli-service.js"
