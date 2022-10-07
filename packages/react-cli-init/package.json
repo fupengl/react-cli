@@ -1,0 +1,30 @@
+{
+  "name": "@planjs/react-cli-init",
+  "version": "0.0.0",
+  "description": "init addon for react-cli",
+  "author": "fupeng <fupenglxy@gmail.com>",
+  "homepage": "https://github.com/fupengl/react-cli#readme",
+  "license": "ISC",
+  "main": "es/index.js",
+  "type": "module",
+  "typings": "typings/index.d.ts",
+  "files": [
+    "bin",
+    "es"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fupengl/react-cli.git"
+  },
+  "scripts": {
+    "prepare": "stan-builder",
+    "dev": "stan-builder -w",
+    "test": "node ./__tests__/react-cli-init.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/fupengl/react-cli/issues"
+  }
+}

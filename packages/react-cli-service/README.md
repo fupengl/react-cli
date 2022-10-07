@@ -1,11 +1,10 @@
 # `@planjs/react-cli-service`
 
-> TODO: description
+> local service for react-cli projects
+
+## feature
+
+[ ] Keep the same output as react-scripts
+[ ] Compatible with react-app-rewrite plugin
 
 ## Usage
-
-```
-const reactCliService = require('@planjs/react-cli-service');
-
-// TODO: DEMONSTRATE API
-```

@@ -1,0 +1,4 @@
+packages/*/es/
+packages/*/typings/
+packages/react-cli-service/__fixtures__/cra-template/
+.stanrc.ts

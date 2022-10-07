@@ -1,2 +1,3 @@
 packages:
   - 'packages/*'
+  - 'packages/react-cli-service/__fixtures__/*'

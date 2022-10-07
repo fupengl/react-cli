@@ -1,17 +1,16 @@
 {
   "name": "@planjs/react-cli-shared-utils",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "Shared utilities for react-cli packages",
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "license": "ISC",
-  "main": "lib/react-cli-shared-utils.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "main": "es/index.js",
+  "typings": "typings/index.d.ts",
+  "type": "module",
   "files": [
-    "lib"
+    "typings",
+    "es"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,9 +20,30 @@
     "url": "git+https://github.com/fupengl/react-cli.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "prepare": "stan-builder",
+    "dev": "stan-builder -w"
   },
   "bugs": {
     "url": "https://github.com/fupengl/react-cli/issues"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "semver": "^7.3.7",
+    "@types/semver": "^7.3.12",
+    "strip-ansi": "^7.0.1",
+    "debug": "^4.3.4",
+    "@types/debug": "^4.1.7",
+    "joi": "^17.6.0",
+    "read-pkg": "^7.1.0",
+    "is-file-esm": "^1.0.0",
+    "prompts": "^2.4.2",
+    "@types/is-file-esm": "^1.0.0",
+    "@types/prompts": "^2.0.14",
+    "address": "^1.2.1",
+    "resolve": "^1.20.0",
+    "@types/resolve": "^1.20.2"
   }
 }
