@@ -2,7 +2,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createRequire } from 'node:module'
 
-import type { Middleware } from 'webpack-dev-server'
 import type Server from 'webpack-dev-server'
 
 import type { ServicePlugin } from '../types.js'
@@ -11,8 +10,8 @@ const devServer: ServicePlugin = (api, options) => {
   const require = createRequire(import.meta.url)
 
   api.chainWebpack(() => {
-    api.service.devServerConfigFns.push(
-      (middlewares: Middleware[], devServer: Server) => {
+    api.configureDevServer(
+      (middlewares, devServer) => {
         devServer.app!.use(function handleWebpackInternalMiddleware(
           req,
           res,
