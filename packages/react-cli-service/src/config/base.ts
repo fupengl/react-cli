@@ -299,10 +299,6 @@ const base: ServicePlugin = (api, options) => {
               // profile: true,
             },
             issue: {
-              // This one is specifically to match during CI tests,
-              // as micromatch doesn't match
-              // '../cra-template-typescript/template/src/App.tsx'
-              // otherwise.
               include: [
                 { file: '../**/src/**/*.{ts,tsx}' },
                 { file: '**/src/**/*.{ts,tsx}' }
@@ -370,96 +366,139 @@ const base: ServicePlugin = (api, options) => {
         .before('oneOf')
     }
 
-    // Process application JS with Babel.
-    // The preset includes JSX, Flow, TypeScript, and some ESnext features.
-    config.module
-      .rule('oneOf')
-      .oneOf('babel')
-      .test(/\.(js|mjs|jsx|ts|tsx)$/)
-      .include.add(api.resolve('src'))
-      .end()
-      .use('babel-loader')
-      .loader(require.resolve('babel-loader'))
-      .options({
-        customize: require.resolve('babel-preset-react-app/webpack-overrides'),
-        presets: [
-          [
-            require.resolve('babel-preset-react-app'),
-            {
-              runtime: hasJsxRuntime ? 'automatic' : 'classic'
-            }
-          ]
-        ],
-        babelrc: true,
-        configFile: true,
-        // Make sure we have a unique cache identifier, erring on the
-        // side of caution.
-        // We remove this when the user ejects because the default
-        // is sane and uses Babel options. Instead of options, we use
-        // the react-scripts and babel-preset-react-app versions.
-        cacheIdentifier: api.getCacheIdentifier(
-          `babel-cache-${process.env.NODE_ENV}`,
-          [
-            'babel-plugin-named-asset-import',
-            'babel-preset-react-app',
-            'react-dev-utils',
-            'react-scripts'
-          ]
-        ).cacheIdentifier,
-        plugins: [
-          isEnvDevelopment &&
-            options.fastRefresh &&
-            require.resolve('react-refresh/babel')
-        ].filter(Boolean),
-        // This is a feature of `babel-loader` for webpack (not Babel itself).
-        // It enables caching results in ./node_modules/.cache/babel-loader/
-        // directory for faster rebuilds.
-        cacheDirectory: true,
-        // See #6846 for context on why cacheCompression is disabled
-        cacheCompression: false,
-        compact: isEnvProduction
-      })
-      .end()
+    if ((api.used.swc() || isEnvDevelopment) && !api.used.babel()) {
+      const swcRule = config.module
+        .rule('oneOf')
+        .oneOf('swc')
+        .test(/\.(js|mjs|jsx|ts|tsx)$/)
+        .include.add(api.resolve('src'))
+        .end()
+        .use('swc-loader')
+        .loader(require.resolve('swc-loader'))
 
-    // Process any JS outside of the app with Babel.
-    // Unlike the application JS, we only compile the standard ES features.
-    config.module
-      .rule('oneOf')
-      .oneOf('babel-runtime')
-      .test(/\.(js|mjs)$/)
-      .exclude.add(/@babel(?:\/|\\{1,2})runtime/)
-      .end()
-      .use('babel-loader')
-      .loader(require.resolve('babel-loader'))
-      .options({
-        babelrc: true,
-        configFile: true,
-        compact: false,
-        presets: [
-          [
-            require.resolve('babel-preset-react-app/dependencies'),
-            { helpers: true }
-          ]
-        ],
-        cacheDirectory: true,
-        // See #6846 for context on why cacheCompression is disabled
-        cacheCompression: false,
-        cacheIdentifier: api.getCacheIdentifier(
-          `babel-cache-${process.env.NODE_ENV}`,
-          [
-            'babel-plugin-named-asset-import',
-            'babel-preset-react-app',
-            'react-dev-utils',
-            'react-scripts'
-          ]
-        ).cacheIdentifier,
-        // Babel sourcemaps are needed for debugging into node_modules
-        // code.  Without the options below, debuggers like VSCode
-        // show incorrect code and set breakpoints on the wrong lines.
-        sourceMaps: shouldUseSourceMap,
-        inputSourceMap: shouldUseSourceMap
-      })
-      .end()
+      if (!api.used.swc()) {
+        swcRule
+          .options({
+            jsc: {
+              target: 'es2015',
+              externalHelpers: true,
+              transform: {
+                react: {
+                  runtime: 'automatic',
+                  development: isEnvDevelopment,
+                  refresh: isEnvDevelopment && options.fastRefresh
+                }
+              },
+              parser: api.used.typescript()
+                ? {
+                    syntax: 'typescript',
+                    tsx: true,
+                    decorators: true,
+                    dynamicImport: true
+                  }
+                : {
+                    syntax: 'ecmascript',
+                    jsx: true,
+                    dynamicImport: true
+                  }
+            }
+          })
+          .end()
+      }
+    } else {
+      // Process application JS with Babel.
+      // The preset includes JSX, Flow, TypeScript, and some ESnext features.
+      config.module
+        .rule('oneOf')
+        .oneOf('babel')
+        .test(/\.(js|mjs|jsx|ts|tsx)$/)
+        .include.add(api.resolve('src'))
+        .end()
+        .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options({
+          customize: require.resolve(
+            'babel-preset-react-app/webpack-overrides'
+          ),
+          presets: [
+            [
+              require.resolve('babel-preset-react-app'),
+              {
+                runtime: hasJsxRuntime ? 'automatic' : 'classic'
+              }
+            ]
+          ],
+          babelrc: true,
+          configFile: true,
+          // Make sure we have a unique cache identifier, erring on the
+          // side of caution.
+          // We remove this when the user ejects because the default
+          // is sane and uses Babel options. Instead of options, we use
+          // the react-scripts and babel-preset-react-app versions.
+          cacheIdentifier: api.getCacheIdentifier(
+            `babel-cache-${process.env.NODE_ENV}`,
+            [
+              'babel-plugin-named-asset-import',
+              'babel-preset-react-app',
+              'react-dev-utils',
+              'react-scripts'
+            ]
+          ).cacheIdentifier,
+          plugins: [
+            isEnvDevelopment &&
+              options.fastRefresh &&
+              require.resolve('react-refresh/babel')
+          ].filter(Boolean),
+          // This is a feature of `babel-loader` for webpack (not Babel itself).
+          // It enables caching results in ./node_modules/.cache/babel-loader/
+          // directory for faster rebuilds.
+          cacheDirectory: true,
+          // See #6846 for context on why cacheCompression is disabled
+          cacheCompression: false,
+          compact: isEnvProduction
+        })
+        .end()
+
+      // Process any JS outside of the app with Babel.
+      // Unlike the application JS, we only compile the standard ES features.
+      config.module
+        .rule('oneOf')
+        .oneOf('babel-runtime')
+        .test(/\.(js|mjs)$/)
+        .exclude.add(/@babel(?:\/|\\{1,2})runtime/)
+        .end()
+        .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options({
+          babelrc: true,
+          configFile: true,
+          compact: false,
+          presets: [
+            [
+              require.resolve('babel-preset-react-app/dependencies'),
+              { helpers: true }
+            ]
+          ],
+          cacheDirectory: true,
+          // See #6846 for context on why cacheCompression is disabled
+          cacheCompression: false,
+          cacheIdentifier: api.getCacheIdentifier(
+            `babel-cache-${process.env.NODE_ENV}`,
+            [
+              'babel-plugin-named-asset-import',
+              'babel-preset-react-app',
+              'react-dev-utils',
+              'react-scripts'
+            ]
+          ).cacheIdentifier,
+          // Babel sourcemaps are needed for debugging into node_modules
+          // code.  Without the options below, debuggers like VSCode
+          // show incorrect code and set breakpoints on the wrong lines.
+          sourceMaps: shouldUseSourceMap,
+          inputSourceMap: shouldUseSourceMap
+        })
+        .end()
+    }
   })
 }
 

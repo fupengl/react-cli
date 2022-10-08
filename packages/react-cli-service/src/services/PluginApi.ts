@@ -39,10 +39,18 @@ class PluginApi {
   used = {
     typescript: (): boolean => fs.existsSync(this.resolve('tsconfig.json')),
     tailwind: (): boolean => fs.existsSync(this.resolve('tailwind.config.js')),
+    swc: (): boolean => fs.existsSync(this.resolve('.swcrc')),
     babel: (): boolean =>
-      ['.babelrc', 'babel.config.js'].some((f) =>
-        fs.existsSync(this.resolve(f))
-      )
+      ['.babelrc', 'babel.config']
+        .reduce<string[]>((acc, file) => {
+          if (!file.endsWith('rc')) {
+            acc.push(file)
+          }
+          // https://babeljs.io/docs/en/config-files
+          acc.push(...['.json', '.js', '.cjs', '.mjs'].map((ext) => file + ext))
+          return acc
+        }, [])
+        .some((f) => fs.existsSync(this.resolve(f)))
   }
 
   assertVersion(range: number | string): void {

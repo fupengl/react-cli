@@ -75,7 +75,7 @@ const build: ServicePlugin = (api, options) => {
 
         // add report
         if (args.report || args['report-json']) {
-          webpackConfig?.plugins?.push(
+          webpackConfig.plugins!.push(
             new BundleAnalyzerPlugin({
               logLevel: 'warn',
               openAnalyzer: false,

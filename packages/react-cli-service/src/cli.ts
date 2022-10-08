@@ -1,4 +1,5 @@
 import minimist from 'minimist'
+
 import {
   checkNodeVersion,
   loadJSON,
@@ -40,3 +41,7 @@ service.run(command, args, rawArgv).catch((err) => {
   err && logger.error(err)
   process.exit(1)
 })
+
+process.on('unhandledRejection', err => {
+  throw err;
+});
