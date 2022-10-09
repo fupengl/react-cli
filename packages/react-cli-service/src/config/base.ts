@@ -384,7 +384,7 @@ const base: ServicePlugin = (api, options) => {
               externalHelpers: true,
               transform: {
                 react: {
-                  runtime: 'automatic',
+                  runtime: hasJsxRuntime ? 'automatic' : 'classic',
                   development: isEnvDevelopment,
                   refresh: isEnvDevelopment && options.fastRefresh
                 }
