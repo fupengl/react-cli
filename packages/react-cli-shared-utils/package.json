@@ -1,6 +1,6 @@
 {
   "name": "@planjs/react-cli-shared-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared utilities for react-cli packages",
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",

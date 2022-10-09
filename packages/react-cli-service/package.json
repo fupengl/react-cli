@@ -1,6 +1,6 @@
 {
   "name": "@planjs/react-cli-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "local service for react-cli projects",
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
@@ -32,10 +32,13 @@
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@planjs/react-cli-shared-utils": "^0.0.1",
+    "@planjs/react-cli-shared-utils": "^0.0.2",
     "@planjs/utils": "^1.17.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^6.3.1",
+    "@swc/core": "^1.3.6",
+    "@swc/helpers": "^0.4.11",
+    "@swc/jest": "^0.2.23",
     "babel-jest": "^29.0.3",
     "babel-loader": "^8.2.5",
     "babel-plugin-named-asset-import": "^0.3.8",
@@ -81,6 +84,7 @@
     "source-map-loader": "^3.0.0",
     "strip-ansi": "^7.0.1",
     "style-loader": "^3.3.1",
+    "swc-loader": "^0.2.3",
     "tailwindcss": "^3.0.2",
     "terser": "^5.14.1",
     "terser-webpack-plugin": "^5.3.6",
@@ -91,11 +95,7 @@
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
     "webpack-merge": "^5.8.0",
-    "workbox-webpack-plugin": "^6.5.4",
-    "swc-loader": "^0.2.3",
-    "@swc/core": "^1.3.6",
-    "@swc/helpers": "^0.4.11",
-    "@swc/jest": "^0.2.23"
+    "workbox-webpack-plugin": "^6.5.4"
   },
   "devDependencies": {
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.6",

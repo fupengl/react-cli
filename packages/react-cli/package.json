@@ -1,6 +1,6 @@
 {
   "name": "@planjs/react-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Command line interface for rapid React development",
   "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
@@ -29,7 +29,7 @@
     "url": "https://github.com/fupengl/react-cli/issues"
   },
   "dependencies": {
-    "@planjs/react-cli-shared-utils": "^0.0.1",
+    "@planjs/react-cli-shared-utils": "^0.0.2",
     "@types/envinfo": "^7.8.1",
     "@types/inquirer": "^9.0.1",
     "commander": "^9.4.0",
