@@ -1,4 +1,5 @@
 packages/*/es/
 packages/*/typings/
+docusaurus/
 packages/react-cli-service/__fixtures__/cra-template/
 .stanrc.ts
