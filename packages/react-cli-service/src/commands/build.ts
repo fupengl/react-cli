@@ -235,4 +235,8 @@ const build: ServicePlugin = (api, options) => {
   )
 }
 
+build.defaultModes = {
+  build: 'production'
+}
+
 export default build
