@@ -310,4 +310,8 @@ const start: ServicePlugin = (api, options) => {
   )
 }
 
+start.defaultModes = {
+  build: 'development'
+}
+
 export default start

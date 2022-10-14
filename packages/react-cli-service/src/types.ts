@@ -54,7 +54,10 @@ interface CSSOptions {
   loaderOptions?: LoaderOptions
 }
 
-export type ServicePlugin = (api: PluginApi, options: UserConfig) => any
+export interface ServicePlugin {
+  (api: PluginApi, options: UserConfig): any
+  defaultModes?: Record<string, string>
+}
 
 export declare interface UserConfig {
   /**
