@@ -8,8 +8,8 @@
     "prepare": "npx husky install",
     "release:pkg": "lerna publish from-git --yes",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "version:beta": "pnpm version:release -- --preid beta",
-    "version:release": "lerna version --no-private --yes",
+    "version:beta": "pnpm version:release -- --canary --preid beta",
+    "version:release": "lerna version minor --no-private --yes",
     "watch": "lerna run --parallel dev"
   },
   "devDependencies": {
