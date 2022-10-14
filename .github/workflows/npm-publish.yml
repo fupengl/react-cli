@@ -61,15 +61,14 @@ jobs:
         with:
           version: 6.0.2
           run_install: true
-      - name: Authenticate with Registry
-        run: |
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-          npm whoami
+      - name: Publish
       - run: |
+          npm whoami
           if [ ${{ github.base_ref }} = develop ]; then
             pnpm version:beta
           else
             pnpm version:release
           fi
           pnpm release:pkg --create-release github
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
