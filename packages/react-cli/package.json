@@ -1,35 +1,32 @@
 {
   "name": "@planjs/react-cli",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Command line interface for rapid React development",
-  "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
-  "license": "ISC",
-  "main": "es/index.js",
-  "type": "module",
-  "files": [
-    "bin",
-    "es"
-  ],
-  "bin": {
-    "react-cli": "es/react-cli.js"
-  },
-  "publishConfig": {
-    "access": "public"
+  "bugs": {
+    "url": "https://github.com/fupengl/react-cli/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fupengl/react-cli.git"
   },
-  "scripts": {
-    "prepare": "stan-builder",
-    "dev": "stan-builder -w"
+  "license": "ISC",
+  "author": "fupeng <fupenglxy@gmail.com>",
+  "type": "module",
+  "main": "es/index.js",
+  "bin": {
+    "react-cli": "es/react-cli.js"
   },
-  "bugs": {
-    "url": "https://github.com/fupengl/react-cli/issues"
+  "files": [
+    "bin",
+    "es"
+  ],
+  "scripts": {
+    "dev": "stan-builder -w",
+    "prepare": "stan-builder"
   },
   "dependencies": {
-    "@planjs/react-cli-shared-utils": "^0.0.2",
+    "@planjs/react-cli-shared-utils": "^0.1.0",
     "@types/envinfo": "^7.8.1",
     "@types/inquirer": "^9.0.1",
     "commander": "^9.4.0",
@@ -40,5 +37,8 @@
   },
   "engines": {
     "node": "^14.18.0 || >=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
