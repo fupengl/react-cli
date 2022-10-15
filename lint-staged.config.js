@@ -1,19 +1,13 @@
 module.exports = {
   // Type check TypeScript files
-  '**/*.(ts|tsx)': 'pnpm tsc --noEmit',
+  '**/*.(ts|tsx)': 'tsc --noEmit',
 
   // Sort package.json
-  'package.json': 'pnpm sort-package-json',
+  'package.json': 'sort-package-json',
 
   // Lint then format TypeScript and JavaScript files
-  '**/*.(ts|tsx|js)': (filenames) => [
-    `pnpm eslint --fix ${filenames.join(' ')}`,
-    `git add ${filenames.join(' ')}`
-  ],
+  '**/*.(ts|tsx|js)': [`eslint --fix`, `git add`],
 
   // Format MarkDown and JSON
-  '**/*.(md|json)': (filenames) => [
-    `pnpm prettier --write ${filenames.join(' ')}`,
-    `git add ${filenames.join(' ')}`
-  ]
+  '**/*.(md|json)': [`prettier --write`, `git add`]
 }
