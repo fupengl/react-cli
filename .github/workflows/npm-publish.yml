@@ -68,6 +68,6 @@ jobs:
           else
             pnpm version:release
           fi
-          pnpm release:pkg --create-release github
+          pnpm release:pkg -- --create-release github
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

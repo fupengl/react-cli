@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/fupengl/react-cli.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "author": "fupeng <fupenglxy@gmail.com>",
   "type": "module",
   "main": "es/index.js",
