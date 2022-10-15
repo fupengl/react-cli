@@ -139,13 +139,6 @@ export declare interface UserConfig {
   }
 
   /**
-   * Default: `undefined`
-   *
-   * Configure the `crossorigin` attribute on `<link rel="stylesheet">` and `<script>` tags in generated HTML
-   */
-  crossorigin?: '' | 'anonymous' | 'use-credentials'
-
-  /**
    * Default: `false`
    *
    * Set to `true` to enable [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) (SRI) on `<link rel="stylesheet">` and `<script>` tags in generated HTML
