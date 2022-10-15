@@ -9,7 +9,7 @@ function getLocalIdent(
 ): string {
   // Use the filename or folder name, based on some uses the index.js / index.module.(css|scss|sass) project style
   const fileNameOrFolder = context.resourcePath.match(
-    /index\.module\.(css|scss|sass)$/
+    /index\.module\.(css|scss|sass|less|styl|stylus)$/
   )
     ? '[folder]'
     : '[name]'

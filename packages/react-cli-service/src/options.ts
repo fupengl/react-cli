@@ -39,7 +39,6 @@ export const schema: SchemaType = createSchema((joi) =>
           .unknown(true)
       )
     ),
-    crossorigin: joi.string().valid('', 'anonymous', 'use-credentials'),
     chainWebpack: joi.func(),
     configureWebpack: joi.alternatives().try(joi.object(), joi.func()),
     configureDevServer: joi.alternatives().try(joi.object(), joi.func()),
@@ -50,7 +49,6 @@ export const schema: SchemaType = createSchema((joi) =>
       loaderOptions: joi.object({
         css: joi.object(),
         sass: joi.object(),
-        scss: joi.object(),
         less: joi.object(),
         stylus: joi.object(),
         postcss: joi.object()
