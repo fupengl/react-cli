@@ -1,6 +1,6 @@
 {
   "name": "@planjs/react-cli-init",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "init addon for react-cli",
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "bugs": {
