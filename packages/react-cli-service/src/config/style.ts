@@ -136,7 +136,7 @@ const style: ServicePlugin = (api, options) => {
       modules: {
         mode: 'icss'
       }
-    }).set('sideEffects', true)
+    }).set('sideEffects', true).exclude.add(/\.module\.css$/).end()
 
     createCSSRule('css-module', /\.module\.css$/, {
       importLoaders: 1,
@@ -158,7 +158,7 @@ const style: ServicePlugin = (api, options) => {
         }
       },
       'sass-loader'
-    ).set('sideEffects', true)
+    ).set('sideEffects', true).exclude.add(/\.module\.(scss|sass)$/).end()
 
     createCSSRule(
       'sass-module',
@@ -185,7 +185,7 @@ const style: ServicePlugin = (api, options) => {
         }
       },
       'less-loader'
-    ).set('sideEffects', true)
+    ).set('sideEffects', true).exclude.add(/\.module\.less$/).end()
 
     createCSSRule(
       'less-module',
@@ -212,7 +212,7 @@ const style: ServicePlugin = (api, options) => {
         }
       },
       'stylus-loader'
-    ).set('sideEffects', true)
+    ).set('sideEffects', true).exclude.add(/\.module\.styl(us)?$/).end()
 
     createCSSRule(
       'stylus-module',
