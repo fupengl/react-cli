@@ -90,10 +90,6 @@ export const defaultOptions: () => UserConfig = () => ({
   // multi-page config
   pages: undefined,
 
-  // <script type="module" crossorigin="use-credentials">
-  // #1656, #1867, #2025
-  crossorigin: undefined,
-
   // subresource integrity
   integrity: false,
 
