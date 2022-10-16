@@ -3,13 +3,14 @@ import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-serve
 import type ChainableWebpackConfig from 'webpack-chain'
 import type { MinifyOptions } from 'terser'
 
+import type HtmlWebpackPlugin from 'html-webpack-plugin'
 import type PluginApi from './services/PluginApi.js'
 
 type PredefinedOptions<T> = T & { [key: string]: any }
 
 type PageEntry = string | string[]
 
-interface PageConfig {
+interface PageConfig extends HtmlWebpackPlugin.Options {
   entry: PageEntry
   [key: string]: any
 }

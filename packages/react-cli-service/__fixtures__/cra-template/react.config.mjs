@@ -2,5 +2,9 @@
  * @type {UserConfig}
  */
 export default {
-  outputDir: 'dist'
+  outputDir: 'dist',
+  pages: {
+    index: 'src/index',
+    about: 'src/about',
+  }
 }
