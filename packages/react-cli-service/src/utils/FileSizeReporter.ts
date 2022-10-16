@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+
 import { chalk } from '@planjs/react-cli-shared-utils'
 import fileSize from 'filesize'
 import recursive from 'recursive-readdir'
@@ -29,12 +30,11 @@ export function printFileSizesAfterBuild(
 ) {
   const root = previousSizeMap.root
   const sizes = previousSizeMap.sizes
-  // @ts-ignore
-  const assets = (webpackStats.stats || [webpackStats])
-    .map((stats: any) =>
-      stats!
-        .toJson({ all: false, assets: true })!
-        .assets.filter((asset: StatsAsset) => canReadAsset(asset.name))
+  const assets = [webpackStats]
+    .map((stats: Stats) =>
+      stats
+        .toJson({ all: false, assets: true })
+        .assets!.filter((asset: StatsAsset) => canReadAsset(asset.name))
         .map((asset: StatsAsset) => {
           const fileContents = fs.readFileSync(path.join(root, asset.name))
           const size = gzipSizeSync(fileContents)
@@ -48,25 +48,26 @@ export function printFileSizesAfterBuild(
             name: path.basename(asset.name),
             size: size,
             sizeLabel:
-              fileSize(size) + (difference ? ' (' + difference + ')' : '')
+              fileSize(size) + (difference ? ' (' + difference + ')' : ''),
+            chunkNames: asset.chunkNames!
           }
         })
     )
-    .reduce<any[]>((single: any[], all: any[]) => all.concat(single), [])
-  assets.sort((a: StatsAsset, b: StatsAsset) => b.size - a.size)
+    .flat()
+  assets.sort((a, b) => b.size - a.size)
   const longestSizeLabelLength = Math.max.apply(
     null,
-    assets.map((a: StatsAsset) => stripAnsi(a.sizeLabel).length)
+    assets.map((a) => stripAnsi(a.sizeLabel).length)
   )
   let suggestBundleSplitting = false
-  assets.forEach((asset: StatsAsset) => {
+  assets.forEach((asset) => {
     let sizeLabel = asset.sizeLabel
     const sizeLength = stripAnsi(sizeLabel).length
     if (sizeLength < longestSizeLabelLength) {
       const rightPadding = ' '.repeat(longestSizeLabelLength - sizeLength)
       sizeLabel += rightPadding
     }
-    const isMainBundle = asset.name.indexOf('main.') === 0
+    const isMainBundle = !!asset.chunkNames?.length
     const maxRecommendedSize = isMainBundle
       ? maxBundleGzipSize
       : maxChunkGzipSize
