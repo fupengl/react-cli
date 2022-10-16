@@ -15,7 +15,6 @@ export const schema: SchemaType = createSchema((joi) =>
     lintOnSave: joi.any().valid(true, false, 'error', 'warning', 'default'),
     inlineRuntime: joi.boolean(),
     assetsDir: joi.string().allow(''),
-    transpileDependencies: joi.alternatives().try(joi.boolean(), joi.array()),
     productionSourceMap: joi.boolean(),
     parallel: joi.alternatives().try(joi.boolean(), joi.number().integer()),
     devServer: joi.object(),
@@ -41,8 +40,7 @@ export const schema: SchemaType = createSchema((joi) =>
     ),
     chainWebpack: joi.func(),
     configureWebpack: joi.alternatives().try(joi.object(), joi.func()),
-    configureDevServer: joi.alternatives().try(joi.object(), joi.func()),
-    integrity: false,
+    configureDevServer: joi.object(),
     css: joi.object({
       extract: joi.alternatives().try(joi.boolean(), joi.object()),
       sourceMap: joi.boolean(),
@@ -74,9 +72,6 @@ export const defaultOptions: () => UserConfig = () => ({
   // whether filename will contain hash part
   filenameHashing: true,
 
-  // whether to transpile all dependencies
-  transpileDependencies: false,
-
   // embed the runtime script into index.html
   inlineRuntime: process.env.INLINE_RUNTIME_CHUNK !== 'false',
 
@@ -89,9 +84,6 @@ export const defaultOptions: () => UserConfig = () => ({
 
   // multi-page config
   pages: undefined,
-
-  // subresource integrity
-  integrity: false,
 
   css: {
     // extract: true,

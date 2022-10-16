@@ -98,15 +98,6 @@ export declare interface UserConfig {
   filenameHashing?: boolean
 
   /**
-   * Default: `false`
-   *
-   * If set to `true`, all dependencies in `node_modules` will be transpiled by Babel;
-   * Or, if you only want to selectively transpile some of the dependencies, you can list them
-   * in this option.
-   */
-  transpileDependencies?: boolean | Array<string | RegExp>
-
-  /**
    * Default: `true`
    *
    * By default, will embed the runtime script into index.html during the production build.
@@ -137,13 +128,6 @@ export declare interface UserConfig {
   pages?: {
     [key: string]: PageEntry | PageConfig
   }
-
-  /**
-   * Default: `false`
-   *
-   * Set to `true` to enable [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) (SRI) on `<link rel="stylesheet">` and `<script>` tags in generated HTML
-   */
-  integrity?: boolean
 
   css?: CSSOptions
 
