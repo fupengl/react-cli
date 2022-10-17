@@ -1,7 +1,7 @@
-import fs from 'node:fs'
 import TerserPlugin from 'terser-webpack-plugin'
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin'
 
+import resolveFilePath from '../utils/resolveFilePath.js'
 import type { ServicePlugin } from '../types.js'
 
 const prod: ServicePlugin = (api, options) => {
@@ -116,12 +116,12 @@ const prod: ServicePlugin = (api, options) => {
     if (isEnvProduction) {
       // Generate a service worker script that will precache, and keep up to date,
       // the HTML & assets that are part of the webpack build.
-      if (fs.existsSync(api.resolve('src/service-worker'))) {
+      if (api.used.serviceWorker()) {
         config
           .plugin('WorkboxWebpackPluginInjectManifest')
           .use(WorkboxWebpackPlugin.InjectManifest, [
             {
-              swSrc: api.resolve('src/service-worker'),
+              swSrc: resolveFilePath(api.resolve('src/service-worker')),
               dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
               exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
               // Bump up the default maximum size (2mb) that's precached,
