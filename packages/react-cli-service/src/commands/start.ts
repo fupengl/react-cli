@@ -13,8 +13,8 @@ import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-serve
 import clipboard from 'clipboardy'
 import defaultsDeep from 'lodash.defaultsdeep'
 import { isFunction } from '@planjs/utils'
-
 import fs from 'fs-extra'
+
 import { checkBrowsers } from '../utils/browsersHelper.js'
 import choosePort from '../utils/choosePort.js'
 import formatDevUrl from '../utils/formatDevUrl.js'
@@ -81,14 +81,14 @@ const start: ServicePlugin = (api, options) => {
           true
         )
 
+        const webpackConfig = api.resolveWebpackConfig()
+
         const urls = formatDevUrl(
           protocol,
           host,
           port,
           options.publicPath!.slice(0, -1)
         )
-
-        const webpackConfig = api.resolveWebpackConfig()
 
         webpackConfig.infrastructureLogging = {
           ...webpackConfig.infrastructureLogging,
