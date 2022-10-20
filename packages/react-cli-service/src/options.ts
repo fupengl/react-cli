@@ -38,6 +38,10 @@ export const schema: SchemaType = createSchema((joi) =>
           .unknown(true)
       )
     ),
+    terser: joi.object({
+      minify: joi.string().valid('terser', 'esbuild', 'swc', 'uglifyJs'),
+      terserOptions: joi.object()
+    }),
     chainWebpack: joi.func(),
     configureWebpack: joi.alternatives().try(joi.object(), joi.func()),
     configureDevServer: joi.object(),
