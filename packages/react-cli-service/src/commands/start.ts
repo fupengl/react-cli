@@ -1,4 +1,5 @@
 import { createRequire } from 'node:module'
+import path from 'node:path'
 
 import webpack from 'webpack'
 import {
@@ -12,7 +13,7 @@ import WebpackDevServer from 'webpack-dev-server'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 import clipboard from 'clipboardy'
 import defaultsDeep from 'lodash.defaultsdeep'
-import { isFunction } from '@planjs/utils'
+import { isFunction, isString } from '@planjs/utils'
 import fs from 'fs-extra'
 
 import { checkBrowsers } from '../utils/browsersHelper.js'
@@ -224,7 +225,39 @@ const start: ServicePlugin = (api, options) => {
           },
           historyApiFallback: {
             disableDotRule: true,
-            index: options.publicPath
+            rewrites: [
+              ...Object.keys(options.pages || {})
+                .sort((a, b) => b.length - a.length)
+                .reduce<Array<{ from: RegExp; to: string }>>((acc, page) => {
+                  const filename = (() => {
+                    const pageConfig = options.pages![page]!
+                    if (pageConfig instanceof Array) {
+                      return ''
+                    }
+                    if (typeof pageConfig === 'object') {
+                      if (isString(pageConfig['filename'])) {
+                        return pageConfig['filename']!
+                      }
+                    }
+                    return ''
+                  })()
+                  acc.push({
+                    from: new RegExp(`^/${page}`),
+                    to: path.posix.join(
+                      options.publicPath!,
+                      filename || `${page}.html`
+                    )
+                  })
+                  return acc
+                }, []),
+              {
+                from: /./,
+                to: path.posix.join(
+                  options.publicPath,
+                  options.indexPath || 'index.html'
+                )
+              }
+            ]
           },
           proxy: api.service.packageJson.proxy,
           open: args.open,

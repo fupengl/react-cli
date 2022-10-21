@@ -6,7 +6,7 @@ import fileSize from 'filesize'
 import recursive from 'recursive-readdir'
 import stripAnsi from 'strip-ansi'
 import { gzipSizeSync } from 'gzip-size'
-import type { Stats, StatsAsset } from 'webpack'
+import type { MultiStats, Stats, StatsAsset } from 'webpack'
 
 function canReadAsset(asset: string) {
   return (
@@ -19,7 +19,7 @@ function canReadAsset(asset: string) {
 // Prints a detailed summary of build files.
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function printFileSizesAfterBuild(
-  webpackStats: Stats,
+  webpackStats: Stats | MultiStats,
   previousSizeMap: {
     sizes: Record<string, number>
     root: string
@@ -30,7 +30,7 @@ export function printFileSizesAfterBuild(
 ) {
   const root = previousSizeMap.root
   const sizes = previousSizeMap.sizes
-  const assets = [webpackStats]
+  const assets = ((webpackStats as MultiStats).stats || [webpackStats])
     .map((stats: Stats) =>
       stats
         .toJson({ all: false, assets: true })
