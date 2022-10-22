@@ -66,8 +66,9 @@ jobs:
           if [ ${{ github.base_ref }} = develop ]; then
             pnpm version:beta
           else
-            pnpm version:release
+            pnpm version:release --create-release github
           fi
-          pnpm release:pkg --create-release github
+          git checkout **/pnpm-lock.yaml
+          pnpm release:pkg
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
