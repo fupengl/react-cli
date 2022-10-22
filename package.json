@@ -6,7 +6,7 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint --cache .",
     "prepare": "npx husky install",
-    "release:pkg": "lerna publish from-git --yes",
+    "release:pkg": "lerna publish from-package --yes",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
     "version:beta": "pnpm version:release -- --canary --preid beta",
     "version:release": "lerna version minor --no-private --yes",
