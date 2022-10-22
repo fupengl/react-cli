@@ -154,40 +154,6 @@ class Service {
       }
     })
 
-    // check if the user has manually mutated output.publicPath
-    const target = process.env.REACT_CLI_BUILD_TARGET
-    if (
-      !process.env.REACT_CLI_TEST &&
-      target &&
-      target !== 'app' &&
-      config.output!.publicPath! !== this.userOptions.publicPath!
-    ) {
-      throw new Error(
-        `Do not modify webpack output.publicPath directly. ` +
-          `Use the "publicPath" option in react.config.js instead.`
-      )
-    }
-
-    if (
-      !process.env.REACT_CLI_ENTRY_FILES &&
-      typeof config.entry !== 'function'
-    ) {
-      let entryFiles: string[]
-      if (typeof config.entry === 'string') {
-        entryFiles = [config.entry]
-      } else if (Array.isArray(config.entry)) {
-        entryFiles = config.entry
-      } else {
-        entryFiles = Object.values(config.entry || []).reduce<string[]>(
-          (allEntries, curr) => allEntries.concat(curr as string),
-          []
-        )
-      }
-
-      entryFiles = entryFiles.map((file) => path.resolve(this.context, file))
-      process.env.REACT_CLI_ENTRY_FILES = JSON.stringify(entryFiles)
-    }
-
     return config
   }
 
