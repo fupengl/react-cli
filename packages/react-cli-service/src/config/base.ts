@@ -63,7 +63,6 @@ const base: ServicePlugin = (api, options) => {
           : false
         : isEnvDevelopment && 'cheap-module-source-map'
     )
-    config.entry('main').add(api.resolve('src/index'))
 
     // output
     config.output.path(api.resolve(options.outputDir!))
@@ -188,30 +187,68 @@ const base: ServicePlugin = (api, options) => {
       ])
 
     // plugins
-    config.plugin('HtmlWebpackPlugin').use(HtmlWebpackPlugin, [
-      Object.assign(
-        {
-          inject: true,
-          template: api.resolve('public', options.indexPath || 'index.html')
-        },
-        isEnvProduction
-          ? {
-              minify: {
-                removeComments: true,
-                collapseWhitespace: true,
-                removeRedundantAttributes: true,
-                useShortDoctype: true,
-                removeEmptyAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                keepClosingSlash: true,
-                minifyJS: true,
-                minifyCSS: true,
-                minifyURLs: true
-              }
-            }
-          : undefined
-      )
-    ])
+    const htmlMinifyOptions = {
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
+    }
+    if (options.pages) {
+      for (const [name, _pageConfig] of Object.entries(options.pages)) {
+        const pageConfig =
+          typeof _pageConfig === 'string' || Array.isArray(_pageConfig)
+            ? { entry: _pageConfig }
+            : _pageConfig
+
+        const {
+          entry,
+          template = `public/${name}.html`,
+          filename = `${name}.html`,
+          chunks = [name],
+          ...restOptions
+        } = pageConfig
+        const entries = Array.isArray(entry) ? entry : [entry]
+
+        config.entry(name).merge(entries.map((e) => api.resolve(e)))
+
+        config.plugin(`html-${name}`).use(HtmlWebpackPlugin, [
+          Object.assign(
+            { ...restOptions },
+            {
+              inject: true,
+              template:
+                template && fs.existsSync(api.resolve(template))
+                  ? api.resolve(template)
+                  : api.resolve('public', options.indexPath || 'index.html'),
+              chunks,
+              filename
+            },
+            isEnvProduction ? htmlMinifyOptions : undefined
+          )
+        ])
+      }
+    } else {
+      config.entry('main').add(api.resolve('src/index'))
+      config.plugin('html').use(HtmlWebpackPlugin, [
+        Object.assign(
+          {
+            inject: true,
+            template: api.resolve('public', options.indexPath || 'index.html'),
+            filename: options.indexPath || 'index.html'
+          },
+          isEnvProduction ? htmlMinifyOptions : undefined
+        )
+      ])
+    }
+
     if (options.inlineRuntime && isEnvProduction) {
       config
         .plugin('InlineChunkHtmlPlugin')
@@ -237,9 +274,12 @@ const base: ServicePlugin = (api, options) => {
             manifest[file.name] = file.path
             return manifest
           }, seed)
-          const entrypointFiles = entrypoints.main.filter(
-            (fileName) => !fileName.endsWith('.map')
-          )
+          const entrypointFiles: string[] = []
+          for (const [_, files] of Object.entries(entrypoints)) {
+            entrypointFiles.push(
+              ...files.filter((fileName) => !fileName.endsWith('.map'))
+            )
+          }
 
           return {
             files: manifestFiles,

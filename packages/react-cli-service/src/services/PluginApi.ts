@@ -9,6 +9,7 @@ import { loadJSON, semver } from '@planjs/react-cli-shared-utils'
 
 import { matchesPluginId } from '../utils/plugin.js'
 import getNpmClient from '../utils/getNpmClient.js'
+import resolveFilePath from '../utils/resolveFilePath.js'
 import type { NpmClientType } from '../utils/getNpmClient.js'
 import type { CommandItem } from './Service.js'
 import type Service from './Service.js'
@@ -50,7 +51,13 @@ class PluginApi {
           acc.push(...['.json', '.js', '.cjs', '.mjs'].map((ext) => file + ext))
           return acc
         }, [])
-        .some((f) => fs.existsSync(this.resolve(f)))
+        .some((f) => fs.existsSync(this.resolve(f))),
+    serviceWorker: (): boolean =>
+      fs.existsSync(resolveFilePath(this.resolve(`src/service-worker`))),
+    jestConfig: (): string | undefined =>
+      ['js', 'ts', 'mjs', 'cjs', 'json']
+        .map((v) => this.resolve(`jest.config.${v}`))
+        .find((f) => fs.existsSync(f))
   }
 
   assertVersion(range: number | string): void {

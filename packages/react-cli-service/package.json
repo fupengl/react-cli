@@ -1,38 +1,49 @@
 {
   "name": "@planjs/react-cli-service",
-  "version": "0.0.2",
+  "version": "0.7.0",
   "description": "local service for react-cli projects",
-  "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
-  "license": "ISC",
-  "main": "es/index.js",
-  "type": "module",
-  "typings": "typings/index.d.ts",
-  "files": [
-    "bin",
-    "es",
-    "typings"
-  ],
-  "bin": {
-    "react-cli-service": "bin/react-cli-service.js"
-  },
-  "publishConfig": {
-    "access": "public"
+  "bugs": {
+    "url": "https://github.com/fupengl/react-cli/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fupengl/react-cli.git"
   },
-  "scripts": {
-    "prepare": "stan-builder",
-    "dev": "stan-builder -w"
+  "license": "MIT",
+  "author": "fupeng <fupenglxy@gmail.com>",
+  "type": "module",
+  "main": "es/index.js",
+  "typings": "typings/index.d.ts",
+  "bin": {
+    "react-cli-service": "bin/react-cli-service.js"
   },
-  "bugs": {
-    "url": "https://github.com/fupengl/react-cli/issues"
+  "files": [
+    "bin",
+    "es",
+    "typings",
+    "jest",
+    "react-app.d.ts"
+  ],
+  "scripts": {
+    "dev": "stan-builder -w",
+    "prepare": "stan-builder"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@planjs/react-cli-shared-utils": "^0.0.2",
+    "@planjs/react-cli-shared-utils": "^0.7.0",
     "@planjs/utils": "^1.17.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^6.3.1",
@@ -46,6 +57,7 @@
     "bfj": "^7.0.2",
     "browserslist": "^4.18.1",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
+    "clipboardy": "^3.0.0",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.2.0",
     "detect-port": "^1.5.1",
@@ -65,6 +77,9 @@
     "hash-sum": "^2.0.0",
     "html-webpack-plugin": "^5.5.0",
     "is-root": "^3.0.0",
+    "jest": "^27.4.3",
+    "jest-resolve": "^27.4.2",
+    "jest-watch-typeahead": "^1.0.0",
     "loader-utils": "^3.2.0",
     "lodash.defaultsdeep": "^4.6.1",
     "mini-css-extract-plugin": "^2.4.5",
@@ -100,6 +115,7 @@
   "devDependencies": {
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.6",
     "@types/detect-port": "^1.3.2",
+    "@types/express": "^4.17.14",
     "@types/fs-extra": "^9.0.13",
     "@types/global-modules": "^2.0.0",
     "@types/hash-sum": "^1.0.0",
@@ -109,40 +125,30 @@
     "@types/prompts": "^2.0.14",
     "@types/recursive-readdir": "^2.2.1",
     "@types/webpack": "^5.28.0",
-    "@types/webpack-bundle-analyzer": "^4.4.3",
-    "clipboardy": "^3.0.0"
-  },
-  "optionalDependencies": {
-    "fsevents": "^2.3.2"
+    "@types/webpack-bundle-analyzer": "^4.4.3"
   },
   "peerDependencies": {
     "react": ">= 16",
     "typescript": "^3.2.1 || ^4"
   },
   "peerDependenciesMeta": {
-    "stylus-loader": {
+    "less-loader": {
       "optional": true
     },
-    "less-loader": {
+    "stylus-loader": {
       "optional": true
     },
     "typescript": {
       "optional": true
     }
   },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  },
   "engines": {
     "node": "^14.18.0 || >=16.0.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -40,8 +40,10 @@ export type CommandItem = {
 class Service {
   initialized = false
   context!: string
+  modes: Record<string, string> = {}
   packageJson!: PackageJsonType & {
     react?: UserConfig
+    jest?: object,
     proxy?: WebpackDevServerOptions['proxy']
   }
   userOptions!: UserConfig
@@ -65,8 +67,15 @@ class Service {
   ): Promise<void> {
     this.plugins = await this.resolvePlugins()
 
-    // TODO mode
-    await this.init()
+    this.modes = this.plugins.reduce((modes, { apply: { defaultModes } }) => {
+      return Object.assign(modes, defaultModes)
+    }, this.modes)
+
+    const mode =
+      args.mode ||
+      (name === 'build' && args.watch ? 'development' : this.modes[name])
+
+    await this.init(mode)
 
     args._ = args._ || []
     let command = this.commands[name]
@@ -230,6 +239,7 @@ class Service {
       [
         '../commands/start.js',
         '../commands/build.js',
+        '../commands/test.js',
         '../commands/inspect.js',
         '../commands/help.js',
         '../commands/version.js',

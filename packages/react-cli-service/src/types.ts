@@ -3,13 +3,14 @@ import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-serve
 import type ChainableWebpackConfig from 'webpack-chain'
 import type { MinifyOptions } from 'terser'
 
+import type HtmlWebpackPlugin from 'html-webpack-plugin'
 import type PluginApi from './services/PluginApi.js'
 
 type PredefinedOptions<T> = T & { [key: string]: any }
 
 type PageEntry = string | string[]
 
-interface PageConfig {
+interface PageConfig extends HtmlWebpackPlugin.Options {
   entry: PageEntry
   [key: string]: any
 }
@@ -54,7 +55,10 @@ interface CSSOptions {
   loaderOptions?: LoaderOptions
 }
 
-export type ServicePlugin = (api: PluginApi, options: UserConfig) => any
+export interface ServicePlugin {
+  (api: PluginApi, options: UserConfig): any
+  defaultModes?: Record<string, string>
+}
 
 export declare interface UserConfig {
   /**
@@ -95,15 +99,6 @@ export declare interface UserConfig {
   filenameHashing?: boolean
 
   /**
-   * Default: `false`
-   *
-   * If set to `true`, all dependencies in `node_modules` will be transpiled by Babel;
-   * Or, if you only want to selectively transpile some of the dependencies, you can list them
-   * in this option.
-   */
-  transpileDependencies?: boolean | Array<string | RegExp>
-
-  /**
    * Default: `true`
    *
    * By default, will embed the runtime script into index.html during the production build.
@@ -134,20 +129,6 @@ export declare interface UserConfig {
   pages?: {
     [key: string]: PageEntry | PageConfig
   }
-
-  /**
-   * Default: `undefined`
-   *
-   * Configure the `crossorigin` attribute on `<link rel="stylesheet">` and `<script>` tags in generated HTML
-   */
-  crossorigin?: '' | 'anonymous' | 'use-credentials'
-
-  /**
-   * Default: `false`
-   *
-   * Set to `true` to enable [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) (SRI) on `<link rel="stylesheet">` and `<script>` tags in generated HTML
-   */
-  integrity?: boolean
 
   css?: CSSOptions
 

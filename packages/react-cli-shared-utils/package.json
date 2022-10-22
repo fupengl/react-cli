@@ -1,33 +1,27 @@
 {
   "name": "@planjs/react-cli-shared-utils",
-  "version": "0.0.2",
+  "version": "0.7.0",
   "description": "Shared utilities for react-cli packages",
-  "author": "fupeng <fupenglxy@gmail.com>",
   "homepage": "https://github.com/fupengl/react-cli#readme",
-  "license": "ISC",
-  "main": "es/index.js",
-  "typings": "typings/index.d.ts",
-  "type": "module",
-  "files": [
-    "typings",
-    "es"
-  ],
-  "publishConfig": {
-    "access": "public"
+  "bugs": {
+    "url": "https://github.com/fupengl/react-cli/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fupengl/react-cli.git"
   },
+  "license": "MIT",
+  "author": "fupeng <fupenglxy@gmail.com>",
+  "type": "module",
+  "main": "es/index.js",
+  "typings": "typings/index.d.ts",
+  "files": [
+    "typings",
+    "es"
+  ],
   "scripts": {
-    "prepare": "stan-builder",
-    "dev": "stan-builder -w"
-  },
-  "bugs": {
-    "url": "https://github.com/fupengl/react-cli/issues"
-  },
-  "engines": {
-    "node": "^14.18.0 || >=16.0.0"
+    "dev": "stan-builder -w",
+    "prepare": "stan-builder"
   },
   "dependencies": {
     "@types/debug": "^4.1.7",
@@ -45,5 +39,11 @@
     "resolve": "^1.20.0",
     "semver": "^7.3.7",
     "strip-ansi": "^7.0.1"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

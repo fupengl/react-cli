@@ -1,6 +1,13 @@
 /**
- * @type {UserConfig}
+ * @type {import('@planjs/react-cli-service').UserConfig}
  */
 export default {
-  outputDir: 'dist'
+  outputDir: 'dist',
+  pages: {
+    index: 'src/index',
+    about: 'src/about'
+  },
+  terser: {
+    minify: 'esbuild'
+  }
 }

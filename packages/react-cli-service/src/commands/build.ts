@@ -6,6 +6,7 @@ import webpack from 'webpack'
 import fs from 'fs-extra'
 import { chalk, logger } from '@planjs/react-cli-shared-utils'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import { isPlanObject } from '@planjs/utils'
 
 import { checkBrowsers } from '../utils/browsersHelper.js'
 import {
@@ -65,10 +66,31 @@ const build: ServicePlugin = (api, options) => {
         if (args.clean !== 'false') {
           fs.emptyDirSync(appBuild)
         }
+        const htmlTemplateSet = new Set<string>()
+        if (options.pages) {
+          Object.keys(options.pages).map((page) => {
+            const pageConfig = options.pages![page]
+            if (
+              isPlanObject(pageConfig) &&
+              !Array.isArray(pageConfig) &&
+              pageConfig?.template
+            ) {
+              htmlTemplateSet.add(api.resolve(pageConfig.template))
+            } else {
+              htmlTemplateSet.add(api.resolve('public', `${page}.html`))
+            }
+          })
+        } else {
+          htmlTemplateSet.add(
+            api.resolve('public', options.indexPath! || 'index.html')
+          )
+        }
         // Merge with the public folder
         fs.copySync(api.resolve('public'), appBuild, {
           dereference: true,
-          filter: (file) => file !== api.resolve('public', options.indexPath!)
+          filter: (file) => {
+            return !htmlTemplateSet.has(file)
+          }
         })
 
         console.log('Creating an optimized production build...')
@@ -233,6 +255,10 @@ const build: ServicePlugin = (api, options) => {
       }
     }
   )
+}
+
+build.defaultModes = {
+  build: 'production'
 }
 
 export default build

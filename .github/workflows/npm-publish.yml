@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.0.2
+          version: 7.11.0
           run_install: true
       - run: pnpm test
 
@@ -59,18 +59,15 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.0.2
+          version: 7.11.0
           run_install: true
-      - name: Authenticate with Registry
-        run: |
-          pnpm logout
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-          npm whoami
       - run: |
+          npm whoami
           if [ ${{ github.base_ref }} = develop ]; then
             pnpm version:beta
           else
-            pnpm version:release
+            pnpm version:release --create-release github
           fi
-          pnpm release:pkg --create-release github
+          pnpm release:pkg
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}

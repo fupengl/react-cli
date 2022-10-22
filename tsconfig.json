@@ -8,11 +8,13 @@
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "useUnknownInCatchVariables": false,
+    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "allowJs": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "packages/*/*.d.ts", "docusaurus/**"]
 }
