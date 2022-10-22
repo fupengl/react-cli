@@ -1,6 +1,6 @@
 {
   "name": "@planjs/react-cli-service",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "local service for react-cli projects",
   "homepage": "https://github.com/fupengl/react-cli#readme",
   "bugs": {
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@planjs/react-cli-shared-utils": "^0.5.0",
+    "@planjs/react-cli-shared-utils": "^0.6.0",
     "@planjs/utils": "^1.17.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^6.3.1",
