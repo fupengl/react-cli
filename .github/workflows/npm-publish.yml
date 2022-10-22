@@ -68,7 +68,6 @@ jobs:
           else
             pnpm version:release --create-release github
           fi
-          git checkout **/pnpm-lock.yaml
           pnpm release:pkg
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
