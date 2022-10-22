@@ -13,7 +13,8 @@
         "**/*.md",
         "**/pnpm-lock.yaml"
       ],
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "message": "[skip ci] chore: release"
     }
   }
 }
