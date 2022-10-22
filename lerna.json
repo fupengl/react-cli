@@ -7,7 +7,12 @@
   "command": {
     "version": {
       "allowBranch": ["main", "develop"],
-      "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"],
+      "ignoreChanges": [
+        "**/__fixtures__/**",
+        "**/__tests__/**",
+        "**/*.md",
+        "**/pnpm-lock.yaml"
+      ],
       "conventionalCommits": true
     }
   }

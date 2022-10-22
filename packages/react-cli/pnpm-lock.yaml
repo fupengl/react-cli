@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@planjs/react-cli-shared-utils': ^0.5.0
+  '@planjs/react-cli-shared-utils': ^0.7.0
   '@types/envinfo': ^7.8.1
   '@types/inquirer': ^9.0.1
   commander: ^9.4.0
