@@ -21,7 +21,8 @@
   "files": [
     "bin",
     "es",
-    "typings"
+    "typings",
+    "react-app.d.ts"
   ],
   "scripts": {
     "dev": "stan-builder -w",
@@ -75,6 +76,9 @@
     "hash-sum": "^2.0.0",
     "html-webpack-plugin": "^5.5.0",
     "is-root": "^3.0.0",
+    "jest": "^27.4.3",
+    "jest-resolve": "^27.4.2",
+    "jest-watch-typeahead": "^1.0.0",
     "loader-utils": "^3.2.0",
     "lodash.defaultsdeep": "^4.6.1",
     "mini-css-extract-plugin": "^2.4.5",

@@ -53,7 +53,11 @@ class PluginApi {
         }, [])
         .some((f) => fs.existsSync(this.resolve(f))),
     serviceWorker: (): boolean =>
-      fs.existsSync(resolveFilePath(this.resolve(`src/service-worker`)))
+      fs.existsSync(resolveFilePath(this.resolve(`src/service-worker`))),
+    jestConfig: (): string | undefined =>
+      ['js', 'ts', 'mjs', 'cjs', 'json']
+        .map((v) => this.resolve(`jest.config.${v}`))
+        .find((f) => fs.existsSync(f))
   }
 
   assertVersion(range: number | string): void {
