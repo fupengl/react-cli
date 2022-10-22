@@ -43,6 +43,7 @@ class Service {
   modes: Record<string, string> = {}
   packageJson!: PackageJsonType & {
     react?: UserConfig
+    jest?: object,
     proxy?: WebpackDevServerOptions['proxy']
   }
   userOptions!: UserConfig
@@ -238,6 +239,7 @@ class Service {
       [
         '../commands/start.js',
         '../commands/build.js',
+        '../commands/test.js',
         '../commands/inspect.js',
         '../commands/help.js',
         '../commands/version.js',
