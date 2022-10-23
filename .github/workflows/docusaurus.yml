@@ -40,7 +40,8 @@ jobs:
         with:
           version: 7.11.0
           run_install: true
-        run: pnpm build
+
+      - run: pnpm build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
