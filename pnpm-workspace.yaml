@@ -1,3 +1,4 @@
 packages:
+  - 'docusaurus'
   - 'packages/*'
   - 'packages/react-cli-service/__fixtures__/*'
