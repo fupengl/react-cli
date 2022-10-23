@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocusaurus=self.webpackChunkdocusaurus||[]).push([[79],{9149:a=>{a.exports=JSON.parse('{"label":"facebook","permalink":"/react-cli/blog/tags/facebook","allTagsPath":"/react-cli/blog/tags","count":1}')}}]);
