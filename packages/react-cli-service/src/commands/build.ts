@@ -4,7 +4,7 @@ import path from 'node:path'
 import type { Stats } from 'webpack'
 import webpack from 'webpack'
 import fs from 'fs-extra'
-import { chalk, logger } from '@planjs/react-cli-shared-utils'
+import { chalk } from '@planjs/react-cli-shared-utils'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { isPlanObject } from '@planjs/utils'
 
@@ -35,7 +35,6 @@ const build: ServicePlugin = (api, options) => {
         '--mode': `specify env mode (default: production)`,
         '--stats': `output "bundle-stats.json"`,
         '--dest': `specify output directory (default: ${options.outputDir})`,
-        '--print-config': 'output current webpack configuration',
         '--report': `generate report.html to help analyze bundle content`,
         '--report-json': 'generate report.json to help analyze bundle content',
         '--clean': `remove the dist directory contents before building the project (default: true)`
@@ -49,16 +48,6 @@ const build: ServicePlugin = (api, options) => {
       const isInteractive = process.stdout.isTTY
       const appBuild = api.resolve(args.dest || options.outputDir!)
       const writeStatsJson = !!args.stats
-
-      if (args['print-config']) {
-        fs.outputFileSync(
-          api.resolve('webpack.config.js'),
-          api.resolveChainableWebpackConfig().toString()
-        )
-        logger.log(`  print ${chalk.cyan('webpack.config.js')} success.`)
-        console.log()
-        return
-      }
 
       try {
         await checkBrowsers(api.service.context, isInteractive)

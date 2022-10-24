@@ -3,30 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
-    "@planjs/react-cli-service": "workspace:../../"
-  },
   "scripts": {
-    "rs:start": "react-scripts start",
+    "build": "react-cli-service build",
+    "inspect": "react-cli-service inspect",
     "rs:build": "react-scripts build",
+    "rs:start": "react-scripts start",
     "rs:test": "react-scripts test",
     "start": "react-cli-service start",
-    "build": "react-cli-service build",
-    "test": "react-cli-service test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "test": "react-cli-service test"
   },
   "browserslist": {
     "production": [
@@ -39,5 +23,21 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "dependencies": {
+    "@planjs/react-cli-service": "workspace:../../",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
   }
 }

@@ -2,19 +2,13 @@ import { createRequire } from 'node:module'
 import path from 'node:path'
 
 import webpack from 'webpack'
-import {
-  chalk,
-  clearConsole,
-  logger,
-  semver
-} from '@planjs/react-cli-shared-utils'
+import { chalk, clearConsole, semver } from '@planjs/react-cli-shared-utils'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import WebpackDevServer from 'webpack-dev-server'
 import type { Configuration as WebpackDevServerOptions } from 'webpack-dev-server'
 import clipboard from 'clipboardy'
 import defaultsDeep from 'lodash.defaultsdeep'
 import { isFunction, isString } from '@planjs/utils'
-import fs from 'fs-extra'
 
 import { checkBrowsers } from '../utils/browsersHelper.js'
 import choosePort from '../utils/choosePort.js'
@@ -48,8 +42,7 @@ const start: ServicePlugin = (api, options) => {
         '--host': `specify host (default: ${defaults.host})`,
         '--port': `specify port (default: ${defaults.port})`,
         '--https': `use https (default: ${defaults.https})`,
-        '--public': `specify the public network URL for the HMR client`,
-        '--print-config': 'output current webpack configuration'
+        '--public': `specify the public network URL for the HMR client`
       }
     },
     async (args) => {
@@ -96,16 +89,6 @@ const start: ServicePlugin = (api, options) => {
           level: 'none'
         }
         webpackConfig.stats = 'errors-only'
-
-        if (args['print-config']) {
-          fs.outputFileSync(
-            api.resolve('webpack.config.js'),
-            api.resolveChainableWebpackConfig().toString()
-          )
-          logger.log(`  print ${chalk.cyan('webpack.config.js')} success.`)
-          console.log()
-          return
-        }
 
         // create compiler
         const compiler = webpack(webpackConfig)
