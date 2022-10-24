@@ -1,4 +1,5 @@
 import webpackChain from 'webpack-chain'
+import fs from 'fs-extra'
 import { highlight } from 'cli-highlight'
 
 import type { ServicePlugin } from '../types.js'
@@ -11,10 +12,7 @@ const inspect: ServicePlugin = (api, options) => {
       usage: 'react-cli-service inspect [options] [...paths]',
       options: {
         '--mode': 'specify env mode (default: development)',
-        '--rule <ruleName>': 'inspect a specific module rule',
-        '--plugin <pluginName>': 'inspect a specific plugin',
-        '--rules': 'list all module rule names',
-        '--plugins': 'list all plugin names',
+        '--output': 'output configuration to file (default: webpack.config.js)'
       }
     },
     (args) => {
@@ -23,9 +21,23 @@ const inspect: ServicePlugin = (api, options) => {
       // @ts-ignore webpack-chain types
       // @see https://github.com/neutrinojs/webpack-chain/blob/main/src/Config.js
       const output = webpackChain.toString(config)
-      console.log(highlight(output, { language: 'js' }))
+      const content = highlight(output, { language: 'js' })
+      if (args.output) {
+        fs.outputFileSync(
+          api.resolve(
+            typeof args.output === 'boolean' ? 'webpack.config.js' : args.output
+          ),
+          `module.export = ${output}`
+        )
+      } else {
+        console.log(content)
+      }
     }
   )
+}
+
+inspect.defaultModes = {
+  inspect: 'development'
 }
 
 export default inspect
