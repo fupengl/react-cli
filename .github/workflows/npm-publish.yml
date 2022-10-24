@@ -67,8 +67,6 @@ jobs:
           else
             pnpm version:release --create-release github
           fi
-          git add **/pnpm-lock.yaml
-          git commit -m 'chore: lock'
           pnpm release:pkg
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

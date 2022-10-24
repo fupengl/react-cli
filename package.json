@@ -8,6 +8,7 @@
     "prepare": "npx husky install",
     "release:pkg": "lerna publish from-package --yes",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "version": "pnpm i --lockfile-only && git add **/pnpm-lock.yaml",
     "version:beta": "pnpm version:release -- --canary --preid beta",
     "version:release": "lerna version minor --no-private --yes",
     "watch": "lerna run --parallel dev"
