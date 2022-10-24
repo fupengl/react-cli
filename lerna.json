@@ -14,7 +14,7 @@
         "**/pnpm-lock.yaml"
       ],
       "conventionalCommits": true,
-      "message": "[skip ci] chore: release"
+      "message": "chore: release"
     }
   }
 }
