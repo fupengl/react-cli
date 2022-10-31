@@ -96,6 +96,7 @@ const base: ServicePlugin = (api, options) => {
         options.assetsDir
       )
     )
+    config.output.hashFunction('xxhash64')
     config.output.publicPath(options.publicPath!)
     config.output.devtoolModuleFilenameTemplate(
       isEnvProduction
