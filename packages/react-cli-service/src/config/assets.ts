@@ -15,7 +15,7 @@ const assets: ServicePlugin = (api, options) => {
       .rule('oneOf')
       .oneOf('avif')
       .test(/\.avif$/)
-      .set('type', 'assets')
+      .set('type', 'asset')
       .set('mimetype', 'image/avif')
       .parser({
         dataUrlCondition: {
@@ -31,7 +31,7 @@ const assets: ServicePlugin = (api, options) => {
       .rule('oneOf')
       .oneOf('img')
       .test([/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/])
-      .set('type', 'assets')
+      .set('type', 'asset')
       .parser({
         dataUrlCondition: {
           maxSize: imageInlineSizeLimit

@@ -6,12 +6,14 @@ import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ESLintPlugin from 'eslint-webpack-plugin'
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import {
   getCurrentDirName,
   getCurrentFileName,
   resolve
 } from '@planjs/react-cli-shared-utils'
 
+import ForkTsCheckerWarningWebpackPlugin from '../webpack/ForkTsCheckerWarningWebpackPlugin.js'
 import getClientEnvironment from '../utils/getClientEnvironment.js'
 import { moduleFileExtensions } from '../constants/config.js'
 import getModules from '../utils/modules.js'
@@ -303,59 +305,56 @@ const base: ServicePlugin = (api, options) => {
     ])
 
     if (api.used.typescript()) {
-      const ForkTsCheckerWebpackPlugin =
-        process.env.TSC_COMPILE_ON_ERROR === 'true'
-          ? require('../webpack/ForkTsCheckerWarningWebpackPlugin.js')
-          : require('fork-ts-checker-webpack-plugin')
+      const plugin = (process.env.TSC_COMPILE_ON_ERROR === 'true'
+        ? ForkTsCheckerWarningWebpackPlugin
+        : ForkTsCheckerWebpackPlugin) as unknown as ForkTsCheckerWebpackPlugin
       // TypeScript type checking
-      config
-        .plugin('ForkTsCheckerWebpackPlugin')
-        .use(ForkTsCheckerWebpackPlugin, [
-          {
-            async: isEnvDevelopment,
-            typescript: {
-              typescriptPath: resolve.sync('typescript', {
-                basedir: api.resolve('node_modules')
-              }),
-              configOverwrite: {
-                compilerOptions: {
-                  sourceMap: isEnvProduction
-                    ? shouldUseSourceMap
-                    : isEnvDevelopment,
-                  skipLibCheck: true,
-                  inlineSourceMap: false,
-                  declarationMap: false,
-                  noEmit: true,
-                  incremental: true,
-                  tsBuildInfoFile: api.resolve(
-                    'node_modules/.cache/tsconfig.tsbuildinfo'
-                  )
-                }
-              },
-              context: api.service.context,
-              diagnosticOptions: {
-                syntactic: true
-              },
-              mode: 'write-references'
-              // profile: true,
+      config.plugin('ForkTsCheckerWebpackPlugin').use(plugin, [
+        {
+          async: isEnvDevelopment,
+          typescript: {
+            typescriptPath: resolve.sync('typescript', {
+              basedir: api.resolve('node_modules')
+            }),
+            configOverwrite: {
+              compilerOptions: {
+                sourceMap: isEnvProduction
+                  ? shouldUseSourceMap
+                  : isEnvDevelopment,
+                skipLibCheck: true,
+                inlineSourceMap: false,
+                declarationMap: false,
+                noEmit: true,
+                incremental: true,
+                tsBuildInfoFile: api.resolve(
+                  'node_modules/.cache/tsconfig.tsbuildinfo'
+                )
+              }
             },
-            issue: {
-              include: [
-                { file: '../**/src/**/*.{ts,tsx}' },
-                { file: '**/src/**/*.{ts,tsx}' }
-              ],
-              exclude: [
-                { file: '**/src/**/__tests__/**' },
-                { file: '**/src/**/?(*.){spec|test}.*' },
-                { file: '**/src/setupProxy.*' },
-                { file: '**/src/setupTests.*' }
-              ]
+            context: api.service.context,
+            diagnosticOptions: {
+              syntactic: true
             },
-            logger: {
-              infrastructure: 'silent'
-            }
+            mode: 'write-references'
+            // profile: true,
+          },
+          issue: {
+            include: [
+              { file: '../**/src/**/*.{ts,tsx}' },
+              { file: '**/src/**/*.{ts,tsx}' }
+            ],
+            exclude: [
+              { file: '**/src/**/__tests__/**' },
+              { file: '**/src/**/?(*.){spec|test}.*' },
+              { file: '**/src/setupProxy.*' },
+              { file: '**/src/setupTests.*' }
+            ]
+          },
+          logger: {
+            infrastructure: 'silent'
           }
-        ])
+        }
+      ])
     }
 
     const { lintOnSave } = options
