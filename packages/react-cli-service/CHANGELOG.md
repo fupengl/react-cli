@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/fupengl/react-cli/compare/v0.11.0...v0.12.0) (2022-11-02)
+
+### Bug Fixes
+
+- fork-ts-checker-webpack-plugin version ([dfc03ce](https://github.com/fupengl/react-cli/commit/dfc03ce83f198978fdf0f8b6dbad729fcf710686))
+
 # [0.11.0](https://github.com/fupengl/react-cli/compare/v0.9.0...v0.11.0) (2022-11-02)
 
 ### Bug Fixes
