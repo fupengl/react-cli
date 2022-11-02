@@ -110,19 +110,20 @@ class Service {
     // load user options
     this.userOptions = await this.loadUserOptions()
 
-    if (this.userOptions.chainWebpack) {
-      this.webpackChainFns.push(this.userOptions.chainWebpack)
-    }
-    if (this.userOptions.configureWebpack) {
-      this.webpackRawConfigFns.push(this.userOptions.configureWebpack)
-    }
-
     // apply plugins.
     await Promise.all(
       this.plugins.map(({ id, apply }) =>
         Promise.resolve(apply(new PluginAPI(id, this), this.userOptions))
       )
     )
+
+    if (this.userOptions.chainWebpack) {
+      this.webpackChainFns.push(this.userOptions.chainWebpack)
+    }
+
+    if (this.userOptions.configureWebpack) {
+      this.webpackRawConfigFns.push(this.userOptions.configureWebpack)
+    }
   }
 
   resolveChainableWebpackConfig(): WebpackChain {
