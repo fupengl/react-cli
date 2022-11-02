@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@babel/core': ^7.16.0
-  '@planjs/react-cli-shared-utils': ^0.9.0
+  '@planjs/react-cli-shared-utils': ^0.10.0
   '@planjs/utils': ^1.17.0
   '@pmmmwh/react-refresh-webpack-plugin': ^0.5.3
   '@svgr/webpack': ^6.3.1

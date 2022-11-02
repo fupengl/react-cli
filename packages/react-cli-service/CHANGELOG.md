@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/fupengl/react-cli/compare/v0.9.0...v0.10.0) (2022-11-02)
+
+### Bug Fixes
+
+- userOptions chainWebpack priority ([c43d859](https://github.com/fupengl/react-cli/commit/c43d859ccc8552468de68036f3ced08a7aa4c302))
+
 # [0.9.0](https://github.com/fupengl/react-cli/compare/v0.8.0...v0.9.0) (2022-10-24)
 
 ### Bug Fixes
