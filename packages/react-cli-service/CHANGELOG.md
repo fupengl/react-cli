@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/fupengl/react-cli/compare/v0.9.0...v0.11.0) (2022-11-02)
+
+### Bug Fixes
+
+- assets module error ([f9426bd](https://github.com/fupengl/react-cli/commit/f9426bd35de056d02218b7f82a10c3e8f3c85e35))
+- userOptions chainWebpack priority ([c43d859](https://github.com/fupengl/react-cli/commit/c43d859ccc8552468de68036f3ced08a7aa4c302))
+
 # [0.10.0](https://github.com/fupengl/react-cli/compare/v0.9.0...v0.10.0) (2022-11-02)
 
 ### Bug Fixes
