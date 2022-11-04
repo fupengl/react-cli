@@ -52,8 +52,8 @@ const start: ServicePlugin = (api, options) => {
       try {
         const isInteractive = process.stdout.isTTY
         const DEFAULT_PORT =
-          parseInt(args.port || process.env.PORT!, 10) || 3000
-        const host = args.host || process.env.HOST || '0.0.0.0'
+          parseInt(args.port|| options.configureDevServer?.port || process.env.PORT!, 10) || 3000
+        const host = args.host || options.configureDevServer?.host || process.env.HOST || '0.0.0.0'
         const protocol =
           args.https || process.env.HTTPS === 'true' ? 'https' : 'http'
         const sockHost = process.env.WDS_SOCKET_HOST
