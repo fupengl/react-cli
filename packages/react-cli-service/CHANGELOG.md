@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/fupengl/react-cli/compare/v0.12.0...v0.13.0) (2022-11-04)
+
+### Bug Fixes
+
+- add unhandledRejection log ([7f8d6c4](https://github.com/fupengl/react-cli/commit/7f8d6c4965ff145b8e321a333e73adbad7e485b9))
+- close error ([07cba5a](https://github.com/fupengl/react-cli/commit/07cba5a8de0611b733b6d67a10d7d5b84fceb88c))
+- start cmd options ([d7a51fd](https://github.com/fupengl/react-cli/commit/d7a51fd049e16cde962d4067c8ec39ef175e5201))
+
 # [0.12.0](https://github.com/fupengl/react-cli/compare/v0.11.0...v0.12.0) (2022-11-02)
 
 ### Bug Fixes
