@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/fupengl/react-cli/compare/v0.14.0...v0.15.0) (2022-11-08)
+
+### Bug Fixes
+
+- filename ([cd89d56](https://github.com/fupengl/react-cli/commit/cd89d56a733c05f4d303c081848aeea35fd7abbf))
+
 # [0.14.0](https://github.com/fupengl/react-cli/compare/v0.13.0...v0.14.0) (2022-11-08)
 
 ### Bug Fixes
