@@ -98,6 +98,23 @@ const base: ServicePlugin = (api, options) => {
         options.assetsDir
       )
     )
+    config.optimization.splitChunks({
+      cacheGroups: {
+        defaultVendors: {
+          name: `chunk-vendors`,
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          chunks: 'initial'
+        },
+        common: {
+          name: `chunk-common`,
+          minChunks: 2,
+          priority: -20,
+          chunks: 'initial',
+          reuseExistingChunk: true
+        }
+      }
+    })
     config.output.hashFunction('xxhash64')
     config.output.publicPath(options.publicPath!)
     config.output.devtoolModuleFilenameTemplate(
