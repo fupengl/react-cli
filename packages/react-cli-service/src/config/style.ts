@@ -120,9 +120,9 @@ const style: ServicePlugin = (api, options) => {
           .use(loader)
           .loader(loader)
           .options({
-            sourceMap,
             // @ts-ignore
-            ...loaderOptions?.[lang]
+            ...loaderOptions?.[lang],
+            sourceMap: true,
           })
           .end()
       }
