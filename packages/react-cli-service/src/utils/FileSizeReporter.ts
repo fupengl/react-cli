@@ -101,7 +101,7 @@ export function printFileSizesAfterBuild(
   }
 }
 
-function removeFileNameHash(buildFolder: string, fileName: string) {
+function removeFileNameHash(buildFolder: string, fileName: string): string {
   return fileName
     .replace(buildFolder, '')
     .replace(/\\/g, '/')

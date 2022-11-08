@@ -53,7 +53,7 @@ const base: ServicePlugin = (api, options) => {
     config.target('browserslist')
     config.stats('errors-warnings')
     config.set('infrastructureLogging', { level: 'none' })
-    config.set('performance', false)
+    config.performance.hints(false)
     config.bail(isEnvProduction)
     config.mode(
       isEnvProduction ? 'production' : isEnvDevelopment ? 'development' : 'none'
@@ -83,7 +83,7 @@ const base: ServicePlugin = (api, options) => {
       isEnvProduction
         ? `static/js/[name]${
             options.filenameHashing ? '.[contenthash:8]' : ''
-          }.js`
+          }.chunk.js`
         : isEnvDevelopment
         ? 'static/js/[name].chunk.js'
         : '',
