@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/fupengl/react-cli/compare/v0.13.0...v0.14.0) (2022-11-08)
+
+### Bug Fixes
+
+- resolve-url-loader error ([da366cc](https://github.com/fupengl/react-cli/commit/da366ccc0266289db90ea7b1f95ed63aa5bf4cbb))
+
 # [0.13.0](https://github.com/fupengl/react-cli/compare/v0.12.0...v0.13.0) (2022-11-04)
 
 ### Bug Fixes
