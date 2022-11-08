@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/fupengl/react-cli/compare/v0.15.0...v0.16.0) (2022-11-08)
+
+### Features
+
+- add cache group ([62e3d82](https://github.com/fupengl/react-cli/commit/62e3d829a417d5a27ab6de022c447a47aff8c13f))
+
 # [0.15.0](https://github.com/fupengl/react-cli/compare/v0.14.0...v0.15.0) (2022-11-08)
 
 ### Bug Fixes
