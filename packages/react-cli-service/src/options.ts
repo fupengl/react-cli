@@ -18,6 +18,8 @@ export const schema: SchemaType = createSchema((joi) =>
     productionSourceMap: joi.boolean(),
     parallel: joi.alternatives().try(joi.boolean(), joi.number().integer()),
     devServer: joi.object(),
+    experimental: joi.object(),
+    compiler: joi.object(),
     pages: joi.object().pattern(
       /\w+/,
       joi.alternatives().try(
@@ -88,6 +90,10 @@ export const defaultOptions: () => UserConfig = () => ({
 
   // multi-page config
   pages: undefined,
+
+  experimental: undefined,
+
+  compiler: undefined,
 
   css: {
     // extract: true,
