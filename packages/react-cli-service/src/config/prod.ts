@@ -1,5 +1,6 @@
 import TerserPlugin from 'terser-webpack-plugin'
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin'
+import defaultsDeep from 'lodash.defaultsdeep'
 
 import resolveFilePath from '../utils/resolveFilePath.js'
 import type { ServicePlugin } from '../types.js'
@@ -13,12 +14,18 @@ const prod: ServicePlugin = (api, options) => {
       isEnvProduction && process.argv.includes('--profile')
 
     const mergeTerserOptions = (defaultOptions: any) => {
+      const opts: any = {}
+      const removeConsole = options?.compiler?.removeConsole
       const userOptions = options.terser && options.terser.terserOptions
-      // user's config is first
-      return {
-        ...defaultOptions,
-        ...userOptions
+
+      if (removeConsole) {
+        opts.compress = {
+          drop_console: true,
+        }
       }
+
+      // user's config is first
+      return defaultsDeep(defaultOptions, opts, userOptions)
     }
 
     const terserMinify = () => ({
@@ -98,7 +105,11 @@ const prod: ServicePlugin = (api, options) => {
 
     // Currently we do not allow custom minify function
     const getMinify = (): any => {
-      const { minify = 'terser' } = options.terser || {}
+      let { minify = 'terser' } = options.terser || {}
+
+      if (!options.terser?.minify && options.experimental?.forceUseSwc) {
+        minify = 'swc'
+      }
 
       const minifyMap = {
         terser: terserMinify,

@@ -163,6 +163,24 @@ export declare interface UserConfig {
    */
   lintOnSave?: boolean | 'default' | 'warning' | 'error'
 
+  experimental?: {
+    /**
+     * Default: `'default'`
+     *
+     * Mandatory to use swc compilation, the default development environment babel has no special configuration, it will automatically use swc, turn on the switch, development and production will use swc compilation.
+     */
+    forceUseSwc?: boolean
+  },
+
+  compiler?: {
+    /**
+     * Default: `false`
+     *
+     * This transform allows for removing all console.* calls in application code (not node_modules). Similar to babel-plugin-transform-remove-console.
+     */
+    removeConsole?: boolean
+  }
+
   /**
    * set terser-webpack-plugin minify and terserOptions
    */

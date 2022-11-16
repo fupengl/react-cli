@@ -423,12 +423,21 @@ const base: ServicePlugin = (api, options) => {
         .before('oneOf')
     }
 
-    if ((api.used.swc() || isEnvDevelopment) && !api.used.babel()) {
+    if ((api.used.swc() || isEnvDevelopment) && !api.used.babel() || options.experimental?.forceUseSwc) {
       const swcRule = config.module
         .rule('oneOf')
-        .oneOf('swc')
+        .oneOf('swc-deps')
         .test(/\.(js|mjs|jsx|ts|tsx)$/)
         .include.add(api.resolve('src'))
+        .end()
+        .use('swc-loader')
+        .loader(require.resolve('swc-loader'))
+
+      const swcDepsRule = config.module
+        .rule('oneOf')
+        .oneOf('swc')
+        .test(/\.(js|mjs)$/)
+        .exclude.add(/@babel(?:\/|\\{1,2})runtime/)
         .end()
         .use('swc-loader')
         .loader(require.resolve('swc-loader'))
@@ -458,6 +467,18 @@ const base: ServicePlugin = (api, options) => {
                     jsx: true,
                     dynamicImport: true
                   }
+            }
+          })
+          .end()
+
+        swcDepsRule
+          .options({
+            jsc: {
+              target: 'es2015',
+              externalHelpers: true,
+              parser: {
+                syntax: 'ecmascript',
+              }
             }
           })
           .end()
@@ -497,8 +518,8 @@ const base: ServicePlugin = (api, options) => {
             [
               'babel-plugin-named-asset-import',
               'babel-preset-react-app',
-              'react-dev-utils',
-              'react-scripts'
+              '@planjs/react-cli-shared-utils',
+              '@planjs/react-cli-service'
             ]
           ).cacheIdentifier,
           plugins: [
@@ -520,7 +541,7 @@ const base: ServicePlugin = (api, options) => {
       // Unlike the application JS, we only compile the standard ES features.
       config.module
         .rule('oneOf')
-        .oneOf('babel-runtime')
+        .oneOf('babel-deps')
         .test(/\.(js|mjs)$/)
         .exclude.add(/@babel(?:\/|\\{1,2})runtime/)
         .end()
@@ -544,8 +565,8 @@ const base: ServicePlugin = (api, options) => {
             [
               'babel-plugin-named-asset-import',
               'babel-preset-react-app',
-              'react-dev-utils',
-              'react-scripts'
+              '@planjs/react-cli-shared-utils',
+              '@planjs/react-cli-service'
             ]
           ).cacheIdentifier,
           // Babel sourcemaps are needed for debugging into node_modules
