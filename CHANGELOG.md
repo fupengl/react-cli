@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/fupengl/react-cli/compare/v0.16.0...v0.17.0) (2022-11-16)
+
+### Features
+
+- add options ([34e3b28](https://github.com/fupengl/react-cli/commit/34e3b28f27eeb5eda60a88b2bb42395a1a5d7e7c))
+
 # [0.16.0](https://github.com/fupengl/react-cli/compare/v0.15.0...v0.16.0) (2022-11-08)
 
 ### Features
