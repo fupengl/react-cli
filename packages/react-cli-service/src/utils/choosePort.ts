@@ -20,6 +20,11 @@ function choosePort(
         if (port === defaultPort) {
           return resolve(port)
         }
+        if (port === undefined) {
+          // https://github.com/node-modules/detect-port/blob/HEAD/lib/detect-port.js#L53-L54
+          logger.error("The ip that is not unknown on the machine, please check hostname.")
+          return resolve(null)
+        }
         const message =
           process.platform !== 'win32' && defaultPort < 1024 && !isRoot()
             ? `Admin permissions are required to run a server on a port below 1024.`
